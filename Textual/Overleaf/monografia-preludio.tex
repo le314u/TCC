@@ -1,0 +1,191 @@
+% ------------------------------------------------------------------------
+%   Componente do template para monografia de TCC-2018 - versao 1.0.alfa
+% ------------------------------------------------------------------------
+
+%------------ Pacotes básicos 
+\usepackage{lmodern}			% Usa a fonte Latin Modern			
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{lastpage}			% Usado pela Ficha catalográfica
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}			% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+		
+%------------ Pacotes adicionais
+\usepackage{blindtext}			% para geração de dummy text
+
+%------------ Pacotes de citações
+\usepackage[brazilian,hyperpageref]{backref}	% Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}		% Citações padrão ABNT
+\usepackage{pdfpages}			% Saida em pdf
+
+%------------ Comandos úteis
+\newcommand{\aspas}[1]{``#1''}
+
+% ----------- CONFIGURAÇÕES DE PACOTES
+
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% Espaçamentos entre linhas e parágrafos 
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+
+% compila o indice
+\makeindex
+
+% ----------------------------------------------------
+% Configurações de aparência do PDF final
+% ----------------------------------------------------
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+
+% ----------------------------------------------------
+% Comandos para geração de itens textuais 
+% ----------------------------------------------------
+
+\newcommand{\imprimirfichacatalografica}{
+
+\begin{fichacatalografica}
+	\sffamily
+	\vspace*{\fill}					% Posição vertical
+	\begin{center}					% Minipage Centralizado
+	\fbox{\begin{minipage}[c][8cm]{13.5cm}		% Largura
+	\small
+	
+	\hspace{1cm} \imprimirautor\\
+
+	\begingroup
+        \leftskip4em
+        \rightskip\leftskip
+	
+	\imprimirtitulo  / \imprimirautor. -- \imprimirlocal, \imprimirdata.
+	
+	\pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
+	
+	\imprimirorientadorRotulo~\imprimirorientador\\
+	
+	%\imprimirtipotrabalho~--~\imprimirinstituicao, \imprimirdata.\\
+	Monografia para trabalho de conclusão de curso (graduação)~--~Instituto Federal 
+	de Educação, Ciência e Tecnologia de Minas Gerais, Ciência da Computação, 
+	Formiga, \imprimirdata.\\
+	
+	1. Palavra-chave1.
+	2. Palavra-chave2.
+	3. Palavra-chave3.
+	I. \imprimirorientador.
+	II. Instituto Federal de Educação, Ciência e Tecnologia de Minas Gerais.
+	III. Ciência da Computação.
+	IV. \imprimirtitulo 			
+        \par
+        \endgroup
+	\end{minipage}}
+	\end{center}
+\end{fichacatalografica}
+
+}
+
+\newcommand{\imprimirerrata}{
+
+\begin{errata}
+Exemplo de errata\\[1cm]
+
+FERRIGNO, C. R. A. \textbf{Tratamento de neoplasias ósseas apendiculares com
+reimplantação de enxerto ósseo autólogo autoclavado associado ao plasma
+rico em plaquetas}: estudo crítico na cirurgia de preservação de membro em
+cães. 2011. 128 f. Tese (Livre-Docência) - Faculdade de Medicina Veterinária e
+Zootecnia, Universidade de São Paulo, São Paulo, 2011.
+
+\begin{table}[htb]
+\center
+\footnotesize
+\begin{tabular}{|p{1.4cm}|p{1cm}|p{3cm}|p{3cm}|}
+  \hline
+   \textbf{Folha} & \textbf{Linha}  & \textbf{Onde se lê}  & \textbf{Leia-se}  \\
+    \hline
+    1 & 10 & auto-conclavo & autoconclavo\\
+   \hline
+\end{tabular}
+\end{table}
+
+\end{errata}
+
+}
+
+\newcommand{\imprimirfolhadeaprovacao}[1]{
+
+\begin{folhadeaprovacao}
+  \begin{center}
+   {\ABNTEXchapterfont\large\imprimirautor}
+
+   \vspace*{\fill}\vspace*{\fill}
+   \begin{center}
+     \ABNTEXchapterfont\bfseries\Large\imprimirtitulo
+   \end{center}
+   \vspace*{\fill}
+    
+   \hspace{.45\textwidth}
+   \begin{minipage}{.5\textwidth}
+       \imprimirpreambulo
+   \end{minipage}%
+   \vspace*{\fill}        
+   \end{center}
+   
+   Trabalho aprovado em {#1}.
+   
+   \vspace{1cm}
+   \hspace{4cm} BANCA EXAMINADORA    
+
+   \assinatura{\textbf{\imprimirorientador} \\ Orientador} 
+   \assinatura{\textbf{Fulano} \\ Convidado 1}
+   \assinatura{\textbf{Sicrano} \\ Convidado 2}
+   %\assinatura{\textbf{Professor} } %\\ Convidado 3}
+   %\assinatura{\textbf{Professor} } %\\ Convidado 4}
+      
+   \begin{center}
+    \vspace*{0.5cm}
+    {\large\imprimirlocal}
+    \par
+    {\large\imprimirdata}
+    \vspace*{1cm}
+  \end{center}
+  
+\end{folhadeaprovacao}
+
+}
+

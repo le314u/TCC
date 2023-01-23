@@ -1,0 +1,237 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Template para monografia de TCC-2018 - versao 1.0.alfa
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Este template utiliza o modelo mantido pela abnt e foi baseado 
+%% no abtex2-modelo-trabalho-academico.tex, v-1.9.6 laurocesar
+%% Copyright 2012-2016 by abnTeX2 group at http://www.abntex.net.br/ 
+%%
+% -------------------------------------------------------------------
+%% This work may be distributed and/or modified under the conditions 
+%% of the LaTeX Project Public License, either version 1.3 of this 
+%% license or (at your option) any later version. The latest version 
+%% of this license is in http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is the abnTeX2 team, led
+%% by Lauro César Araujo. Further information are available on 
+%% http://www.abntex.net.br/
+%%
+%% This work consists of the files abntex2-modelo-trabalho-academico.tex,
+%% abntex2-modelo-include-comandos and abntex2-modelo-references.bib
+% -------------------------------------------------------------------
+%%
+%% Modelo de Monografia em conformidade com ABNT NBR 14724:2011
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% ATENÇAO para as opções:
+%%
+%% para modo rascunho, sem páginas brancas, use: 
+%% openany, oneside, nopartblankpage
+%%
+%% para modo normal, com tudo que ABNT exige, use:  
+%% openright, twoside, partpageblank
+%%
+
+\documentclass[
+	% -- opções da classe memoir --
+	12pt,			% tamanho da fonte
+	openany,		% capítulos começam em qq página (isso elimina várias pág brancas)
+	%openright,		% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	oneside,		% considera impressão de um só lado (gera menos pág brancas)
+	%twoside,		% para impressão em recto e verso. Oposto a oneside
+	a4paper,		% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,		% idioma adicional para hifenização
+	%french,		% idioma adicional para hifenização
+	%spanish,		% idioma adicional para hifenização
+	%portuges		% o último idioma é o principal do documento
+	brazil			% o último idioma é o principal do documento
+	]{abntex2}
+
+
+\input{monografia-preludio.tex}	
+
+\graphicspath{{./figuras/}}   	% pasta contendo todas as figuras
+
+\nopartblankpage  		% elimina páginas em branco
+% \partpageblank		% permite páginas em branco
+
+% ----------------------------------------------------
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ----------------------------------------------------
+
+\titulo{Título do TCC}
+\autor{Lucas Mateus Fernandes}
+\local{Formiga - MG}
+\data{2023}
+\orientador{Fernando Paim Lima}
+% \coorientador{Felipe Augusto Lima Reis}
+\instituicao{%
+  Instituto Federal de Educação, Ciência e Tecnologia de Minas Gerais \par
+  Campus Formiga \par
+  Ciência da Computação
+  }
+\tipotrabalho{Monografia}
+
+% O preambulo deve conter o tipo do trabalho, o objetivo, o nome da instituição e a área de concentração 
+%\preambulo{Monografia do trabalho de conclusão de curso apresentado ao Instituto Federal Minas Gerais - Campus Formiga, como requisito parcial para a obtenção do título de Bacharel em Ciência da Computação.}
+
+
+\preambulo{Proposta de projeto do Trabalho de Conclusão de Curso do Curso de Bacharelado em Ciência da Computação, IFMG – Campus Formiga.}
+
+    
+% ----------------------------------------------------
+% INÍCIO DO DOCUMENTO
+% ----------------------------------------------------
+
+\begin{document}
+
+%\selectlanguage{portuges}
+\selectlanguage{brazil}
+
+\frenchspacing  % retira espaço extra obsoleto entre as frases.
+
+%-----------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+%-----------------------------------------------------
+% \pretextual
+
+\imprimircapa
+
+\imprimirfolhaderosto*  % o comando com * indica que haverá ficha bibliográfica
+
+%------------- Ficha catalográfica
+% São os ``Dados internacionais de catalogação-na-publicação''.
+% Escolha uma das opções: usar página pdf pronta (gerada pela biblioteca?!)
+% ou gerar a página com o comando \imprimirfichacatalografica. 
+% (Mais detalhes no preludio e documentacao do pacote abntex2.)
+%
+% \begin{fichacatalografica}
+%     \includepdf{ficha_catalografica.pdf}
+% \end{fichacatalografica}
+\imprimirfichacatalografica
+
+%------------ Errata (se houver)
+% Modifique o comando \imprimirerrata no preludio e use esse comando
+%\imprimirerrata
+
+%------------ Folha de aprovação
+% É um elemento obrigatório da NBR 14724/2011 (seção 4.2.1.3). 
+% Você pode utilizar a página modelo até a aprovação do trabalho. 
+% Após isso, gere uma página com a imagem da folha assinada pela banca,
+% comente o comando \imprimirfolhadeaprovacao e use o \includepdf 
+\imprimirfolhadeaprovacao{06 de junho de 2018}
+% \includepdf{folhadeaprovacao_final.pdf}
+
+%------------ Dedicatória
+\begin{dedicatoria}
+   \vspace*{\fill} \centering \noindent 
+   \textit{ Este trabalho é dedicado a tudo e todos, exceto os cachorros de rua.} 
+   \vspace*{\fill}
+\end{dedicatoria}
+
+%------------ Agradecimentos
+\begin{agradecimentos}
+  Gostaria de agradecer meus pais por tudo que fizeram e
+  aos meus professores pela paciência que tiveram.
+\end{agradecimentos}
+
+
+%------------ Epígrafe
+\begin{epigrafe}
+   \vspace*{\fill}
+   \begin{flushright}
+	\textit{\aspas{Nunca atribua à malícia/maldade o que pode ser adequadamente explicado pela estupidez.}
+	(Navalha de Hanlon) }
+   \end{flushright}
+\end{epigrafe}
+
+%------------ RESUMOS
+\setlength{\absparsep}{18pt} % ajusta o espaçamento dos parágrafos do resumo
+
+% resumo em português
+\begin{resumo}
+ A escrita da monografia é um problema clássico no Trabalho de Conclusão de Curso (TCC).
+ Aqui é o lugar onde o autor explica brevemente o conteúdo do seu trabalho. Para usar este
+ template é necessário instalar alguns pacotes do LaTeX, particularmente o abntex2. O pacote
+ blindtex não é realmente necessário, serve apenas para gerar lero-lero neste exemplo.
+ 
+ \textbf{Palavras-chave}: Monografia, LaTeX, TCC.
+\end{resumo}
+
+% resumo em inglês
+\begin{resumo}[Abstract]
+ \begin{otherlanguage*}{english}
+  The writing of the monograph is a classic problem in the Course Conclusion Work.
+  Here is where the author briefly explains the content of his work.
+ 
+ \textbf{Keywords}: Monograph, LaTeX.
+ \end{otherlanguage*}
+\end{resumo}
+
+% Consulte o manual da classe abntex2 para maiores 
+% orientações sobre os seguintes tópicos:
+
+%------------ Lista de ilustrações
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+
+%------------ Lista de tabelas
+
+%------------ Lista de abreviaturas e siglas
+
+%------------ Lista de símbolos
+
+%------------ Sumario
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+\include{cap1-introducao}
+\include{cap2-revisao}
+\include{cap3-desenvolvimento}
+\include{cap4-conclusao}
+\include{cap5-trabalhos-futuros}
+
+\phantompart
+
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+
+% Referências bibliográficas
+\bibliography{monografia}
+
+% Consulte o manual da classe abntex2 para orientações 
+% sobre os seguintes tópicos opcionais:
+
+%------------ Glossário
+
+%------------ Apêndices
+
+%------------ Anexos
+
+% INDICE REMISSIVO
+\phantompart
+\printindex
+
+\end{document}
+\grid
