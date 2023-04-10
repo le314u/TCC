@@ -5,7 +5,7 @@
 Neste capítulo são mostrados os principais fundamentos necessários para entender os
 conceitos abordados no presente trabalho.
 
-\section[TAF]{TAF}
+\section[TAF]{Teste de Aptidão Física}
 
 
 O Teste de Aptidão Física (TAF). é uma etapa comum em concursos públicos para provimento de cargos em carreiras relacionadas a área de segurança pública. Seu objetivo é atestar a capacidade do indivíduo em desempenhar funções específicas do cargo por meio da avaliação de determinados exercícios. A avaliação é embasada em exercícios e parâmetros pré estabelecidos em edital como por exemplo: quantidade de repetições de um determinado movimento para o exercício de barra fixa ou flexão abdominal, tempo gasto para translocação em uma determinada distancia nas corridas de 12km, 2.400m ou natação, ou até mesmo a distância percorrida durante o salto de impulsão horizontal.
@@ -13,13 +13,13 @@ O Teste de Aptidão Física (TAF). é uma etapa comum em concursos públicos par
 
 \section[Barra Fixa]{Barra Fixa}
 
-Nos ultimos 4 anos é possivel ver uma série de concursos publicos que avaliam o movimento de barra fixa no teste de aptidão física (TAF) como por exemplo:
+Nos ultimos 5 anos é possivel ver uma série de concursos publicos que avaliam o movimento de barra fixa no teste de aptidão física (TAF) como por exemplo:
 Concurso público para admissão ao curso de formação de soldados bombeiros militar do quadro de praças (qp-bm) e do quadro de praças especialistas – (qpe-bm) do corpo de bombeiros militar de minas gerais para o ano de 2020.\cite{eCBMG2018};
 Concurso público para admissão ao curso de formação de soldados do quadro de praças especialistas da polícia militar de minas gerais.\cite{ePMMG2021};
 Concurso público para o provimento de vagas nos cargos de delegado de polícia federal, agente de polícia federal, escrivão de polícia federal e papiloscopista policial federal.\cite{ePF2021};
 Concurso público para provimento de cargos da carreira de agente de segurança penitenciário/policial penal do quadro de pessoal da secretaria de estado de justiça e segurança\cite{ePP2021}.
 
-O teste de flexão em barra fixa ou teste dinâmico de barra fixa sofre algumas divergencias de acordo com o edital porem os principios do movimento são semelhantes.
+O teste de flexão em barra fixa ou teste dinâmico de barra fixa sofre algumas divergencias de acordo com o edital, porem os principios do movimento são semelhantes:
 
 A barra fixa é instalada a uma altura tal, que o avaliado, mantendo-se pendurado, com os cotovelos em extensão, não tenha contato dos pés com o solo;
 A posição da pegada é pronada (dorso da mão voltado para o rosto) e a abertura das mãos corresponde à distância biacromial (largura dos ombros);
@@ -30,16 +30,41 @@ Os cotovelos deverão estar em extensão total para o início de flexão;
 Não são permitidos movimentos de quadris ou pernas e extensão da coluna cervical como formas de auxiliar na execução da prova.
 Somente é contado o número de movimentos completados corretamente.
 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.45]{tostines.jpg}
+	\caption{Exemplo de objeto causador de Efeito Tostines}
+	\label{fig-tostines}
+\end{figure}
+
 
 \section[Visão computacional]{Visão computacional}
-Visão computacional é a ciência que estuda e desenvolve tecnologias que permitem extrair características de imagens capturadas por diferentes tipos de sensores e então permitem reconhecer, manipular e processar dados sobre os objetos que compõem a imagem capturada \cite{VisaoComp}.
+Visão computacional é a ciência que estuda e desenvolve tecnologias que permitem extrair características de imagens capturadas por diferentes tipos de sensores e então permitem reconhecer, manipular e processar dados sobre os objetos que compõem a imagem capturada \cite{VisaoComp} \cite{visao}.
+
+
+\section[Visão computacional]{Estimativa de pose humana}
+Estimativa de Pose Humana (EPH) ou Identificação de Pose é um problema geral em Visão Computacional, que tem o objetivo de detectar a posição e a orientação de uma pessoa  em imagens ou vídeos prevendo a localização de alguns pontos-chave específicos como  cabeça, ombros, cotovelos, mãos, quadril, joelhos e pés.\cite{edh}
+
+EPH pode ser bidimensional ou tridimensional, sendo o primeiro responsabel por estimar as cordenadas X Y e o segundo as cordenadas X Y Z de um espaço virtual que geralmente é inferido a partir de uma imagem bidimensional. A EDH pode tambem ser classificada de acordo com a quantidade de pessoas a serem estimadas podendo ser uma unica pessoa ou de várias pessoas o que interfere nas resoluções possiveis pois a estimativa de postura de várias pessoas é ligeiramente mais difícil do que o caso de uma única pessoa.\cite{edhDeep}
+
+
+\section[Visão computacional]{Machine learning}
+
+Machine learning é um ramo da inteligência artificial (IA) focado na análise de dados, que por meio de métodos estatísticos de aprendizado e otimização  permite computadores analisarem conjuntos de dados e identificar padrões e tendências históricas para prever modelos futuros.\cite{ml}
+
+O algoritmo típico de aprendizado de máquina supervisionado consiste em aproximadamente três componentes: Decisão; Erro ; Otimização.
+
+A decisão esta relacionada a uma predição ou classificação com base em alguns dados de entrada, que podem ser rotulados ou não rotulados. O errro avalia a qualidade da predição ou classificação por meio de comparaçoes com o rotulo ou exemplos conhecidos. A otimização de modelo esta relacionada a ajustes para minimizar a diferença entre o exemplo conhecido e a estimativa do modelo.
 
 
 
+\section[Visão computacional]{Tensor flow}
+O TensorFlow é uma plataforma completa que facilita a criação e a implantação de modelos de Machine learning (ML).
 
-\cite{visao}
 
 
+\section[Visão computacional]{OpenCV}
+OpenCV (Open Source Computer Vision Library), originalmente, desenvolvida pela Intel, em 2000, é uma biblioteca multiplataforma, totalmente livre ao uso acadêmico e comercial, para o desenvolvimento de aplicativos na área de Visão computacional \cite{}
 
 
 
@@ -57,59 +82,5 @@ Origem é a extremidade do músculo que esta fixada a um ponto fixo ou a uma pe�
 Inserção é a extremidade do músculo que esta fixada a um ponto movel ou a uma peça óssea que se desloca \cite{sisMuscular}.
 
 \section[Cadeia Cinemática]{Cadeia Cinemática}
-Os termos cadeia cinemática aberta ou fechada, são usados para demonstrar se o segmento mais distal da cadeia está fixado a algum objeto imóvel ou até mesmo o solo \cite{silva2015cinesiologia}.
-
-\subsection[Cadeia Cinemática Aberta]{Cadeia Cinemática Aberta}
-Uma cadeia cinemática aberta representa uma situação em que a extremidade do membro não está fixada ao solo ou a algum objeto imóvel e assim, o segmento está livre para se mover\cite{silva2015cinesiologia}.
-
-\subsection[Cadeia Cinemática Fechada]{Cadeia Cinemática Fechada}
-Uma cadeia cinemática fechada representa uma situação em que o segmento mais distal da cadeia está fixo ao solo ou a um objeto imóvel \cite{silva2015cinesiologia}.
-
-
-
-
-
-
-
-\section[TERMOS]{Visão computacional}
-
-\section[TERMOS]{Visão computacional}
-
-\section[TERMOS]{DEFINIÇÃO DE TERMOS}
-
-
-
-
-
-
-\section[Conceito1]{Primeiro Conceito}
-
-\blindtext
-
-\blindtext[2]
-
-\blindtext
-
-A figura~\ref{fig-tostines} ilustra primeiro material conhecido causador do Efeito Tostines.
-
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[scale=0.45]{tostines.jpg}
-	\caption{Exemplo de objeto causador de Efeito Tostines}
-	\label{fig-tostines}
-\end{figure}
-
-\blindtext[2]
-
-
-
-
-\section[Conceito2]{Segundo Conceito}
-
-\blindtext
-
-\blindtext[2]
-
-\blindtext
-		
-
+Os termos cadeia cinemática aberta ou fechada, são usados para demonstrar se o segmento mais distal da cadeia está fixado a algum objeto imóvel ou até mesmo o solo.
+Sendo que cadeia cinemática aberta representa uma situação em que a extremidade do membro não está fixada ao solo ou a algum objeto imóvel e assim, o segmento está livre para se mover e cadeia cinemática fechada representa uma situação em que o segmento mais distal da cadeia está fixo ao solo ou a um objeto imóvel \cite{silva2015cinesiologia}.
