@@ -1,7 +1,5 @@
 import cv2
-import numpy as np
-import mediapipe as mp
-import tensor
+import midia_pipe
 
 
 def loadVideo(path):
@@ -35,14 +33,14 @@ def main():
 			image.flags.writeable = False
 
 			#Faz o processamento da imagem
-			points = tensor.process_img(image)
+			points = midia_pipe.process_img(image)
 
 			#Desenha os traços
-			image = tensor.draw(image, tensor.Pose.BRACO_DIR,(255,0,0),points)
-			image = tensor.draw(image, tensor.Pose.BRACO_ESQ,(255,0,0),points)
-			image = tensor.draw(image, tensor.Pose.PERNA_DIR,(0,255,0),points)
-			image = tensor.draw(image, tensor.Pose.PERNA_ESQ,(0,255,0),points)
-			image = tensor.draw(image, tensor.Pose.CORPO,(0,0,255),points)
+			image = midia_pipe.draw(image, midia_pipe.Pose.BRACO_DIR,(255,0,0),points)
+			image = midia_pipe.draw(image, midia_pipe.Pose.BRACO_ESQ,(255,0,0),points)
+			image = midia_pipe.draw(image, midia_pipe.Pose.PERNA_DIR,(0,255,0),points)
+			image = midia_pipe.draw(image, midia_pipe.Pose.PERNA_ESQ,(0,255,0),points)
+			image = midia_pipe.draw(image, midia_pipe.Pose.CORPO,(0,0,255),points)
 				
 			continuar = show(image)
 		except Exception:
