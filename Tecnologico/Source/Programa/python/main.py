@@ -16,8 +16,10 @@ def show(img,autoRun=1):
 	key = cv2.waitKey(autoRun) != ord('q')
 	return key
 
+
 def main():
 	'''Main run'''
+	startUI()
 	video = loadVideo('midia/c.mp4')
 	continuar = True
 
@@ -27,6 +29,7 @@ def main():
 		#Redimensiona a imagem
 		image = img
 		image = cv2.resize(img, (0,0), fx=0.25, fy=0.25) 
+		print(image[0],image[1])
 		try:
 
 			# Força uma passagem por referência
@@ -45,6 +48,22 @@ def main():
 			continuar = show(image)
 		except Exception:
 			continuar = show(image)
+
+
+
+def nothing(x):
+    pass
+
+def getMeta(window_name):
+    return cv2.getTrackbarPos('size',window_name)
+
+def startUI(window_name=""):
+    '''Cria uma UI'''
+
+    window_name = "UI"
+    #Altera o nome da janela
+    cv2.namedWindow(window_name)
+    cv2.createTrackbar('size',window_name,0,100,nothing)
 
 
 
