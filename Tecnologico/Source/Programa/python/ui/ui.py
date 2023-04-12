@@ -8,7 +8,7 @@ from PIL import ImageTk, Image
 import os
 from  controllerVideo import ControllerVideo
 
-class Ui():
+class Player():
     def __init__(self):
         #Meta dados da Janela Tkinter
         self.conf = {
@@ -26,6 +26,9 @@ class Ui():
         path = self.getPath()
         #Carrega o Video
         self.controller = ControllerVideo(path)
+        #Da Play no Video
+        self.controller.play()
+
         #Cria a Janela baseada nas configurações do video
         self.window = Tk()
         self.window.title( self.conf["title"] )
@@ -34,9 +37,16 @@ class Ui():
         self.resize()
         self.canvas = Label( self.window )
 
-        self.controllerPlayer = Control(self.controller)
-        #Executa
-        self.controller.play()
+        self.controllerPlayer = ControllerPlayer(self.controller)
+
+        
+        #Linka o Player e o ControllerPlayer para fecharem juntas
+        player = self.window
+        control = self.controllerPlayer.window
+        on_close = lambda: (player.destroy(), control.destroy())
+        player.protocol("WM_DELETE_WINDOW", on_close)
+        control.protocol("WM_DELETE_WINDOW", on_close)
+        
         #Cria uma tred para desenhar
         mltp.Process(target=self.play())
         self.run()
@@ -98,8 +108,7 @@ class Ui():
             cv2.destroyAllWindows()
             
 
-
-class Control():
+class ControllerPlayer():
     def __init__(self, controller=None):
         self.controller =  controller 
         self.conf = {
@@ -168,6 +177,6 @@ class Control():
     
 
 
-Ui()
+Player()
 
 #cap.release()
