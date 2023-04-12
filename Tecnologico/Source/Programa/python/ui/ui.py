@@ -17,6 +17,8 @@ class Ui():
             "scale":0.25,
             "bord":(0,0),
             "color":"gray17",
+            "last_frame":-1,
+            "velocidade":0.25
         }
 
 
@@ -32,11 +34,17 @@ class Ui():
         self.resize()
         self.canvas = Label( self.window )
 
+        self.controllerPlayer = Control(self.controller)
         #Executa
         self.controller.play()
+        #Cria uma tred para desenhar
         mltp.Process(target=self.play())
         self.run()
-     
+    
+    def hasModifcation(self):
+        '''Verifica se o frame foi alterado e precisa redesenhar'''
+        return self.conf['last_frame'] != self.controller.getIdFrame()  
+
     def getPath(self):
         '''Seta o Path do video'''
         aux = Tk()
@@ -48,14 +56,14 @@ class Ui():
     
     def play(self):
         '''Desenha o video no Canvas'''
+
+        self.controllerPlayer.attSlider()
+
         if self.controller.isRunning():
             self.controller.next()
-            frame =  self.controller.getFrame() 
-            self.draw( frame )
-            self.window.after(20, self.play  )
-        else:
-            self.controller.restart()
-            self.window.after(20, self.play  )
+        frame =  self.controller.getFrame() 
+        self.draw( frame )
+        self.window.after( round(1/self.conf['velocidade']*20) , self.play  )
 
     def run(self):
         '''Main Loop'''
@@ -76,76 +84,88 @@ class Ui():
         return (new_w,new_h)
 
     def draw(self, frame_cv):
-        '''Desenha o frame no Player'''
-        frame_cv = cv2.resize(frame_cv, self._getSizeFrame() )
-        frame_cv = cv2.cvtColor(frame_cv, cv2.COLOR_BGRA2RGB)
-        img = Image.fromarray(frame_cv)
-        picture = ImageTk.PhotoImage(img)
-        self.canvas.configure(image=picture)
-        self.canvas.image = picture
-        w, h  = self.conf['bord']
-        self.canvas.place(x=w,y=h)
-        cv2.destroyAllWindows()
+        '''Desenha o frame no Player apenas se teve modificação'''
+        if(self.hasModifcation()):
+            self.conf['last_frame'] = self.controller.getIdFrame()
+            frame_cv = cv2.resize(frame_cv, self._getSizeFrame() )
+            frame_cv = cv2.cvtColor(frame_cv, cv2.COLOR_BGRA2RGB)
+            img = Image.fromarray(frame_cv)
+            picture = ImageTk.PhotoImage(img)
+            self.canvas.configure(image=picture)
+            self.canvas.image = picture
+            w, h  = self.conf['bord']
+            self.canvas.place(x=w,y=h)
+            cv2.destroyAllWindows()
+            
 
 
 class Control():
-    def __init__(self):
-        max_val = cap.get(cv2.CAP_PROP_FRAME_COUNT)
-        var = DoubleVar()
+    def __init__(self, controller=None):
+        self.controller =  controller 
+        self.conf = {
+            "title":"Controlador",
+            "scale":0.25,
+            "bord":(0,0),
+            "color":"gray17",
+        }
 
-        self.play = Button(win, text ="PLAY")
-        self.play.place(x=100, y=0, width=w)
-        self.play.bind("<ButtonPress-1>", lambda e: self.run())
+        #Cria a Janela a ser usada como controlador do Player
+        self.window = Tk()
+        self.window.title( self.conf["title"] )
+        self.window.configure( bg=self.conf["color"] )
+        self.window.geometry("600x100")
+        #self.window.resizable( False, False )
 
-        self.scale = Scale(win, from_=0, to=max_val - 1, orient=HORIZONTAL,variable=var,bg="gray17",fg="white", activebackground='#339999')
-        self.scale.set(0)
-        self.scale.place(x=100, y=h+50, width=w)
+        win = self.window
+
+
+        self.playButton = Button(win, text ="PLAY")
+        self.playButton.place(x=50, y=0, width=50)
+        self.playButton.bind("<ButtonPress-1>", lambda e: self.alter())
         
-        #self.label = Label(win)
-        self.counter = 0
-        self.key = True
-        # self.display()
-        mltp.Process(target=self.display())
-        self.scale.bind("<ButtonPress-1>", lambda e: self.active_scaler())
-        self.scale.bind("<ButtonRelease-1>", lambda e: self.active_auto())
+        var = DoubleVar()
+        self.frameSlider = Scale(win, from_=0, to=self.controller.getTotalFrame() - 1, orient=HORIZONTAL,variable=var,bg="gray17",fg="white", activebackground='#339999')
+        self.frameSlider.set(0)
+        self.frameSlider.place(x=50, y=50, width=500)
+        
+        #Funções Frame Slider
+        self.frameSlider.bind("<ButtonPress-1>", lambda e: self.active_scaler())
+        self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.active_auto())
 
-    def to_pil(self, img):
-        #img = cv2.resize(img, (w,h))
-        #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
-        #image = Image.fromarray(img)
-        #pic = ImageTk.PhotoImage(image)
-        #self.label.configure(image=pic)
-        #self.label.image = pic
-        #self.label.place(x=100, y=50)
-        #cv2.destroyAllWindows()
-        pass
+
+    def attSlider(self):
+        '''Atualiza o player de acordo com o controlador de midia'''
+        if(self.controller.isRunning()):
+            self.frame2Slider()
+        else:
+            self.slider2Frame()
+
+    def slider2Frame(self):
+        '''Atualiza o controller de acordo com a barra'''
+        val_slider = self.frameSlider.get()
+        self.controller.setFrame(val_slider)
+    
+    def frame2Slider(self):
+        '''Atualiza a barra de acordo com o controller'''
+        id_frame = self.controller.getIdFrame()
+        self.frameSlider.set(id_frame)
 
     def active_auto(self):
-        self.key = True
+        '''Quando clicado'''
+        self.controller.play()
 
     def active_scaler(self):
-        self.key = False
-    
-    def run(self):
-        self.key = not self.key
+        '''Quando Segurado'''
+        self.controller.pause()
 
-    def display(self):
-        if self.key == True:
-            self.counter += 1
-            if self.counter >= max_val:
-                self.counter = max_val
-                cap.set(cv2.CAP_PROP_POS_FRAMES, self.counter - 1)
-            self.scale.set(self.counter)
+    def alter(self):
+        '''Altera entre Play/Pause'''
+        if(self.controller.isRunning()):
+            self.controller.pause()
         else:
-            val = self.scale.get()
-            self.counter = val
-            cap.set(cv2.CAP_PROP_POS_FRAMES, self.counter)
-        _, frame = cap.read()
-        self.to_pil(frame)
-        win.after(20, self.display)
+            self.controller.play()
 
-
-
+    
 
 
 Ui()
