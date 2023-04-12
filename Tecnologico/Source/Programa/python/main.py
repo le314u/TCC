@@ -1,5 +1,6 @@
 import cv2
 import midia_pipe
+from ui.player import getPath
 
 
 def loadVideo(path):
@@ -20,7 +21,9 @@ def show(img,autoRun=1):
 def main():
 	'''Main run'''
 	startUI()
-	video = loadVideo('midia/c.mp4')
+	path = getPath()
+	path = path if str(path) != "()" else 'midia/c.mp4'
+	video = loadVideo(path)
 	continuar = True
 
 	while continuar:
@@ -29,7 +32,6 @@ def main():
 		#Redimensiona a imagem
 		image = img
 		image = cv2.resize(img, (0,0), fx=0.25, fy=0.25) 
-		print(image[0],image[1])
 		try:
 
 			# Força uma passagem por referência
@@ -51,8 +53,6 @@ def main():
 
 
 
-def nothing(x):
-    pass
 
 def getMeta(window_name):
     return cv2.getTrackbarPos('size',window_name)
@@ -63,7 +63,7 @@ def startUI(window_name=""):
     window_name = "UI"
     #Altera o nome da janela
     cv2.namedWindow(window_name)
-    cv2.createTrackbar('size',window_name,0,100,nothing)
+    cv2.createTrackbar('size',window_name,0,100,lambda x : None)
 
 
 

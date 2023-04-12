@@ -14,6 +14,9 @@ class ControllerVideo():
         }
         self._openVideo(path)
 
+    def loadVideo(self):
+        pass
+    
     def _openVideo(self, path):
         '''Carrega o video'''
         video = cv2.VideoCapture( path )

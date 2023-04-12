@@ -1,12 +1,23 @@
-#from asyncio import windows_events
-from turtle import title
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import cv2
 from tkinter import *
 from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
-import os
-from  controllerVideo import ControllerVideo
+
+
+from  ui.controllerVideo import ControllerVideo
+
+
+def getPath():
+    '''Seta o Path do video'''
+    aux = Tk()
+    currdir = os.getcwd()
+    path = filedialog.askopenfilename(parent=aux, initialdir=currdir, title='Selecione o Video')
+    aux.destroy()
+    return path
 
 class Player():
     def __init__(self):
@@ -21,9 +32,8 @@ class Player():
             "velocidade":0.25
         }
 
-
         #Carrega o path video
-        path = self.getPath()
+        path = getPath()
         #Carrega o Video
         self.controller = ControllerVideo(path)
         #Da Play no Video
@@ -54,15 +64,6 @@ class Player():
     def hasModifcation(self):
         '''Verifica se o frame foi alterado e precisa redesenhar'''
         return self.conf['last_frame'] != self.controller.getIdFrame()  
-
-    def getPath(self):
-        '''Seta o Path do video'''
-        aux = Tk()
-        currdir = os.getcwd()
-        path = filedialog.askopenfilename(parent=aux, initialdir=currdir, title='Selecione o Video')
-        aux.destroy()
-        self.conf['path'] = path
-        return path
     
     def play(self):
         '''Desenha o video no Canvas'''
@@ -107,7 +108,6 @@ class Player():
             self.canvas.place(x=w,y=h)
             cv2.destroyAllWindows()
             
-
 class ControllerPlayer():
     def __init__(self, controller=None):
         self.controller =  controller 
@@ -173,10 +173,3 @@ class ControllerPlayer():
             self.controller.pause()
         else:
             self.controller.play()
-
-    
-
-
-Player()
-
-#cap.release()
