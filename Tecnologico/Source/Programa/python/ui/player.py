@@ -1,13 +1,13 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import cv2
 from tkinter import *
 from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
+from ui import controllerVideo
 
-
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from  ui.controllerVideo import ControllerVideo
 
 
@@ -19,8 +19,8 @@ def getPath():
     aux.destroy()
     return path
 
-class Player():
-    def __init__(self):
+class PlayerWin():
+    def __init__(self,controller):
         #Meta dados da Janela Tkinter
         self.conf = {
             "title":"TCC - Lucas Mateus Fernandes",
@@ -32,12 +32,8 @@ class Player():
             "velocidade":0.25
         }
 
-        #Carrega o path video
-        path = getPath()
         #Carrega o Video
-        self.controller = ControllerVideo(path)
-        #Da Play no Video
-        self.controller.play()
+        self.controller = controller
 
         #Cria a Janela baseada nas configurações do video
         self.window = Tk()
@@ -47,38 +43,43 @@ class Player():
         self.resize()
         self.canvas = Label( self.window )
 
-        self.controllerPlayer = ControllerPlayer(self.controller)
+        self.menuPlayer = MenuPlayerWin(self.controller)
 
         
         #Linka o Player e o ControllerPlayer para fecharem juntas
         player = self.window
-        control = self.controllerPlayer.window
-        on_close = lambda: (player.destroy(), control.destroy())
+        menu = self.menuPlayer.window
+        on_close = lambda: (player.destroy(), menu.destroy())
+        menu.protocol("WM_DELETE_WINDOW", on_close)
         player.protocol("WM_DELETE_WINDOW", on_close)
-        control.protocol("WM_DELETE_WINDOW", on_close)
         
         #Cria uma tred para desenhar
         mltp.Process(target=self.play())
-        self.run()
     
+    def switchController(self, controller):
+        '''Altera o Video em exibição'''
+        #Altera o Switch
+        self.controller = controller
+        self.resize()
+        #Reconfigura o menu associando ao novo controller
+        self.menuPlayer.switchController(controller)
+
+    def run(self):
+        '''Main Loop'''
+        self.window.mainloop();
+
     def hasModifcation(self):
         '''Verifica se o frame foi alterado e precisa redesenhar'''
         return self.conf['last_frame'] != self.controller.getIdFrame()  
     
     def play(self):
-        '''Desenha o video no Canvas'''
-
-        self.controllerPlayer.attSlider()
-
+        '''Executa o video frame a frame'''
+        self.menuPlayer.attSlider()
         if self.controller.isRunning():
             self.controller.next()
         frame =  self.controller.getFrame() 
         self.draw( frame )
         self.window.after( round(1/self.conf['velocidade']*20) , self.play  )
-
-    def run(self):
-        '''Main Loop'''
-        self.window.mainloop();
        
     def resize(self):
         '''Redimensiona o 'Player' '''
@@ -108,9 +109,10 @@ class Player():
             self.canvas.place(x=w,y=h)
             cv2.destroyAllWindows()
             
-class ControllerPlayer():
-    def __init__(self, controller=None):
-        self.controller =  controller 
+class MenuPlayerWin():
+    
+    def __init__(self, controller):
+        self.controller = controller 
         self.conf = {
             "title":"Controlador",
             "scale":0.25,
@@ -127,7 +129,6 @@ class ControllerPlayer():
 
         win = self.window
 
-
         self.playButton = Button(win, text ="PLAY")
         self.playButton.place(x=50, y=0, width=50)
         self.playButton.bind("<ButtonPress-1>", lambda e: self.alter())
@@ -140,6 +141,21 @@ class ControllerPlayer():
         #Funções Frame Slider
         self.frameSlider.bind("<ButtonPress-1>", lambda e: self.active_scaler())
         self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.active_auto())
+
+
+    
+        
+
+    def switchController(self, controller):
+        self.controller = controller
+        self.slider2Frame()
+        self.confSlider()
+
+    def confSlider(self):
+        old_value = self.frameSlider.get()
+        self.frameSlider.config(from_=0, to=self.controller.getTotalFrame() - 1)
+        self.frameSlider.set(old_value)
+
 
 
     def attSlider(self):
@@ -173,3 +189,15 @@ class ControllerPlayer():
             self.controller.pause()
         else:
             self.controller.play()
+
+class UI():
+    def __init__(self):
+        self.path = getPath()
+        self.controller = ControllerVideo(path=self.path)
+        self.player = PlayerWin(self.controller)
+
+        self.player.switchController(ControllerVideo(path=getPath()))
+        self.player.switchController(ControllerVideo(path=getPath()))
+        #Persiste o Player
+        self.player.run()
+

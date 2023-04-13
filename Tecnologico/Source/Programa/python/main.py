@@ -1,6 +1,6 @@
 import cv2
 import midia_pipe
-from ui.player import getPath
+from ui.player import UI,getPath
 
 
 def loadVideo(path):
@@ -66,5 +66,5 @@ def startUI(window_name=""):
     cv2.createTrackbar('size',window_name,0,100,lambda x : None)
 
 
-
-main()
+UI()
+#main()

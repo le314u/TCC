@@ -3,7 +3,7 @@ import cv2
 
 class ControllerVideo():
 
-    def __init__(self, path):
+    def __init__(self, path=None, video=None):
         self.conf = {
             "video":None,
             "frame":None,
@@ -12,16 +12,29 @@ class ControllerVideo():
             "total_frame":0,
             "id_frame":0,
         }
-        self._openVideo(path)
+        if path is not None:
+            self._openVideo(path)
+        elif video is not None:
+            self._loadVideo(video)
 
-    def loadVideo(self):
-        pass
+    def _loadVideo(self, video):
+        '''Carrega o video'''
+        #Seta as configurações / metaDados
+        self.conf['video'] = video
+        self.conf['play'] = True
+        self.conf['total_frame'] = round(video.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.conf['size'] = (
+            round(video.get(cv2.CAP_PROP_FRAME_WIDTH)),
+            round(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        )
+        return video
     
     def _openVideo(self, path):
-        '''Carrega o video'''
+        '''Carrega o video a partir de um path'''
         video = cv2.VideoCapture( path )
         #Seta as configurações / metaDados
         self.conf['video'] = video
+        self.conf['play'] = True
         self.conf['total_frame'] = round(video.get(cv2.CAP_PROP_FRAME_COUNT))
         self.conf['size'] = (
             round(video.get(cv2.CAP_PROP_FRAME_WIDTH)),
@@ -43,7 +56,7 @@ class ControllerVideo():
 
     def setFrame(self, id_frame):
         '''Define um frame especifico aparttir do ID'''
-        id_next_frame = id_frame  if id_frame <= self.getTotalFrame() else self.getTotalFrame()
+        id_next_frame = id_frame  if id_frame < self.getTotalFrame() else self.getTotalFrame()
         self.conf['id_frame'] = id_next_frame
         self.conf['video'].set(cv2.CAP_PROP_POS_FRAMES, id_next_frame-1)
         _, self.conf['frame'] = self.conf['video'].read()
@@ -75,7 +88,7 @@ class ControllerVideo():
 
     def isFinished(self):
         '''Verifica se o video chegou ao fim'''
-        self.conf['play'] = self.getIdFrame() <= self.getTotalFrame()
+        self.conf['play'] = self.getIdFrame() < self.getTotalFrame()
         return not self.conf['play']
 
     def isRunning(self):
