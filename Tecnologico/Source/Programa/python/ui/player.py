@@ -10,7 +10,6 @@ from ui import controllerVideo
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from  ui.controllerVideo import ControllerVideo
 
-
 def getPath():
     '''Seta o Path do video'''
     aux = Tk()
@@ -124,8 +123,10 @@ class MenuPlayerWin():
         self.window = Tk()
         self.window.title( self.conf["title"] )
         self.window.configure( bg=self.conf["color"] )
-        self.window.geometry("600x100")
-        #self.window.resizable( False, False )
+        desvioX = str(round(((self.window.winfo_screenwidth()-600)/2)))
+        self.window.geometry("600x100"+"+"+desvioX+"+0")
+  
+        self.window.resizable( False, False )
 
         win = self.window
 
@@ -191,13 +192,16 @@ class MenuPlayerWin():
             self.controller.play()
 
 class UI():
+
     def __init__(self):
-        self.path = getPath()
+
+        self.path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/c.mp4" #getPath()
         self.controller = ControllerVideo(path=self.path)
         self.player = PlayerWin(self.controller)
 
-        self.player.switchController(ControllerVideo(path=getPath()))
-        self.player.switchController(ControllerVideo(path=getPath()))
+        #self.player.switchController(ControllerVideo(path=getPath()))
+        #self.player.switchController(ControllerVideo(path=getPath()))
         #Persiste o Player
         self.player.run()
+        
 
