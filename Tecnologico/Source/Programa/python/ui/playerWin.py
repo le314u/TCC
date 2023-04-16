@@ -6,22 +6,14 @@ from tkinter import *
 from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
-from ui import controllerVideo
 
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from  ui.controllerVideo import ControllerVideo
 
-def getPath():
-    '''Seta o Path do video'''
-    aux = Tk()
-    currdir = os.getcwd()
-    path = filedialog.askopenfilename(parent=aux, initialdir=currdir, title='Selecione o Video')
-    aux.destroy()
-    return path
 
 class PlayerWin():
-    def __init__(self,controller):
+    def __init__(self,controller:ControllerVideo):
         #Meta dados da Janela Tkinter
         self.conf = {
             "title":"TCC - Lucas Mateus Fernandes",
@@ -57,7 +49,7 @@ class PlayerWin():
         #Cria uma tred para desenhar
         mltp.Process(target=self.play())
     
-    def switchController(self, controller):
+    def switchController(self, controller:ControllerVideo):
         '''Altera o Video em exibição'''
         #Altera o Switch
         self.controller = controller
@@ -112,7 +104,7 @@ class PlayerWin():
             
 class MenuPlayerWin():
     
-    def __init__(self, controller):
+    def __init__(self, controller:ControllerVideo):
         self.controller = controller 
         self.conf = {
             "title":"Controlador",
@@ -145,11 +137,7 @@ class MenuPlayerWin():
         self.frameSlider.bind("<ButtonPress-1>", lambda e: self.active_scaler())
         self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.active_auto())
 
-
-    
-        
-
-    def switchController(self, controller):
+    def switchController(self, controller:ControllerVideo):
         self.controller = controller
         self.slider2Frame()
         self.confSlider()
@@ -158,8 +146,6 @@ class MenuPlayerWin():
         old_value = self.frameSlider.get()
         self.frameSlider.config(from_=0, to=self.controller.getTotalFrame() - 1)
         self.frameSlider.set(old_value)
-
-
 
     def attSlider(self):
         '''Atualiza o player de acordo com o controlador de midia'''
@@ -193,38 +179,3 @@ class MenuPlayerWin():
         else:
             self.controller.play()
 
-class UI():
-    
-
-    def __init__(self):
-        self.teste()
-        self.path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/c.mp4" #getPath()
-        self.controller = ControllerVideo(path=self.path)
-        self.player = PlayerWin(self.controller)
-
-        #self.player.switchController(ControllerVideo(path=getPath()))
-        #self.player.switchController(ControllerVideo(path=getPath()))
-        #Persiste o Player
-        #self.player.run()
-        
-
-    def teste(self):
-        video = cv2.VideoCapture("/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/c.mp4") 
-        _, img = video.read();
-        #converte em preto e branco
-        gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) 
-        #Detecção de borda
-        edges = cv2.Canny(gray,550,150,apertureSize = 3) 
-        lines = cv2.HoughLines(edges,1,np.pi/180, 200) 
-        for r,theta in lines[0]: 
-            a = np.cos(theta) 
-            b = np.sin(theta) 
-            x0 = a*r 
-            y0 = b*r 
-            x1 = int(x0 + 2000*(-b)) 
-            y1 = int(y0 + 2000*(a)) 
-            x2 = int(x0 - 2000*(-b)) 
-            y2 = int(y0 - 2000*(a))           
-            cv2.line(img,(x1,y1), (x2,y2), (0,0,255),2) 
-            
-        cv2.imwrite('linesDetected.jpg', img) 

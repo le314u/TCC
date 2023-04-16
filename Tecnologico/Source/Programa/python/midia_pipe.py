@@ -26,15 +26,17 @@ pose = mp_pose.Pose(
 	)
 
 #ENUM
-_braco = lambda lado:('Pulso '+lado,'Cotovelo '+lado,'Ombro '+lado)
-_perna = lambda lado:('Calcanhar '+lado,'Joelho '+lado,'Quadril '+lado)
+_braco_dis = lambda lado:('Pulso '+lado,'Cotovelo '+lado)
+_braco_prox = lambda lado:('Cotovelo '+lado,'Ombro '+lado)
+_perna_dis = lambda lado:('Calcanhar '+lado,'Joelho '+lado)
+_perna_prox = lambda lado:('Joelho '+lado,'Quadril '+lado)
 Pose=Enum('Pose', ['BRACO_DIR','BRACO_ESQ','PERNA_DIR','PERNA_ESQ','CORPO'])
 
 class Segmento(Enum):
-    BRACO_DIR = _braco("Direito")
-    BRACO_ESQ = _braco("Esquerdo")
-    PERNA_DIR = _perna("Direito")
-    PERNA_ESQ = _perna("Esquerdo")
+    BRACO_DIR = _braco_dis("Direito")+_braco_prox("Direito")
+    BRACO_ESQ = _braco_dis("Esquerdo")+_braco_prox("Esquerdo")
+    PERNA_DIR = _perna_dis("Direito")+_perna_prox("Direito")
+    PERNA_ESQ = _perna_dis("Esquerdo")+_perna_prox("Esquerdo")
     CORPO = ('Ombro Esquerdo','Ombro Direito','Quadril Direito','Quadril Esquerdo')
 
 

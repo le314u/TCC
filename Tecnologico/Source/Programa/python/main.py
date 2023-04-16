@@ -52,8 +52,6 @@ def main():
 			continuar = show(image)
 
 
-
-
 def getMeta(window_name):
     return cv2.getTrackbarPos('size',window_name)
 
