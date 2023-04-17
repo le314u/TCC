@@ -1,6 +1,8 @@
 import cv2
-import midia_pipe
-from ui.player import UI,getPath
+from processImg.process import Process
+from ui.interface import UI,getPath
+from ui.linkButton2Process import ButtonsPlayer
+from ui.player.buttonsModel import newButton
 
 
 def loadVideo(path):
@@ -38,14 +40,14 @@ def main():
 			image.flags.writeable = False
 
 			#Faz o processamento da imagem
-			points = midia_pipe.process_img(image)
+			points = edh.process_img(image)
 
 			#Desenha os traços
-			image = midia_pipe.draw(image, midia_pipe.Pose.BRACO_DIR,(255,0,0),points)
-			image = midia_pipe.draw(image, midia_pipe.Pose.BRACO_ESQ,(255,0,0),points)
-			image = midia_pipe.draw(image, midia_pipe.Pose.PERNA_DIR,(0,255,0),points)
-			image = midia_pipe.draw(image, midia_pipe.Pose.PERNA_ESQ,(0,255,0),points)
-			image = midia_pipe.draw(image, midia_pipe.Pose.CORPO,(0,0,255),points)
+			image = edh.draw(image, edh.Pose.BRACO_DIR,(255,0,0),points)
+			image = edh.draw(image, edh.Pose.BRACO_ESQ,(255,0,0),points)
+			image = edh.draw(image, edh.Pose.PERNA_DIR,(0,255,0),points)
+			image = edh.draw(image, edh.Pose.PERNA_ESQ,(0,255,0),points)
+			image = edh.draw(image, edh.Pose.CORPO,(0,0,255),points)
 				
 			continuar = show(image)
 		except Exception:
@@ -64,5 +66,11 @@ def startUI(window_name=""):
     cv2.createTrackbar('size',window_name,0,100,lambda x : None)
 
 
-UI()
+
+process = Process() 
+btns = [
+	newButton(process,"EDH","poseDetection"),
+    newButton(process,"Barra","barra"),
+]
+UI(process=process,btns=btns)
 #main()

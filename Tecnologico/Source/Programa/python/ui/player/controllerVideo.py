@@ -1,17 +1,42 @@
 #from asyncio import windows_events
+from io import BytesIO
 import cv2
 
+def Video(video_original, frames):
+    '''Pega um conjunto de frames e cria um video'''
+    #Quantidade de fps
+    fps = int(video_original.get(cv2.CAP_PROP_FPS))
+    #dimensão do video
+    frame_size = (int(video_original.get(cv2.CAP_PROP_FRAME_WIDTH)), int(video_original.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+    #codex
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # ou outro codec
+    #Salva na memoria
+    buffer = BytesIO()
+    writer = cv2.VideoWriter(buffer, fourcc, fps, frame_size)
+    #Passa frame a frame
+    for f in frames:
+        writer.write(f)
+    #Encerra o video
+    writer.release()
+    #retorna o novo video
+    video_data = buffer.getvalue()
+    return video_data
+    
 class ControllerVideo():
 
-    def __init__(self, path=None, video=None):
+    def __init__(self, path=None, video=None , process_frame = lambda x:x):
+        #Função de pre processamentoi
+        self.process_frame = process_frame
         self.conf = {
             "video":None,
             "frame":None,
+            "frames":[],
             "play":False,
             "size":(0,0),
             "total_frame":0,
             "id_frame":0,
         }
+        
         if path is not None:
             self._openVideo(path)
         elif video is not None:
@@ -43,9 +68,10 @@ class ControllerVideo():
         return video
     
     def next(self):
-        '''Passa para o proximo frame'''
+        '''Passa para o proximo frame e aplcia o pre processamento'''
         if(not self.isFinished()):
-            _, self.conf['frame'] = self.conf['video'].read()
+            _, frame= self.conf['video'].read()
+            self.conf['frame']  = self.process_frame(frame)
             self.conf['id_frame'] = self.conf['id_frame']+1
 
     
@@ -59,7 +85,9 @@ class ControllerVideo():
         id_next_frame = id_frame  if id_frame < self.getTotalFrame() else self.getTotalFrame()
         self.conf['id_frame'] = id_next_frame
         self.conf['video'].set(cv2.CAP_PROP_POS_FRAMES, id_next_frame-1)
-        _, self.conf['frame'] = self.conf['video'].read()
+        _, frame = self.conf['video'].read()
+        self.conf['frame']  = self.process_frame(frame)
+
 
                
     def getIdFrame(self):

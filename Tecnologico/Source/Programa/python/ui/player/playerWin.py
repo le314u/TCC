@@ -1,5 +1,7 @@
 import sys
 import os
+from turtle import width
+from typing import Callable, Dict, List
 import cv2
 import numpy as np 
 from tkinter import *
@@ -7,13 +9,12 @@ from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
 
-
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from  ui.controllerVideo import ControllerVideo
-
+from  ui.player.controllerVideo import ControllerVideo
+from  ui.player.buttonsModel import Buttons
 
 class PlayerWin():
-    def __init__(self,controller:ControllerVideo):
+    def __init__(self,controller:ControllerVideo,  buttons:List[Buttons] = None):
         #Meta dados da Janela Tkinter
         self.conf = {
             "title":"TCC - Lucas Mateus Fernandes",
@@ -22,9 +23,8 @@ class PlayerWin():
             "bord":(0,0),
             "color":"gray17",
             "last_frame":-1,
-            "velocidade":0.25
+            "velocidade":1
         }
-
         #Carrega o Video
         self.controller = controller
 
@@ -36,9 +36,8 @@ class PlayerWin():
         self.resize()
         self.canvas = Label( self.window )
 
-        self.menuPlayer = MenuPlayerWin(self.controller)
+        self.menuPlayer = MenuPlayerWin(self.controller, buttons)
 
-        
         #Linka o Player e o ControllerPlayer para fecharem juntas
         player = self.window
         menu = self.menuPlayer.window
@@ -104,14 +103,15 @@ class PlayerWin():
             
 class MenuPlayerWin():
     
-    def __init__(self, controller:ControllerVideo):
+    def __init__(self, controller:ControllerVideo , buttons:List[Buttons] = None):
         self.controller = controller 
         self.conf = {
             "title":"Controlador",
             "scale":0.25,
             "bord":(0,0),
-            "color":"gray17",
+            "color":"gray17"
         }
+        self.n_buttons = 0
 
         #Cria a Janela a ser usada como controlador do Player
         self.window = Tk()
@@ -119,15 +119,10 @@ class MenuPlayerWin():
         self.window.configure( bg=self.conf["color"] )
         desvioX = str(round(((self.window.winfo_screenwidth()-600)/2)))
         self.window.geometry("600x100"+"+"+desvioX+"+0")
-  
         self.window.resizable( False, False )
 
         win = self.window
 
-        self.playButton = Button(win, text ="PLAY")
-        self.playButton.place(x=50, y=0, width=50)
-        self.playButton.bind("<ButtonPress-1>", lambda e: self.alter())
-        
         var = DoubleVar()
         self.frameSlider = Scale(win, from_=0, to=self.controller.getTotalFrame() - 1, orient=HORIZONTAL,variable=var,bg="gray17",fg="white", activebackground='#339999')
         self.frameSlider.set(0)
@@ -136,6 +131,31 @@ class MenuPlayerWin():
         #Funções Frame Slider
         self.frameSlider.bind("<ButtonPress-1>", lambda e: self.active_scaler())
         self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.active_auto())
+
+
+        self.playButton =self._createButton("PLAY",self.alter)
+
+        if not buttons  is None:
+            for button in buttons:
+                b,fb = button.get()
+                self._createButton(b,fb)
+
+        
+    def _createButton(self, name, fx = lambda : None):
+        WIDTH, BORDER, INTER_BORDER = 50, 50, 10
+        i = self.n_buttons
+        x = BORDER+(WIDTH*i)+(INTER_BORDER*i)
+        
+        #Cria o Button
+        newButton = Button(self.window, text = name)
+        newButton.place(x=x, y=0, width=WIDTH)
+        newButton.bind("<ButtonPress-1>", lambda e: fx())
+
+        #Atualiza o indice :
+        self.n_buttons = self.n_buttons + 1
+
+        return newButton
+
 
     def switchController(self, controller:ControllerVideo):
         self.controller = controller
