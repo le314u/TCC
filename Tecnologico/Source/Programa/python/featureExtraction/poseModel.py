@@ -4,6 +4,8 @@ import mediapipe as mp
 from enum import Enum
 from bdb import Bdb
 
+from dec_time import TIME
+
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
@@ -45,6 +47,7 @@ class Pose(Enum):
     PERNA_DIR = 3
     PERNA_ESQ = 4
 
+
 class PosePoints():
     #Variavel de classe
     midia_pipe_ENUM = mp.solutions.pose.PoseLandmark
@@ -58,10 +61,10 @@ class PosePoints():
         '''Retorna a Pose de acordo com tensor Flow'''
         return PosePoints.pose_midia_pipe.process(image)
 
-    def __init__(self, hight, width, poseTensor) -> None:
-        self.hight = hight
-        self.width = width
-        self.poseTensor = poseTensor
+    def __init__(self,image) -> None:
+        
+        hight, width, _ = image.shape
+        poseTensor = PosePoints.getPose(image)
 
         rPoint = lambda point:(round(point.x*width) , round(point.y*hight) )
         access = lambda key: rPoint(poseTensor.pose_landmarks.landmark[PosePoints.midia_pipe_ENUM[key]])
@@ -83,9 +86,5 @@ class PosePoints():
             'Pulso Direito': access("RIGHT_WRIST") 
         }    
 
-
-
-        
-        
     def getPoints(self):
         return self.pose_points

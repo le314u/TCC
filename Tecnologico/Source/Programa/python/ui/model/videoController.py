@@ -1,6 +1,7 @@
 #from asyncio import windows_events
-from io import BytesIO
 import cv2
+from io import BytesIO
+from ui.model.buffer import BufferAnalyzer
 
 def Video(video_original, frames):
     '''Pega um conjunto de frames e cria um video'''
@@ -22,13 +23,14 @@ def Video(video_original, frames):
     video_data = buffer.getvalue()
     return video_data
     
-class ControllerVideo():
+class VideoController():
 
     def __init__(self, path=None, video=None , process_frame = lambda x:x):
         #Função de pre processamentoi
         self.process_frame = process_frame
         self.conf = {
             "video":None,
+            "fps":0,
             "frame":None,
             "frames":[],
             "play":False,
@@ -41,6 +43,10 @@ class ControllerVideo():
             self._openVideo(path)
         elif video is not None:
             self._loadVideo(video)
+            
+        #Instancia o Buffer de acordo com  o video
+        dummy = [None for i in range( self.conf['total_frame'] )]
+        self.buffer = BufferAnalyzer(self.conf['fps'],dummy)
 
     def _loadVideo(self, video):
         '''Carrega o video'''
@@ -48,6 +54,7 @@ class ControllerVideo():
         self.conf['video'] = video
         self.conf['play'] = True
         self.conf['total_frame'] = round(video.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.conf['fps'] = video.get(cv2.CAP_PROP_FPS)
         self.conf['size'] = (
             round(video.get(cv2.CAP_PROP_FRAME_WIDTH)),
             round(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -61,6 +68,7 @@ class ControllerVideo():
         self.conf['video'] = video
         self.conf['play'] = True
         self.conf['total_frame'] = round(video.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.conf['fps'] = video.get(cv2.CAP_PROP_FPS)
         self.conf['size'] = (
             round(video.get(cv2.CAP_PROP_FRAME_WIDTH)),
             round(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
