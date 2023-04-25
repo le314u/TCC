@@ -43,12 +43,16 @@ class PlayerWin():
         #Linka o Player e o ControllerPlayer para fecharem juntas
         player = self.window
         menu = self.menuPlayer.window
-        on_close = lambda: (player.destroy(), menu.destroy())
+        on_close = lambda: (player.destroy(), menu.destroy(), sys.exit())
         menu.protocol("WM_DELETE_WINDOW", on_close)
         player.protocol("WM_DELETE_WINDOW", on_close)
         
-        #Cria uma tred para desenhar
+        # #Cria uma tred para desenhar
         mltp.Process(target=self.play())
+
+        # #Cria uma tred para desenhar
+        # play_thread = mltp.Process(target=self.play)
+        # play_thread.start()
     
     def switchController(self, controller:VideoController):
         '''Altera o Video em exibição'''

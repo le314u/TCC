@@ -9,6 +9,7 @@ from ui.controller.preProcess import preProcess
 from ui.view.playerWin import PlayerWin
 from ui.model.videoController import VideoController
 from util.decorators import timed
+from util.flag import Flag
 
 class Ux():
     
@@ -23,8 +24,7 @@ class Ux():
         self.controller = VideoController(path=self.path)
         self.player = PlayerWin(self.controller, self.btns)
         #pre processamento ocorre em paralelo
-        thread_process = threading.Thread(target=preProcess,args=(self.controller,))
+        thread_process = threading.Thread(target=preProcess,args=(self.controller,),daemon=True)
         thread_process.start()
         #Persiste o Player
         self.player.run()
-        

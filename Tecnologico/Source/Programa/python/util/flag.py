@@ -1,10 +1,10 @@
 from typing import Callable
 
 class Flag:
-    def __init__(self, name:str, function:Callable):
+    def __init__(self, name:str, function:Callable, active:bool=False):
         self.name = name
         self.function = function
-        self.active = False
+        self.active = active
 
     def activate(self):
         self.active = True
