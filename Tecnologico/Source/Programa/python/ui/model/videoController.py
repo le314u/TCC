@@ -34,18 +34,14 @@ class VideoController():
         start_time = time.time()
         #Carrega um vetor de frames
         self.next()
-        #Rebobina o video
         self.setFrame(0)
         for i in range(self.getTotalFrame()):
             frame = self.getFrame()
-            if frame.all() == None:
-                print("Erro id"+str(i))
-            self.conf['frames'].append(frame)
+            if frame is not None:
+                self.conf['frames'].append(frame)
             self.next()
         #Rebobina o video
         self.setFrame(0)
-        end_time = time.time()
-        print(f"{end_time - start_time:.6f}s")
         
 
     def _loadVideo(self, video):
@@ -62,7 +58,7 @@ class VideoController():
         return video
     
     def next(self):
-        '''Passa para o proximo frame e aplcia o pre processamento'''
+        '''Passa para o proximo frame e aplica o pre processamento'''
         if(not self.isFinished()):
             _, frame= self.conf['video'].read()
             self.conf['frame']  = self.process_frame(frame)

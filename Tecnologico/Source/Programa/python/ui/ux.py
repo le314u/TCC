@@ -22,15 +22,9 @@ class Ux():
         self.path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/c.mp4" #getPath()
         self.controller = VideoController(path=self.path)
         self.player = PlayerWin(self.controller, self.btns)
-        #preProcess(self.controller)
-        ##Persiste o Player
-        # self.player.run()
-        #
-        
+        #pre processamento ocorre em paralelo
         thread_process = threading.Thread(target=preProcess,args=(self.controller,))
-        # inicia as threads
         thread_process.start()
-        # aguarda o término da execução de ambas as threads
+        #Persiste o Player
         self.player.run()
-        thread_process.join()
         
