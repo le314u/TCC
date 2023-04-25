@@ -1,4 +1,3 @@
-from ast import Num
 import cv2
 import numpy as np 
 
@@ -16,7 +15,7 @@ def intercept(line1, line2) -> bool:
     return point[2] == 1
     
 
-def angle(line1, line2) -> Num:
+def angle(line1, line2) -> float:
     '''Retorna o angulo entre dois segmentos de reta'''
     # Convertendo as linhas para o formato aceito pela função intersectLines
     pt1, pt2 = line1

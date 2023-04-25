@@ -1,6 +1,5 @@
 import cv2
 from featureExtraction.poseModel import PosePoints
-from dec_time import TIME
 
 def renderBar(image, points):
     '''Desenha a barra'''

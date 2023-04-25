@@ -14,7 +14,7 @@ class BufferAnalyzer:
         '''Retorna o valor de uma celula do buffer'''
         return self.buffer[index]
 
-    def init_fraction(self, n: int) -> int:
+    def position_fraction(self, n: int) -> int:
         '''Retorna o indice da celula que inicia a fração 'n' '''
         #Quantidade de frações do buffer
         max = len(self.buffer) // self.fps
@@ -23,14 +23,10 @@ class BufferAnalyzer:
         #Aritimetica para saber qual celula começa a fração
         init = n * self.fps
         return init
-
-    def add_value(self, value: object):
-        '''Adiciona um valor do buffer'''
-        self.buffer.append(value)
     
     def get_mean(self, fraction:int = 0, extractor: Callable[[int], float] = None) -> float:
         '''Retorna a media'''
-        start = self.init_fraction(fraction)
+        start = self.position_fraction(fraction)
         #Calcula a media 
         values = [extractor(i) for i in range(start, start+self.fps)]
         media = sum(values) / self.fps
@@ -38,7 +34,7 @@ class BufferAnalyzer:
 
     def get_derivative(self, fraction:int = 0, extractor: Callable[[int], float] = None) -> float:
         '''Retorna a derivada no segmento de reta'''
-        start = self.init_fraction(fraction)
+        start = self.position_fraction(fraction)
         values = [extractor(i) for i in range(start, start+self.fps)]
         #Variação de valor
         dV = lambda x : extractor(x+1) - extractor(x)

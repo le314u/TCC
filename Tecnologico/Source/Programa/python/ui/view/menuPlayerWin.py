@@ -12,7 +12,6 @@ from ui.model.buttonSketch import ButtonSketch
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from ui.model.videoController import VideoController
-from ui.controller.linkViewFlag import ButtonsPlayer
 
             
 class MenuPlayerWin():

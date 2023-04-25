@@ -2,6 +2,7 @@ import sys
 import os
 from turtle import width
 from typing import Callable, Dict, List
+from warnings import catch_warnings
 import cv2
 import numpy as np 
 from tkinter import *
@@ -92,9 +93,10 @@ class PlayerWin():
         '''Desenha o frame no Player apenas se teve modificação'''
         if(self.hasModifcation()):
             self.conf['last_frame'] = self.controller.getIdFrame()
-            frame_cv = cv2.resize(frame_cv, self._getSizeFrame() )
-            frame_cv = cv2.cvtColor(frame_cv, cv2.COLOR_BGRA2RGB)
-            img = Image.fromarray(frame_cv)
+            frame_cp = frame_cv.copy()
+            frame_cp = cv2.resize(frame_cp, self._getSizeFrame() )
+            frame_cp = cv2.cvtColor(frame_cp, cv2.COLOR_BGRA2RGB)
+            img = Image.fromarray(frame_cp)
             picture = ImageTk.PhotoImage(img)
             self.canvas.configure(image=picture)
             self.canvas.image = picture

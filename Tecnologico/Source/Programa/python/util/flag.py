@@ -1,6 +1,4 @@
 from typing import Callable
-from dec_time import TIME
-
 
 class Flag:
     def __init__(self, name:str, function:Callable):

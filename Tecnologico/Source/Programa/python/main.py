@@ -1,9 +1,7 @@
 from typing import List
 import cv2
 from ui.ux import Ux
-from ui.controller.linkViewFlag import ButtonsPlayer
 from ui.model.buttonSketch import ButtonSketch
-from dec_time import TIME
 from util.flag import Flag
 
 #Cria as flags

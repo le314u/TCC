@@ -1,6 +1,6 @@
 import cv2
 from featureExtraction.poseModel import PosePoints
-from dec_time import TIME
+
 
 def renderPose(image,points):
     '''Desenha os segmentos detectados'''
@@ -17,7 +17,6 @@ def renderPose(image,points):
         return aux_image
     except:
         return image
-
 
 def _draw_pose(image,points,color,pose):
     '''Desenha o Segmento na imagem a partir dos pontos de referencia'''

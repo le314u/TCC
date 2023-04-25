@@ -1,4 +1,3 @@
-from ast import Num
 import cv2
 import numpy as np 
 
