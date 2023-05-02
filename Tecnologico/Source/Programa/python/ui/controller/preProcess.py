@@ -11,7 +11,7 @@ from util.flag import Flag
 from util.progress_bar import progress_bar
 
 
-def preProcess(controller:VideoController):
+def preProcess(controller:VideoController, flag:Flag):
     total = controller.getTotalFrame()
     controller.setFrame(0)
     #Carrega todos os frames no Controller
@@ -20,6 +20,9 @@ def preProcess(controller:VideoController):
         progress_bar( round(id*100/total) ,"pose Detection")
         frame = controller.getFrameId(id)
         controller.buffer.set_cell(id,process_frame(frame))
+    #Apos o termino ativa a flag para desbloquear os buttons
+    flag.activate()
+    flag.run()
 
 
 def process_frame(frame):
@@ -30,6 +33,7 @@ def process_frame(frame):
     try:
         barra = bar(frame_cp)
     except:
+        barra = None
         pass
 
     #Extrai pose do frame
@@ -37,6 +41,7 @@ def process_frame(frame):
         pose = PosePoints(frame_cp)
         points = pose.getPoints()   
     except:
+        points = None
         pass  
     #Retorno
     struct = {

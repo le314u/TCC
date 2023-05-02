@@ -9,6 +9,7 @@ from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
 from ui.model.buttonSketch import ButtonSketch
+from util.flag import Flag
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from ui.model.videoController import VideoController
@@ -16,8 +17,9 @@ from ui.model.videoController import VideoController
             
 class MenuPlayerWin():
     
-    def __init__(self, controller:VideoController , buttons:List[ButtonSketch] = None):
-        self.controller = controller 
+    def __init__(self, controller:VideoController , buttons:List[ButtonSketch] = None, flags:List[Flag]=[None]):
+        self.controller = controller
+        self.flags = flags
         self.conf = {
             "title":"Controlador",
             "scale":0.25,
@@ -38,18 +40,23 @@ class MenuPlayerWin():
         self.frameSlider = Scale(win, from_=0, to=self.controller.getTotalFrame() - 1, orient=HORIZONTAL,variable=DoubleVar(),bg="gray17",fg="white", activebackground='#339999')
         self.frameSlider.place(x=50, y=50, width=500)
         self.frameSlider.set(0)
-        self.frameSlider.bind("<ButtonPress-1>", lambda e: self.active_scaler())
-        self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.active_auto())
+        self.frameSlider.bind("<ButtonPress-1>", lambda e: self.slider_press())
+        self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.slider_release())
 
         #Cria o botao Play/Pause e N botoes Switcher de flag
         self.n_buttons = 0
         self.switchers = []
         self.playButton =self._createButton("PLAY",self.alter)
+        self.activeButton(self.playButton)
         if not buttons  is None:
             for button in buttons:
-                name, fx = button.get()
+                name, fx, flag = button.get()
                 btn = self._createButton(name, fx) 
-                self.switchers.append(btn)
+                storage_struct = {
+                    "button":btn,
+                    "flag": flag
+                }
+                self.switchers.append(storage_struct)
 
         
     def _createButton(self, name, fx = lambda : None):
@@ -62,10 +69,28 @@ class MenuPlayerWin():
         newButton = Button(self.window, text = name)
         newButton.place(x=x, y=0, width=WIDTH)
         newButton.bind("<ButtonPress-1>", lambda e: fx())
+        self.desactiveButton(newButton)
         #Atualiza o indice :
         self.n_buttons = self.n_buttons + 1
 
         return newButton
+
+
+    def activeButton(self, btn:Button):
+        '''Ativa um button na tela'''
+        btn.config(state="normal")
+    
+    def desactiveButton(self, btn:Button):
+        '''Desativa um button na tela'''
+        btn.config(state="disable")
+
+    def setState(self, state = None):
+        '''Altera o estado dos buttons de acordo com o State'''
+        switchers:List[Dict[Button, Flag]] = self.switchers
+        for switcher in switchers:
+            button = switcher["button"]
+            flag = switcher["flag"]
+            self.activeButton(button)
 
 
     def switchController(self, controller:VideoController):
@@ -74,9 +99,7 @@ class MenuPlayerWin():
         self.slider2Frame()
         old_value = self.frameSlider.get()
         self.frameSlider.config(from_=0, to=self.controller.getTotalFrame() - 1)
-        self.frameSlider.set(old_value)
-
-        
+        self.frameSlider.set(old_value)        
        
 
     def attSlider(self):
@@ -96,13 +119,18 @@ class MenuPlayerWin():
         id_frame = self.controller.getIdFrame()
         self.frameSlider.set(id_frame)
 
-    def active_auto(self):
+    def slider_press(self):
         '''Quando clicado'''
-        self.controller.play()
-
-    def active_scaler(self):
-        '''Quando Segurado'''
+        self.conf['state'] = self.controller.isRunning()
         self.controller.pause()
+
+    def slider_release(self):
+        '''Quando solto'''
+        if self.conf['state']:
+            self.controller.play()
+        else:
+            self.controller.pause()
+
 
     def alter(self):
         '''Altera entre Play/Pause'''

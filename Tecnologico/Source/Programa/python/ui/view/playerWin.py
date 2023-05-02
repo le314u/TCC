@@ -1,3 +1,4 @@
+from ast import Try
 import sys
 import os
 from turtle import width
@@ -10,13 +11,15 @@ from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
 
+from util.flag import Flag
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from  ui.model.videoController import VideoController
 from  ui.model.buttonSketch import ButtonSketch
 from  ui.view.menuPlayerWin import MenuPlayerWin
 
 class PlayerWin():
-    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None):
+    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None, flags:List[Flag]=[None]):
         #Meta dados da Janela Tkinter
         self.conf = {
             "title":"TCC - Lucas Mateus Fernandes",
@@ -27,8 +30,9 @@ class PlayerWin():
             "last_frame":-1,
             "velocidade":1
         }
-        #Carrega o Video
+        #Carrega arg's do construtor
         self.controller = controller
+        self.flags = flags
 
         #Cria a Janela baseada nas configurações do video
         self.window = Tk()
@@ -38,21 +42,24 @@ class PlayerWin():
         self.resize()
         self.canvas = Label( self.window )
 
-        self.menuPlayer = MenuPlayerWin(self.controller, buttons)
+        self.menuPlayer = MenuPlayerWin(self.controller, buttons, self.flags)
 
         #Linka o Player e o ControllerPlayer para fecharem juntas
         player = self.window
         menu = self.menuPlayer.window
-        on_close = lambda: (player.destroy(), menu.destroy(), sys.exit())
+        def on_close():
+            player.destroy()
+            menu.destroy()
+            sys.exit()
         menu.protocol("WM_DELETE_WINDOW", on_close)
         player.protocol("WM_DELETE_WINDOW", on_close)
         
-        # #Cria uma tred para desenhar
+        #Cria uma tred para desenhar
         mltp.Process(target=self.play())
 
-        # #Cria uma tred para desenhar
-        # play_thread = mltp.Process(target=self.play)
-        # play_thread.start()
+    def setState(self, state=None):
+        fx = lambda : self.menuPlayer.setState(state)
+        self.window.after(0,fx)
     
     def switchController(self, controller:VideoController):
         '''Altera o Video em exibição'''
@@ -95,15 +102,19 @@ class PlayerWin():
 
     def draw(self, frame_cv):
         '''Desenha o frame no Player apenas se teve modificação'''
-        if(self.hasModifcation()):
-            self.conf['last_frame'] = self.controller.getIdFrame()
-            frame_cp = frame_cv.copy()
-            frame_cp = cv2.resize(frame_cp, self._getSizeFrame() )
-            frame_cp = cv2.cvtColor(frame_cp, cv2.COLOR_BGRA2RGB)
-            img = Image.fromarray(frame_cp)
-            picture = ImageTk.PhotoImage(img)
-            self.canvas.configure(image=picture)
-            self.canvas.image = picture
-            w, h  = self.conf['bord']
-            self.canvas.place(x=w,y=h)
+        try:
+            if(self.hasModifcation()):
+                self.conf['last_frame'] = self.controller.getIdFrame()
+                frame_cp = frame_cv.copy()
+                frame_cp = cv2.resize(frame_cp, self._getSizeFrame() )
+                frame_cp = cv2.cvtColor(frame_cp, cv2.COLOR_BGRA2RGB)
+                img = Image.fromarray(frame_cp)
+                picture = ImageTk.PhotoImage(img)
+                self.canvas.configure(image=picture)
+                self.canvas.image = picture
+                w, h  = self.conf['bord']
+                self.canvas.place(x=w,y=h)
+                cv2.destroyAllWindows()
+
+        except Exception:
             cv2.destroyAllWindows()

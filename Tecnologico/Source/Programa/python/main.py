@@ -5,8 +5,8 @@ from ui.model.buttonSketch import ButtonSketch
 from util.flag import Flag
 
 #Cria as flags
-edh_flag = Flag("EDH",lambda : None)
-barra_flag = Flag("Barra",lambda : None)
+edh_flag = Flag("EDH")
+barra_flag = Flag("Barra")
 
 #Cria os buttons
 btns:List[ButtonSketch] = [
