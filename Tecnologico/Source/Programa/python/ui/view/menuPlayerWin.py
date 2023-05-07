@@ -9,10 +9,8 @@ from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
 from ui.model.buttonSketch import ButtonSketch
-from util.flag import Flag
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from ui.model.videoController import VideoController
+from util.flag import Flag
 
             
 class MenuPlayerWin():
@@ -101,7 +99,6 @@ class MenuPlayerWin():
         self.frameSlider.config(from_=0, to=self.controller.getTotalFrame() - 1)
         self.frameSlider.set(old_value)        
        
-
     def attSlider(self):
         '''Atualiza o player de acordo com o controlador de midia'''
         if(self.controller.isRunning()):
@@ -130,7 +127,6 @@ class MenuPlayerWin():
             self.controller.play()
         else:
             self.controller.pause()
-
 
     def alter(self):
         '''Altera entre Play/Pause'''

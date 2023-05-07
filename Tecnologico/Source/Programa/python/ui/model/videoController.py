@@ -1,10 +1,11 @@
 #from asyncio import windows_events
+import math
 import sys
 import time
 import cv2
 import numpy as np
 from io import BytesIO
-from ui.model.buffer import BufferAnalyzer
+from models.buffer import Buffer
 
     
 class VideoController():
@@ -29,7 +30,7 @@ class VideoController():
         self._loadVideo(video)
 
         #Instancia o Buffer de acordo com  o video
-        self.buffer = BufferAnalyzer(self.conf['fps'], [{}] * self.getTotalFrame() )
+        self.buffer = Buffer(self.conf['fps'], [{}] * self.getTotalFrame() )
 
         start_time = time.time()
         #Carrega um vetor de frames
@@ -50,7 +51,7 @@ class VideoController():
         self.conf['video'] = video
         self.conf['play'] = False
         self.conf['total_frame'] = round(video.get(cv2.CAP_PROP_FRAME_COUNT))
-        self.conf['fps'] = video.get(cv2.CAP_PROP_FPS)
+        self.conf['fps'] = math.floor(video.get(cv2.CAP_PROP_FPS))
         self.conf['size'] = (
             round(video.get(cv2.CAP_PROP_FRAME_WIDTH)),
             round(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -94,6 +95,11 @@ class VideoController():
         '''Retorna as dimensoes do video'''
         return self.conf['size']
     
+    def getMeta(self,id):
+        '''Retorna metaDados do frame ID '''
+        return self.buffer[id]
+    
+
     def restart(self):
         '''Move o video para o frame 1'''
         self.setFrame(1)

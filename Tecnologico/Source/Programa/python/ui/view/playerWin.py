@@ -12,6 +12,7 @@ import multiprocessing as mltp
 from PIL import ImageTk, Image
 
 from util.flag import Flag
+from util.pipe import PipeLine
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from  ui.model.videoController import VideoController
@@ -19,7 +20,7 @@ from  ui.model.buttonSketch import ButtonSketch
 from  ui.view.menuPlayerWin import MenuPlayerWin
 
 class PlayerWin():
-    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None, flags:List[Flag]=[None]):
+    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None, flags:List[Flag]=[None], preRender = lambda c:c.getFrame()):
         #Meta dados da Janela Tkinter
         self.conf = {
             "title":"TCC - Lucas Mateus Fernandes",
@@ -32,6 +33,7 @@ class PlayerWin():
         }
         #Carrega arg's do construtor
         self.controller = controller
+        self.preRender = preRender
         self.flags = flags
 
         #Cria a Janela baseada nas configurações do video
@@ -58,6 +60,7 @@ class PlayerWin():
         mltp.Process(target=self.play())
 
     def setState(self, state=None):
+        '''Altera o estado do Menu ativando os buttons'''
         fx = lambda : self.menuPlayer.setState(state)
         self.window.after(0,fx)
     
@@ -82,8 +85,8 @@ class PlayerWin():
         self.menuPlayer.attSlider()
         if self.controller.isRunning():
             self.controller.next()
-        frame =  self.controller.getFrame() 
-        self.draw( frame )
+        newFrame = self.preRender(self.controller)
+        self.draw( newFrame )
         self.window.after( round(1/self.conf['velocidade']*20) , self.play  )
        
     def resize(self):
@@ -102,6 +105,7 @@ class PlayerWin():
 
     def draw(self, frame_cv):
         '''Desenha o frame no Player apenas se teve modificação'''
+        
         try:
             if(self.hasModifcation()):
                 self.conf['last_frame'] = self.controller.getIdFrame()

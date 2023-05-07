@@ -1,6 +1,5 @@
 import cv2
-from featureExtraction.poseModel import PosePoints
-
+from featureExtraction.objectDetector import PosePoints
 
 def renderPose(image,points):
     '''Desenha os segmentos detectados'''

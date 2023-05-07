@@ -1,9 +1,9 @@
 import cv2
-from featureExtraction.poseModel import PosePoints
+from featureExtraction.lineModel import LineModel
 
-def renderBar(image, points):
+def renderBar(image, line:LineModel):
     '''Desenha a barra'''
-    start, end = points
+    start, end = line.getPoints
     color = (255,255,0)
     # Copia a imagem
     img = image.copy()

@@ -1,29 +1,34 @@
 from typing import Callable
 
 class Flag:
-    def __init__(self, name:str, function:Callable=(lambda :None), active:bool=False):
+    def __init__(self, name:str, function:Callable=(lambda :None), state:bool=False):
         self.name = name
+        self.state = state
         self.function = function
-        self.active = active
+
+    def __str__(self):
+        state =  "ativa" if self.state else "inativa"
+        return f"{self.name} : {state}"
 
     def activate(self):
-        self.active = True
+        self.state = True
 
     def deactivate(self):
-        self.active = False
+        self.state = False
     
     def alternate(self):
-        self.active = not self.active
+        self.state = not self.state
        
     def setFx(self,fx:Callable):
         self.function = fx
     
-    def state(self):
-        return self.active
+    def getState(self):
+        return self.state
 
     def name(self):
         return self.name
 
     def run(self, arg = None):
         return self.function(arg) if arg is not None else self.function()
- 
+    
+    

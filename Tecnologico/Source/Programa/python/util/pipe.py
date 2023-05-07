@@ -1,7 +1,7 @@
-import sys
-import os
+from copyreg import constructor
 from typing import List, Tuple
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from models.buffer import Buffer
+from ui.model.videoController import VideoController
 from util.flag import Flag
 
 
@@ -9,7 +9,7 @@ class PipeLine():
     
     def __init__(self):
         #Cada flag é associada a um numero que define a ordem de prioridade
-        self.conf:List[(Flag,float)]
+        self.conf:List[(Flag,float)] = []
         
 
     def addFlag(self, flag:Flag , num:float=1):
@@ -17,12 +17,17 @@ class PipeLine():
         if flag not in self.conf:
             self.conf.append((flag,num))
 
-    def exec(self,frame):
+    def exec(self,controller:VideoController):
         '''Executa cada função do pipeline sobre o frame atual de acordo com a ordem '''
-        active = lambda x: x.state()
-        activeFlags = list( filter(active, self.conf) )
+        frame = controller.getFrame()
+        getState = lambda flag: flag.getState()
+        activeFlags = list( filter(getState, [flag for flag,_ in self.conf] ) ) 
         orderPipe:List[Tuple[Flag,float]] = sorted(activeFlags, key=lambda x: x[1])
+        #Faz o processamento
         for flag,_ in orderPipe:
-            if flag.state():
-                frame = flag.run(frame)
+            if flag.getState():
+                #Pega as variaveis de controle
+                id,frame = controller.getIdFrame(), controller.getFrame()
+                #Executa a função com o frame e celula com os meta Dados
+                frame = flag.run(frame, controller.getMeta(id))
         return frame
