@@ -97,7 +97,7 @@ class VideoController():
     
     def getMeta(self,id):
         '''Retorna metaDados do frame ID '''
-        return self.buffer[id]
+        return self.buffer.buffer[id]
     
 
     def restart(self):

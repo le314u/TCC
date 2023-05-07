@@ -9,10 +9,10 @@ from util.pipe import PipeLine
 
 #Cria as flags
 barra_flag = Flag("Barra")
-barra_flag.setFx( lambda frame, cel : renderBar(frame,cel.getPose() ) )
+barra_flag.setFx( lambda frame, cel : renderBar(frame,cel.getBarra() ) )
 
 edh_flag = Flag("EDH")
-edh_flag.setFx( lambda frame, cel : renderBar(frame,cel.getBarra() ) )
+edh_flag.setFx( lambda frame, cel : renderPose(frame,cel.getPose() ) )
 
 
 #Cria um pipeLine de Renderização

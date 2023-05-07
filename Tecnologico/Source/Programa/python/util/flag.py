@@ -28,7 +28,9 @@ class Flag:
     def name(self):
         return self.name
 
-    def run(self, arg = None):
-        return self.function(arg) if arg is not None else self.function()
-    
+    def run(self, *args):
+        if len(args) > 0:
+            return self.function(*args)
+        else:
+            return self.function()    
     
