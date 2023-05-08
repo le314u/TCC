@@ -6,7 +6,7 @@ from tkinter import *
 from tkinter import filedialog
 from functools import partial
 from typing import List
-from featureExtraction.process import indice_not_process,fix_barra
+from featureExtraction.process import indice_not_process,fix_barra,fix_pose
 from ui.controller.preProcess import preProcess
 from ui.view.playerWin import PlayerWin
 from ui.model.videoController import VideoController
@@ -36,6 +36,8 @@ class Ux():
             not_allocated = indice_not_process(self.controller.buffer)
             for i in not_allocated['barra']:
                 fix_barra(self.controller.buffer, i)
+            for i in not_allocated['pose']:
+                fix_pose(self.controller.buffer, i)
         fy = lambda : self.player.setState()
         finished.setFx(lambda : (fx(), fy()))
 

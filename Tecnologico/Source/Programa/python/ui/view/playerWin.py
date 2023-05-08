@@ -29,7 +29,7 @@ class PlayerWin():
             "bord":(0,0),
             "color":"gray17",
             "last_frame":-1,
-            "velocidade":1
+            "velocidade":0.25
         }
         #Carrega arg's do construtor
         self.controller = controller

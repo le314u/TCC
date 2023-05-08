@@ -52,31 +52,46 @@ class PoseModel():
         
     def getPoint(self):
         return self.ponto
+
     def get_left_ankle(self):
         return self.left_ankle
+
     def get_left_elbow(self):
         return self.left_elbow
+
     def get_left_shoulder(self):
         return self.left_shoulder
+
     def get_left_heel(self):
         return self.left_heel
+
     def get_left_hip(self):
         return self.left_hip
+
     def get_left_knee(self):
         return self.left_knee
+
     def get_left_wrist(self):
         return self.left_wrist
+
     def get_right_ankle(self):
         return self.right_ankle
+
     def get_right_elbow(self):
         return self.right_elbow
+
     def get_right_shoulder(self):
         return self.right_shoulder
+
     def get_right_heel(self):
         return self.right_heel
+
     def get_right_hip(self):
         return self.right_hip
+
     def get_right_knee(self):
         return self.right_knee
+
     def get_right_wrist(self):
         return self.right_wrist
+        

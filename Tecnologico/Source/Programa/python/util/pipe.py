@@ -19,7 +19,12 @@ class PipeLine():
 
     def exec(self,controller:VideoController):
         '''Executa cada função do pipeline sobre o frame atual de acordo com a ordem '''
-        frame = controller.getFrame()
+         #Pega as variaveis de controle
+        id,frame = controller.getIdFrame(), controller.getFrame()
+        if id <= controller.getTotalFrame()-1:
+            frame_cp = frame.copy()
+        else:
+            return frame
         getState = lambda flag: flag.getState()
         activeFlags = list( filter(getState, [flag for flag,_ in self.conf] ) ) 
         orderPipe:List[Tuple[Flag,float]] = sorted(self.conf, key=lambda x: x[1])
@@ -27,10 +32,8 @@ class PipeLine():
         for flag,_ in orderPipe:
             if flag.getState():
                 try:
-                    #Pega as variaveis de controle
-                    id,frame = controller.getIdFrame()-1, controller.getFrame()
                     #Executa a função com o frame e celula com os meta Dados
-                    frame = flag.run(frame, controller.getMeta(id))
+                    frame_cp = flag.run(frame_cp, controller.getMeta(id))
                 except:
-                    frame = controller.getFrame()
-        return frame
+                    frame_cp = controller.getFrame()
+        return frame_cp

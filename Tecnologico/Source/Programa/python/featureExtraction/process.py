@@ -1,6 +1,7 @@
 import math
 from typing import List
 from featureExtraction.lineModel import LineModel
+from featureExtraction.poseModel import PoseModel
 from models.buffer import Buffer
 from models.frameFeature import FrameFeature
 from featureExtraction.deltaCalculator import DeltaCalculator
@@ -51,6 +52,44 @@ def fix_barra(buffer:Buffer, index:int):
     pose = buffer.get_cell(index)
     feature = FrameFeature(barra=line,pose=pose)
     buffer.set_cell(index, feature)
+
+def fix_pose(buffer:Buffer, index:int):
+    '''Inferencia da pose'''
+    pass
+#     start,end = get_range_to_analyze(buffer,index)
+#     array = buffer.get_slice((start,end), lambda data: data.getPose() )
+    
+#     def teste(data):
+#         print(data.get_left_ankle())
+#         [0] e [1]
+        
+
+
+
+
+#     getMean = round(DeltaCalculator.get_mean(array, teste ))
+
+
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_ankle())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_elbow())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_shoulder())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_heel())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_hip())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_knee())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_wrist())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_ankle())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_elbow())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_shoulder())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_heel())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_hip())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_knee())
+# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_wrist())        
+
+#     feature = buffer.get_cell(index)
+#     pose = PoseModel()
+#     line = feature.getBarra()
+#     feature = FrameFeature(barra=line,pose=pose)
+#     buffer.set_cell(index, feature)
 
 
     #Passa pelo buffer
