@@ -1,0 +1,14 @@
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/threading.py", line 932, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.8/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/ui/controller/preProcess.py", line 18, in preProcess
+    progress_bar( round(100*id/total) ,"pose Detection")
+  File "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/util/progress_bar.py", line 6, in progress_bar
+    bar_size = _get_bar_size(label)
+  File "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/util/progress_bar.py", line 14, in _get_bar_size
+    terminal_size = os.get_terminal_size()
+OSError: [Errno 25] Inappropriate ioctl for device

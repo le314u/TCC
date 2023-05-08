@@ -1,3 +1,4 @@
+import pdb
 import math
 from typing import List
 from featureExtraction.lineModel import LineModel
@@ -41,57 +42,49 @@ def get_range_to_analyze(buffer:Buffer,index:int):
 def fix_barra(buffer:Buffer, index:int):
     '''Inferencia da posição da barra'''
     start,end = get_range_to_analyze(buffer,index)
-    array = buffer.get_slice((start,end), lambda data: data.getBarra() )
-    extractBar = lambda i,j : ( lambda line: line.getPoints()[i][j] )
-    getMean = lambda i,j: round(DeltaCalculator.get_mean(array, extractBar(i,j)))
+    array = buffer.get_slice((start,end), lambda data: data.getBarra() )    
+    extract = lambda i,j : ( lambda line: line.getPoints()[i][j] )
+    getMean = lambda i,j: round(DeltaCalculator.get_mean(array, extract(i,j)))
     x1 = getMean(0,0)
     y1 = getMean(0,1)
     x2 = getMean(1,0)
     y2 = getMean(1,1)
     line = LineModel(x1,y1,x2,y2)
-    pose = buffer.get_cell(index)
+    pose = buffer.get_cell(index).getPose()
     feature = FrameFeature(barra=line,pose=pose)
     buffer.set_cell(index, feature)
 
 def fix_pose(buffer:Buffer, index:int):
     '''Inferencia da pose'''
-    pass
-#     start,end = get_range_to_analyze(buffer,index)
-#     array = buffer.get_slice((start,end), lambda data: data.getPose() )
-    
-#     def teste(data):
-#         print(data.get_left_ankle())
-#         [0] e [1]
-        
+    start,end = get_range_to_analyze(buffer,index)
+    array = buffer.get_slice((start,end), lambda data: data.getPose() )
+    extract_x = lambda part: ( lambda pose: getattr(pose, f"get_{part}")()[0] )
+    extract_y = lambda part: ( lambda pose: getattr(pose, f"get_{part}")()[1] )
+    point = lambda part: (
+       round(DeltaCalculator.get_mean(array, extract_x(part))),
+       round(DeltaCalculator.get_mean(array, extract_y(part)))
+    )
+    parts = ["left_ankle", "left_elbow", "left_shoulder", "left_heel", "left_hip", "left_knee", "left_wrist", "right_ankle", "right_elbow", "right_shoulder", "right_heel", "right_hip", "right_knee", "right_wrist"]
+    points = []
+    for part in parts:
+        points.append( point(part) )
+     
+    cel = buffer.get_cell(index)
+    line = cel.getBarra()
+    pose = PoseModel(*points)
+    feature = FrameFeature(barra=line,pose=pose)
+    buffer.set_cell(index, feature)
 
+    # Passa pelo buffer
+    # Analisa as celulas que estao faltando
+    # Verifica o gradiente de  variação
 
-
-
-#     getMean = round(DeltaCalculator.get_mean(array, teste ))
-
-
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_ankle())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_elbow())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_shoulder())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_heel())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_hip())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_knee())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_left_wrist())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_ankle())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_elbow())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_shoulder())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_heel())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_hip())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_knee())
-# # round(DeltaCalculator.get_mean(array, lambda pose: pose.get_right_wrist())        
-
-#     feature = buffer.get_cell(index)
-#     pose = PoseModel()
-#     line = feature.getBarra()
-#     feature = FrameFeature(barra=line,pose=pose)
-#     buffer.set_cell(index, feature)
-
-
-    #Passa pelo buffer
-    #Analisa as celulas que estao faltando
-    #Verifica o gradiente de  variação
+# def DEBUG(data):
+#     ret = ""
+#     if isinstance(data,PoseModel):
+#         ret = "Pose" 
+#     if isinstance(data,FrameFeature):
+#         ret = "Frame" 
+#     if data is None:
+#         ret = "None" 
+#     print(ret)

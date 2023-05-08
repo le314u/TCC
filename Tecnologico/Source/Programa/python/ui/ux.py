@@ -32,14 +32,19 @@ class Ux():
         self.player = PlayerWin(self.controller, btns, flags, preRender)
 
         finished = flags[0]
-        def fx():
+        def fix():
             not_allocated = indice_not_process(self.controller.buffer)
+            print(not_allocated)
             for i in not_allocated['barra']:
                 fix_barra(self.controller.buffer, i)
+            not_allocated = indice_not_process(self.controller.buffer)
+            print(not_allocated)
             for i in not_allocated['pose']:
                 fix_pose(self.controller.buffer, i)
+            not_allocated = indice_not_process(self.controller.buffer)
+            print(not_allocated)
         fy = lambda : self.player.setState()
-        finished.setFx(lambda : (fx(), fy()))
+        finished.setFx(lambda : (fix(), fy()))
 
 
         #pre processamento ocorre em paralelo

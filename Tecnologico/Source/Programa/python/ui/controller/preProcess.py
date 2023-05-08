@@ -2,6 +2,7 @@ from models.frameFeature import FrameFeature
 from featureExtraction.objectDetector import PosePoints,detectBar
 from featureExtraction.poseModel import PoseModel
 from featureExtraction.lineModel import LineModel
+from util.beep import beep
 from util.flag import Flag
 from util.progress_bar import progress_bar
 from ui.model.videoController import VideoController
@@ -16,8 +17,9 @@ def preProcess(controller:VideoController, flag:Flag):
         #printa a porcentagem ja feita 
         progress_bar( round(100*id/total) ,"pose Detection")
         frame = controller.getFrameId(id)
-        value = process_frame(frame)
-        controller.buffer.set_cell(id, process_frame(frame) )
+        feature = process_frame(frame)
+        controller.buffer.set_cell(id, feature )
+    beep()
     #Apos o termino ativa a flag para desbloquear os buttons
     flag.activate()
     flag.run()

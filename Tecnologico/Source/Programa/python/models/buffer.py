@@ -1,5 +1,7 @@
 from typing import Any, List, Callable, Tuple
 
+from models.frameFeature import FrameFeature
+
 class Buffer:
 
     def __init__(self, capacity:int=24, data: List = []) -> None:
@@ -9,7 +11,7 @@ class Buffer:
     def size(self):
         return len(self.buffer)
     
-    def set_cell(self, index:int, value) -> None:
+    def set_cell(self, index:int, value:Any) -> None:
         '''Define o valor de uma celula do buffer'''
         self.buffer[index] = value
 
