@@ -1,10 +1,11 @@
+import math
 import cv2
 import numpy as np
 import mediapipe as mp
 from enum import Enum
 from featureExtraction.poseModel import PoseModel
 from featureExtraction.lineModel import LineModel 
-from featureExtraction.geometria import angle,segment
+from featureExtraction.geometria import angle_point,segment
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -80,24 +81,58 @@ class PosePoints():
 def detectBar(frame) -> LineModel:
     '''Dado um frame retorna a barra'''
     img = frame.copy()
+    altura, largura, _  = img.shape
     #converte em preto e branco
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) 
     #Detecção de borda
-    edges = cv2.Canny(gray,550,150,apertureSize = 3) 
-    lines = cv2.HoughLines(edges,1,np.pi/180, 200)
+    edges = cv2.Canny(gray,50,150,apertureSize = 3) 
+    lines = cv2.HoughLines(edges,1,np.pi/180, 100)
 
-    # # Filtrar as linhas horizontais
-    # horizontal_lines = []
-    # for line in lines:
-    #     rho, theta = line[0]
-    #     if np.abs(theta - angle(90)) < angle(10):  # Ângulo dentro de 10 graus de 90 graus
-    #         horizontal_lines.append(line)
-    line = lines[0][0]
-    rho,theta = line
-    points = segment(rho,theta,200) 
-    x1,y1=points[0]
-    x2,y2=points[1]
+    tolerance = 8
+    horizontal_lines = []
+    for line in lines:
+        rho, theta = line[0]
+        pt1,pt2 = segment(rho,theta)
+        angle = angle_point(pt1,pt2)
+        # Verificar se é horizontal
+        if abs(angle) < tolerance or abs(180-tolerance) < abs(angle):
+            horizontal_lines.append(line)
     
+    #Verifica a região de interesse
+    section_line = []
+    limit_sup = round(0.07 * altura)
+    limit_inf = round(0.14 * altura)
+    for line in horizontal_lines:
+        rho,theta = line[0]
+        points = segment(rho,theta,largura) 
+        x1,y1 = points[0]
+        x2,y2 = points[1]
+        if all(y < limit_inf for y in [y1, y2]) and all(y > limit_sup for y in [y1, y2]):
+            section_line.append(line)
+    
+    #Verifica a menor linha
+    real_line = section_line[0][0]
+    for line in section_line:
+        rho,theta = line[0]
+        points = segment(rho,theta,largura) 
+        x1,y1 = points[0]
+        x2,y2 = points[1]
+        val1 = y2
+
+        rho,theta = real_line
+        points = segment(rho,theta,largura) 
+        x1,y1 = points[0]
+        x2,y2 = points[1]
+        val2 = y2
+
+        if(val1 > val2):
+            real_line = line[0]
+            
+        # Exibindo a imagem
+ 
+    #Preparando o retorno
+    rho,theta = real_line
+    points = segment(rho,theta,largura) 
+    x1,y1 = points[0]
+    x2,y2 = points[1]
     return LineModel(x1,y1,x2,y2)
-
-

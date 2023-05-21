@@ -15,7 +15,16 @@ def intercept(line1, line2) -> bool:
     return point[2] == 1
     
 
-def angle(line1, line2) -> float:
+# Cálculo do ângulo entre dois pontos
+def angle_point(pt1, pt2):
+    delta_x = pt2[0] - pt1[0]
+    delta_y = pt2[1] - pt1[1]
+    angle_rad = np.arctan2(delta_y, delta_x)
+    angle_deg = np.degrees(angle_rad)
+    return angle_deg
+
+
+def angle_line(line1, line2) -> float:
     '''Retorna o angulo entre dois segmentos de reta'''
     # Convertendo as linhas para o formato aceito pela função intersectLines
     pt1, pt2 = line1
@@ -32,10 +41,6 @@ def angle(line1, line2) -> float:
     angle_rad = np.deg2rad(angle)
 
     return angle
-
-def angle(theta):
-    '''Converte um ângulo em graus para radianos.'''
-    return theta * 180 / np.pi
 
 def segment(rho, theta, comprimento=2000):
     '''Representação de um segmento de reta'''
