@@ -33,4 +33,18 @@ def angle(line1, line2) -> float:
 
     return angle
 
+def angle(theta):
+    '''Converte um ângulo em graus para radianos.'''
+    return theta * 180 / np.pi
 
+def segment(rho, theta, comprimento=2000):
+    '''Representação de um segmento de reta'''
+    cos = np.cos(theta) 
+    sen = np.sin(theta) 
+    x = cos*rho
+    y = sen*rho
+    x1 = int(x + comprimento *(-sen)) 
+    x2 = int(x - comprimento *(-sen)) 
+    y1 = int(y + comprimento *(cos)) 
+    y2 = int(y - comprimento *(cos))  
+    return( (x1,y1), (x2,y2) )
