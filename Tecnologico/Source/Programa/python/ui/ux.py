@@ -30,19 +30,15 @@ class Ux():
         self.path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/lazy.mp4" #getPath()
         self.controller = VideoController(path=self.path)
         self.player = PlayerWin(self.controller, btns, flags, preRender)
-
         finished = flags[0]
         def fix():
             not_allocated = indice_not_process(self.controller.buffer)
-            print(not_allocated)
-            for i in not_allocated['barra']:
+            for i in not_allocated['line']:
                 fix_barra(self.controller.buffer, i)
             not_allocated = indice_not_process(self.controller.buffer)
-            print(not_allocated)
             for i in not_allocated['pose']:
                 fix_pose(self.controller.buffer, i)
             not_allocated = indice_not_process(self.controller.buffer)
-            print(not_allocated)
         fy = lambda : self.player.setState()
         finished.setFx(lambda : (fix(), fy()))
 

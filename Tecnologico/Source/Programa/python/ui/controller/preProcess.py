@@ -1,4 +1,4 @@
-from models.frameFeature import FrameFeature
+from models.celulaModel import CelulaModel
 from featureExtraction.objectDetector import PosePoints,detectBar
 from featureExtraction.poseModel import PoseModel
 from featureExtraction.lineModel import LineModel
@@ -25,13 +25,13 @@ def preProcess(controller:VideoController, flag:Flag):
     flag.run()
 
 
-def process_frame(frame) -> FrameFeature:
+def process_frame(frame) -> CelulaModel:
     #Inicia o Frame
     frame_cp, barra, points =  [None]*3
     try:
         frame_cp = frame.copy()
     except:
-        return FrameFeature(barra, points)
+        return CelulaModel(line=barra, pose=points)
 
     #Extrai a barra
     try:
@@ -47,6 +47,6 @@ def process_frame(frame) -> FrameFeature:
         points = None
 
     #retorno
-    return FrameFeature(barra, points)
+    return CelulaModel(line=barra, pose=points)
 
 

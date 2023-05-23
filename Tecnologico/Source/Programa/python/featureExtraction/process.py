@@ -4,17 +4,17 @@ from typing import List
 from featureExtraction.lineModel import LineModel
 from featureExtraction.poseModel import PoseModel
 from models.buffer import Buffer
-from models.frameFeature import FrameFeature
+from models.celulaModel import CelulaModel
 from featureExtraction.deltaCalculator import DeltaCalculator
 
 
 def indice_not_process(buffer:Buffer):
     '''Retorna os indices que nao foi possivel fazer a extração da imagem'''
-    not_allocated = {"barra":[],"pose":[]}
+    not_allocated = {"line":[],"pose":[]}
     for i in range(buffer.size()):
-        cel:FrameFeature = buffer.get_cell(i)
-        if cel.getBarra() == None:
-            not_allocated['barra'].append(i)
+        cel:CelulaModel = buffer.get_cell(i)
+        if cel.getLine() == None:
+            not_allocated['line'].append(i)
         if cel.getPose() == None:
             not_allocated['pose'].append(i)
     return not_allocated
@@ -30,7 +30,6 @@ def get_range_to_analyze(buffer:Buffer,index:int):
     else: #Se tem apenas n-x celulas antes passa x celulas para o final
         start = 0
         end = offset - index
-
     if index < (buffer.size() - offset ): #Se tem n celulas depois
         end = end +index + offset - 1 
     else: #Se tem apenas n-x celulas depois passa x celulas para o inicio
@@ -51,8 +50,8 @@ def fix_barra(buffer:Buffer, index:int):
     y2 = getMean(1,1)
     line = LineModel(x1,y1,x2,y2)
     pose = buffer.get_cell(index).getPose()
-    feature = FrameFeature(barra=line,pose=pose)
-    buffer.set_cell(index, feature)
+    cel = CelulaModel(line=line,pose=pose)
+    buffer.set_cell(index, cel)
 
 def fix_pose(buffer:Buffer, index:int):
     '''Inferencia da pose'''
@@ -70,9 +69,9 @@ def fix_pose(buffer:Buffer, index:int):
         points.append( point(part) )
      
     cel = buffer.get_cell(index)
-    line = cel.getBarra()
+    line = cel.getLine()
     pose = PoseModel(*points)
-    feature = FrameFeature(barra=line,pose=pose)
+    feature = CelulaModel(line=line,pose=pose)
     buffer.set_cell(index, feature)
 
     # Passa pelo buffer
@@ -83,7 +82,7 @@ def fix_pose(buffer:Buffer, index:int):
 #     ret = ""
 #     if isinstance(data,PoseModel):
 #         ret = "Pose" 
-#     if isinstance(data,FrameFeature):
+#     if isinstance(data,CelulaModel):
 #         ret = "Frame" 
 #     if data is None:
 #         ret = "None" 
