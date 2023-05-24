@@ -66,9 +66,6 @@ def fix_barra_moda(buffer:Buffer):
         cel = CelulaModel(line=line,pose=pose)
         buffer.set_cell(index, cel)
 
-
-
-
 def fix_pose(buffer:Buffer, index:int):
     '''Inferencia da pose'''
     start,end = get_range_to_analyze(buffer,index)
