@@ -13,8 +13,10 @@ def indice_not_process(buffer:Buffer):
     not_allocated = {"line":[],"pose":[]}
     for i in range(buffer.size()):
         cel:CelulaModel = buffer.get_cell(i)
+        #fix Barra
         if cel.getLine() == None:
             not_allocated['line'].append(i)
+        #fix Pose
         if cel.getPose() == None:
             not_allocated['pose'].append(i)
     return not_allocated
@@ -41,17 +43,31 @@ def get_range_to_analyze(buffer:Buffer,index:int):
 def fix_barra(buffer:Buffer, index:int):
     '''Inferencia da posição da barra'''
     start,end = get_range_to_analyze(buffer,index)
-    array = buffer.get_slice((start,end), lambda data: data.getBarra() )    
+    array = buffer.get_slice((start,end), lambda data: data.getLine() )    
     extract = lambda i,j : ( lambda line: line.getPoints()[i][j] )
     getMean = lambda i,j: round(DeltaCalculator.get_mean(array, extract(i,j)))
-    x1 = getMean(0,0)
-    y1 = getMean(0,1)
-    x2 = getMean(1,0)
-    y2 = getMean(1,1)
+    x1,y1,x2,y2 = getMean(0,0), getMean(0,1), getMean(1,0), getMean(1,1)
     line = LineModel(x1,y1,x2,y2)
     pose = buffer.get_cell(index).getPose()
     cel = CelulaModel(line=line,pose=pose)
     buffer.set_cell(index, cel)
+
+def fix_barra_moda(buffer:Buffer):
+    '''Descobre a media e resignifica a barra'''
+    start,end = 0, buffer.size()
+    array = buffer.get_slice((start,end), lambda data: data.getLine() )    
+    extract = lambda i,j : ( lambda line: line.getPoints()[i][j] )
+    getMode = lambda i,j: round(DeltaCalculator.get_mode(array, extract(i,j)))
+    x1,y1,x2,y2 = getMode(0,0), getMode(0,1), getMode(1,0), getMode(1,1)
+
+    for index in range(end):
+        line = LineModel(x1,y1,x2,y2)
+        pose = buffer.get_cell(index).getPose()
+        cel = CelulaModel(line=line,pose=pose)
+        buffer.set_cell(index, cel)
+
+
+
 
 def fix_pose(buffer:Buffer, index:int):
     '''Inferencia da pose'''

@@ -98,10 +98,11 @@ def detectBar(frame) -> LineModel:
         if abs(angle) < tolerance or abs(180-tolerance) < abs(angle):
             horizontal_lines.append(line)
     
+
     #Verifica a região de interesse
     section_line = []
-    limit_sup = round(0.07 * altura)
-    limit_inf = round(0.14 * altura)
+    limit_sup = round(0.03 * altura) #round(0.07 * altura)
+    limit_inf = round(0.18 * altura) #round(0.14 * altura)
     for line in horizontal_lines:
         rho,theta = line[0]
         points = segment(rho,theta,largura) 
@@ -110,7 +111,7 @@ def detectBar(frame) -> LineModel:
         if all(y < limit_inf for y in [y1, y2]) and all(y > limit_sup for y in [y1, y2]):
             section_line.append(line)
     
-    #Verifica a menor linha
+    #Verifica a maior linha
     real_line = section_line[0][0]
     for line in section_line:
         rho,theta = line[0]
@@ -125,11 +126,13 @@ def detectBar(frame) -> LineModel:
         x2,y2 = points[1]
         val2 = y2
 
-        if(val1 > val2):
+        
+        if(val2 > val1 ):
             real_line = line[0]
             
-        # Exibindo a imagem
- 
+    #     # Exibindo a imagem
+    
+    real_line = real_line
     #Preparando o retorno
     rho,theta = real_line
     points = segment(rho,theta,largura) 

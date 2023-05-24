@@ -5,7 +5,7 @@ class Buffer:
 
     def __init__(self, capacity:int=24, data: List[CelulaModel] = []) -> None:
         self.buffer = data #Uma lsita de Celulas
-        self.capacity = capacity #Inteiro que representa a quantidade de frames faz u msegmento por padrão é igual ao fps
+        self.capacity = capacity #Inteiro que representa a quantidade de frames faz um segmento por padrão é igual ao fps
       
     def size(self):
         return len(self.buffer)

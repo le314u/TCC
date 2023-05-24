@@ -34,4 +34,14 @@ class DeltaCalculator:
         '''Retorna o desvio padrao da amostra'''
         values = [extractor(x) for x in data if x is not None]
         standart_deviation = statistics.pstdev(values)
-        return standart_deviation    
+        return standart_deviation
+
+    @staticmethod
+    def get_mode(
+            data: List[Any],
+            extractor: Callable[[Any], float] = lambda data: data,
+        ) -> float:
+        '''Retorna a moda'''
+        values = [extractor(x) for x in data if x is not None]
+        mode = statistics.mode(values)
+        return mode
