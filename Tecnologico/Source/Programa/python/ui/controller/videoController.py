@@ -5,7 +5,7 @@ import time
 import cv2
 import numpy as np
 from io import BytesIO
-from models.buffer import Buffer
+from ui.model.buffer import Buffer
 
     
 class VideoController():
@@ -29,18 +29,9 @@ class VideoController():
             video = cv2.VideoCapture( path )
         self._loadVideo(video)
 
-        #Instancia o Buffer de acordo com  o video
+        #Instancia o Buffer de acordo com  o video e Carrega um vetor de frames
         self.buffer = Buffer(self.conf['fps'], [{}] * self.getTotalFrame() )
-
-        start_time = time.time()
-        #Carrega um vetor de frames
-        self.next()
-        self.setFrame(0)
-        for i in range(self.getTotalFrame()):
-            frame = self.getFrame()
-            if frame is not None:
-                self.conf['frames'].append(frame)
-            self.next()
+        self._video2frames()
         #Rebobina o video
         self.setFrame(0)
         
@@ -58,7 +49,30 @@ class VideoController():
         )
         return video
     
+    def _video2frames(self):
+        #Rebobina o video para o primeiro frame
+        self.rebobina()
+        #Pega o primeiro frame
+        if(not self.isFinished()):
+            self.nextInVideo()
+        #Rebobina o video para o primeiro frame
+        self.rebobina()
+        #Começa a copiar frame por frame
+        for i in range(self.getTotalFrame()):
+            frame = self.getFrame()
+            if frame is not None:
+                self.conf['frames'].append(frame)
+            if(not self.isFinished()):
+                self.nextInVideo()
+
     def next(self):
+        '''Passa para o proximo frame e aplica o pre processamento'''
+        if(not self.isFinished()):
+            id = self.conf['id_frame']+1
+            self.conf['id_frame'] = id
+            self.conf['frame']  = self.conf['frames'][id]
+            
+    def nextInVideo(self):
         '''Passa para o proximo frame e aplica o pre processamento'''
         if(not self.isFinished()):
             _, frame= self.conf['video'].read()
@@ -75,13 +89,25 @@ class VideoController():
         id = min( max(id, 0), max_frame)
         return self.conf['frames'][id] 
         
-    def setFrame(self, id_frame):
-        '''Define um frame especifico aparttir do ID'''
+    def rebobina(self):
+        '''Volta o video para o id 0'''
+        id_frame = 0
         id_next_frame = id_frame  if id_frame < self.getTotalFrame() else self.getTotalFrame()
         self.conf['id_frame'] = id_next_frame
         self.conf['video'].set(cv2.CAP_PROP_POS_FRAMES, id_next_frame-1)
         _, frame = self.conf['video'].read()
         self.conf['frame']  = self.process_frame(frame)
+
+    def setFrame(self, id_frame):
+        self.conf["id_frame"] = id_frame
+        self.conf["frame"] = self.getFrameId(id_frame)
+
+    def setNewFrame(self, id_frame, frame):
+        '''Define um frame especifico no ID'''
+        id_next_frame = id_frame  if id_frame < self.getTotalFrame() else self.getTotalFrame()
+        new_frame = self.process_frame(frame)
+        self.conf['frame']  = new_frame
+        self.conf['frames'][id_frame] = new_frame
                
     def getIdFrame(self):
         '''retorna o id no frame que o video está'''
@@ -98,7 +124,6 @@ class VideoController():
     def getMeta(self,id):
         '''Retorna metaDados do frame ID '''
         return self.buffer.buffer[id]
-    
 
     def restart(self):
         '''Move o video para o frame 1'''
@@ -114,13 +139,12 @@ class VideoController():
 
     def isFinished(self):
         '''Verifica se o video chegou ao fim'''
-        self.conf['play'] = self.getIdFrame() < self.getTotalFrame()
+        self.conf['play'] = self.getIdFrame() < self.getTotalFrame()-1
         return not self.conf['play']
 
     def isRunning(self):
         '''Retorna se o video esta rodando ou pausado'''
         return self.conf['play']
-
 
 
 def Video(video_original, frames):

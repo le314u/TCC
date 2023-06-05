@@ -1,10 +1,11 @@
+
+import os
 import math
 import cv2
 import numpy as np
 import mediapipe as mp
-from enum import Enum
-from featureExtraction.poseModel import PoseModel
-from featureExtraction.lineModel import LineModel 
+from featureExtraction.model.poseModel import PoseModel,Segmento
+from featureExtraction.model.lineModel import LineModel 
 from featureExtraction.geometria import angle_point,segment
 
 mp_drawing = mp.solutions.drawing_utils
@@ -27,23 +28,11 @@ pose_midia_pipe = mp_pose.Pose(
 		min_tracking_confidence=0.5
 	)
 
-D = "Direito"
-E = "Esquerdo"
-_parte = lambda parteA, parteB, lado: (f"{parteA}{lado}", f"{parteB}{lado}")
-
-class Segmento(Enum):
-    CORPO = ('Ombro Esquerdo', 'Ombro Direito', 'Quadril Direito', 'Quadril Esquerdo')
-    BRACO_DIR = _parte('Pulso ', 'Cotovelo ', D) + _parte('Cotovelo ', 'Ombro ', D)
-    BRACO_ESQ = _parte('Pulso ', 'Cotovelo ', E) + _parte('Cotovelo ', 'Ombro ', E)
-    PERNA_DIR = _parte('Calcanhar ', 'Joelho ', D) + _parte('Joelho ', 'Quadril ', D)
-    PERNA_ESQ = _parte('Calcanhar ', 'Joelho ', E) + _parte('Joelho ', 'Quadril ', E)
-
 class PosePoints():
     #Variavel de classe
     midia_pipe_ENUM = mp.solutions.pose.PoseLandmark
     pose_midia_pipe = pose_midia_pipe #Midia Pipe
-    #Enum
-    Segmento = Segmento
+    
 
     @staticmethod
     def extractPose(image):
@@ -93,6 +82,7 @@ def detectBar(frame) -> LineModel:
     for line in lines:
         rho, theta = line[0]
         pt1,pt2 = segment(rho,theta)
+        pt1 = (0, pt1[1])
         angle = angle_point(pt1,pt2)
         # Verificar se é horizontal
         if abs(angle) < tolerance or abs(180-tolerance) < abs(angle):

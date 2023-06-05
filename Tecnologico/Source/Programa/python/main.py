@@ -3,7 +3,7 @@ import cv2
 from render.renderBar import renderBar
 from render.renderPose import renderPose
 from render.renderTxt import renderTxt
-from ui.ux import Ux
+from ui.view.mainWindow import MainWindow
 from ui.model.buttonSketch import ButtonSketch
 from util.flag import Flag
 from util.pipe import PipeLine
@@ -34,4 +34,4 @@ btns:List[ButtonSketch] = [
     ButtonSketch("Dados",dados_flag)
 ]
 
-Ux(btns=btns, preRender=pipe_render.exec)
+MainWindow(btns=btns, preRender=pipe_render.exec)

@@ -1,7 +1,7 @@
 from copyreg import constructor
 from typing import List, Tuple
-from models.buffer import Buffer
-from ui.model.videoController import VideoController
+from ui.model.buffer import Buffer
+from ui.controller.videoController import VideoController
 from util.flag import Flag
 
 

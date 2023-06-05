@@ -15,7 +15,7 @@ from util.flag import Flag
 from util.pipe import PipeLine
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from  ui.model.videoController import VideoController
+from  ui.controller.videoController import VideoController
 from  ui.model.buttonSketch import ButtonSketch
 from  ui.view.menuPlayerWin import MenuPlayerWin
 
@@ -29,7 +29,7 @@ class PlayerWin():
             "bord":(0,0),
             "color":"gray17",
             "last_frame":-1,
-            "velocidade":0.25
+            "velocidade":1
         }
         #Carrega arg's do construtor
         self.controller = controller

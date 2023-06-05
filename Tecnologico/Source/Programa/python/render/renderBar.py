@@ -1,5 +1,5 @@
 import cv2
-from featureExtraction.lineModel import LineModel
+from featureExtraction.model.lineModel import LineModel
 
 def renderBar(image, line:LineModel):
     '''Desenha a barra'''

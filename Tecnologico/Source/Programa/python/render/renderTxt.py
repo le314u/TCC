@@ -2,11 +2,10 @@
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
-from models.contracaoModel import ContracaoModel
+from featureExtraction.model.contracaoModel import ContracaoModel
 
 def renderTxt(image, data:ContracaoModel):
     '''Desenha os segmentos detectados'''
-    data=ContracaoModel("açai","téste",123,123,123)
     data = str(data)
     
     altura, largura, _ = image.shape

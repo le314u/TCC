@@ -1,3 +1,17 @@
+from enum import Enum
+from featureExtraction.model.lineModel import LineModel
+
+D = "Direito"
+E = "Esquerdo"
+_parte = lambda parteA, parteB, lado: (f"{parteA}{lado}", f"{parteB}{lado}")
+
+class Segmento(Enum):
+    CORPO = ('Ombro Esquerdo', 'Ombro Direito', 'Quadril Direito', 'Quadril Esquerdo')
+    BRACO_DIR = _parte('Pulso ', 'Cotovelo ', D) + _parte('Cotovelo ', 'Ombro ', D)
+    BRACO_ESQ = _parte('Pulso ', 'Cotovelo ', E) + _parte('Cotovelo ', 'Ombro ', E)
+    PERNA_DIR = _parte('Calcanhar ', 'Joelho ', D) + _parte('Joelho ', 'Quadril ', D)
+    PERNA_ESQ = _parte('Calcanhar ', 'Joelho ', E) + _parte('Joelho ', 'Quadril ', E)
+
 class PoseModel():
     def __init__(self,
         left_ankle = None,
@@ -95,3 +109,18 @@ class PoseModel():
     def get_right_wrist(self):
         return self.right_wrist
         
+    #LINE
+    def getSegmentLine(self, segment:Segmento)->LineModel:
+        val = segment.value
+        total = len(val)
+        qtdParts = round(total/2)
+        segmentLine = [None] * qtdParts
+        for part in range(qtdParts):
+            id = 2*(part)
+            p1,p2 = self.segmentName2Point(val[id]), self.segmentName2Point(val[id+1])
+            segmentLine[part] = LineModel(*p1,*p2)
+        return segmentLine                                                                                                                                  
+        
+    
+    def segmentName2Point(self, segmentName):
+        return self.ponto[segmentName]

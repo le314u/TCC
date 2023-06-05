@@ -9,7 +9,7 @@ from tkinter import filedialog
 import multiprocessing as mltp
 from PIL import ImageTk, Image
 from ui.model.buttonSketch import ButtonSketch
-from ui.model.videoController import VideoController
+from ui.controller.videoController import VideoController
 from util.flag import Flag
 
             
@@ -20,7 +20,7 @@ class MenuPlayerWin():
         self.flags = flags
         self.conf = {
             "title":"Controlador",
-            "scale":0.25,
+            "scale":0.5,
             "bord":(0,0),
             "color":"gray17"
         }

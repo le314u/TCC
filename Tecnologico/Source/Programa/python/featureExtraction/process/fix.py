@@ -1,10 +1,10 @@
 import pdb
 import math
 from typing import List
-from featureExtraction.lineModel import LineModel
-from featureExtraction.poseModel import PoseModel
-from models.buffer import Buffer
-from models.celulaModel import CelulaModel
+from featureExtraction.model.lineModel import LineModel
+from featureExtraction.model.poseModel import PoseModel
+from ui.model.buffer import Buffer
+from ui.model.celulaModel import CelulaModel
 from featureExtraction.deltaCalculator import DeltaCalculator
 
 
@@ -49,7 +49,8 @@ def fix_barra(buffer:Buffer, index:int):
     x1,y1,x2,y2 = getMean(0,0), getMean(0,1), getMean(1,0), getMean(1,1)
     line = LineModel(x1,y1,x2,y2)
     pose = buffer.get_cell(index).getPose()
-    cel = CelulaModel(line=line,pose=pose)
+    data = buffer.get_cell(index).getData()
+    cel = CelulaModel(line=line, pose=pose, data=data)
     buffer.set_cell(index, cel)
 
 def fix_barra_moda(buffer:Buffer):
@@ -63,7 +64,8 @@ def fix_barra_moda(buffer:Buffer):
     for index in range(end):
         line = LineModel(x1,y1,x2,y2)
         pose = buffer.get_cell(index).getPose()
-        cel = CelulaModel(line=line,pose=pose)
+        data = buffer.get_cell(index).getData()
+        cel = CelulaModel(line=line, pose=pose, data=data)
         buffer.set_cell(index, cel)
 
 def fix_pose(buffer:Buffer, index:int):
@@ -84,19 +86,6 @@ def fix_pose(buffer:Buffer, index:int):
     cel = buffer.get_cell(index)
     line = cel.getLine()
     pose = PoseModel(*points)
-    feature = CelulaModel(line=line,pose=pose)
+    data = buffer.get_cell(index).getData()
+    feature = CelulaModel(line=line, pose=pose, data=data)
     buffer.set_cell(index, feature)
-
-    # Passa pelo buffer
-    # Analisa as celulas que estao faltando
-    # Verifica o gradiente de  variação
-
-# def DEBUG(data):
-#     ret = ""
-#     if isinstance(data,PoseModel):
-#         ret = "Pose" 
-#     if isinstance(data,CelulaModel):
-#         ret = "Frame" 
-#     if data is None:
-#         ret = "None" 
-#     print(ret)

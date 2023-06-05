@@ -1,5 +1,7 @@
 import cv2
 import numpy as np 
+import math
+from featureExtraction.model.lineModel import LineModel
 
 def intercept(line1, line2) -> bool:
     '''Retorna se as duas linhas se cruzam em algum momento'''
@@ -14,7 +16,6 @@ def intercept(line1, line2) -> bool:
 
     return point[2] == 1
     
-
 # Cálculo do ângulo entre dois pontos
 def angle_point(pt1, pt2):
     delta_x = pt2[0] - pt1[0]
@@ -23,24 +24,29 @@ def angle_point(pt1, pt2):
     angle_deg = np.degrees(angle_rad)
     return angle_deg
 
-
-def angle_line(line1, line2) -> float:
-    '''Retorna o angulo entre dois segmentos de reta'''
+def angle_line(line1:LineModel, line2:LineModel) -> float:
+    '''Retorna o ângulo entre dois segmentos de reta 0 a 180'''
+    # Extrair as coordenadas dos pontos dos segmentos de reta
+    pt1, pt2 = line1.getPoints()
+    pt3, pt4 = line2.getPoints()
     # Convertendo as linhas para o formato aceito pela função intersectLines
-    pt1, pt2 = line1
-    pt3, pt4 = line2
-
-    # Calcule o vetor diretor de cada segmento de reta
-    vec1 = cv2.subtract(pt2, pt1)
-    vec2 = cv2.subtract(pt4, pt3)
-
-    # Calcule o ângulo entre os dois vetores diretores
-    angle = cv2.fastAtan2(vec1[1], vec1[0]) - cv2.fastAtan2(vec2[1], vec2[0])
-    
-    # Converta o ângulo de graus para radianos
-    angle_rad = np.deg2rad(angle)
-
-    return angle
+    x1, y1 = pt1
+    x2, y2 = pt2
+    x3, y3 = pt3
+    x4, y4 = pt4
+    # Calcular os vetores diretores dos segmentos de reta
+    v1 = (x2 - x1, y2 - y1)
+    v2 = (x4 - x3, y4 - y3)
+    # Calcular o produto escalar
+    dot_product = v1[0] * v2[0] + v1[1] * v2[1]
+    # Calcular as normas dos vetores diretores
+    norm_v1 = math.sqrt(v1[0]**2 + v1[1]**2)
+    norm_v2 = math.sqrt(v2[0]**2 + v2[1]**2)
+    # Calcular o ângulo em radianos
+    angle_rad = math.acos(dot_product / (norm_v1 * norm_v2))
+    # Converter o ângulo de radianos para graus
+    angle_degrees = math.degrees(angle_rad)
+    return abs(angle_degrees)
 
 def segment(rho, theta, comprimento=2000):
     '''Representação de um segmento de reta'''
