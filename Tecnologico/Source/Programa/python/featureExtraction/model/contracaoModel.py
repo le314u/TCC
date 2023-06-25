@@ -1,3 +1,6 @@
+def r2(numero):
+    return round(numero, 2)
+
 class ContracaoModel:
 
     def __init__(self, concentrica=None, excentrica=None, isometrica=None, quantidade_movimentos=None, angulo=None):
@@ -11,10 +14,10 @@ class ContracaoModel:
             self.angulo_perna_dir = None
             self.angulo_perna_esq = None
         else:
-            self.angulo_braco_dir = angulo.get("braco_dir")
-            self.angulo_braco_esq = angulo.get("braco_esq")
-            self.angulo_perna_dir = angulo.get("perna_dir")
-            self.angulo_perna_esq = angulo.get("perna_esq")
+            self.angulo_braco_dir = r2(angulo.get("braco_dir"))
+            self.angulo_braco_esq = r2(angulo.get("braco_esq"))
+            self.angulo_perna_dir = r2(angulo.get("perna_dir"))
+            self.angulo_perna_esq = r2(angulo.get("perna_esq"))
 
     
     def __str__(self):

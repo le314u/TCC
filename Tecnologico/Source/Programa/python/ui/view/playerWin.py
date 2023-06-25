@@ -44,7 +44,7 @@ class PlayerWin():
         self.resize()
         self.canvas = Label( self.window )
 
-        self.menuPlayer = MenuPlayerWin(self.controller, buttons, self.flags)
+        self.menuPlayer = MenuPlayerWin(self.conf, self.controller, buttons, self.flags)
 
         #Linka o Player e o ControllerPlayer para fecharem juntas
         player = self.window

@@ -6,18 +6,20 @@ import cv2
 import numpy as np 
 from tkinter import *
 from tkinter import filedialog
+import tkinter as tk
 import multiprocessing as mltp
 from PIL import ImageTk, Image
 from ui.model.buttonSketch import ButtonSketch
 from ui.controller.videoController import VideoController
 from util.flag import Flag
-
+from ui.view.input import Input
             
 class MenuPlayerWin():
     
-    def __init__(self, controller:VideoController , buttons:List[ButtonSketch] = None, flags:List[Flag]=[None]):
+    def __init__(self, configurations, controller:VideoController , buttons:List[ButtonSketch] = None, flags:List[Flag]=[None]):
         self.controller = controller
         self.flags = flags
+        self.conf_player = configurations
         self.conf = {
             "title":"Controlador",
             "scale":0.5,
@@ -41,11 +43,18 @@ class MenuPlayerWin():
         self.frameSlider.bind("<ButtonPress-1>", lambda e: self.slider_press())
         self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.slider_release())
 
+        #Cria o botao de velocidade
+        self.speed = Input(self.window, self.fx_speed, "Speed")
+        self.speed_input = self.speed.get_button()
+
         #Cria o botao Play/Pause e N botoes Switcher de flag
-        self.n_buttons = 0
+        self.n_buttons = 1
         self.switchers = []
         self.playButton =self._createButton("PLAY",self.alter)
         self.activeButton(self.playButton)
+
+        
+
         if not buttons  is None:
             for button in buttons:
                 name, fx, flag = button.get()
@@ -134,3 +143,13 @@ class MenuPlayerWin():
             self.controller.pause()
         else:
             self.controller.play()
+
+    def fx_speed(self,arg=None):
+        try:
+            val = self.speed_input.get()
+            if(float(val) > 0 ):
+                self.conf_player["velocidade"]=float(val)
+        except:
+            #valor float = "" vai dar problema
+            pass
+        

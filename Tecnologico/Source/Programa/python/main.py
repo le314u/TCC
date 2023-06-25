@@ -34,4 +34,10 @@ btns:List[ButtonSketch] = [
     ButtonSketch("Dados",dados_flag)
 ]
 
-MainWindow(btns=btns, preRender=pipe_render.exec)
+
+
+try:
+    MainWindow(btns=btns, preRender=pipe_render.exec)
+except Exception as e:
+    print(e)
+    exit()

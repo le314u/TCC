@@ -76,9 +76,6 @@ def preProcess(controller:VideoController, flag:Flag):
 
         pt1 = (0, pt1[1])
         angulo = angle_point(pt1,pt2)
-        print(pt1)
-        print(pt2)
-        print(angulo)
         for id in range(total):
             percent = round(100*(id/total))
             progress_bar(percent ,"Rotate frame")
@@ -101,9 +98,6 @@ def preProcess(controller:VideoController, flag:Flag):
     pt1,pt2 = barra.getPoints()
     pt1 = (0, pt1[1])
     angulo = angle_point(pt1,pt2)
-    print(pt1)
-    print(pt2)
-    print(angulo)
     process(controller)
     beep()
     #Apos o termino ativa a flag para desbloquear os buttons
