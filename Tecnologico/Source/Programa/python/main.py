@@ -11,21 +11,11 @@ from util.pipe import PipeLine
 #Cria as flags
 barra_flag = Flag("Barra")
 barra_flag.setFx( lambda frame, cel : renderBar(frame,cel.getLine() ) )
-
 edh_flag = Flag("EDH")
 edh_flag.setFx( lambda frame, cel : renderPose(frame,cel.getPose() ) )
-
 dados_flag = Flag("Dados")
 dados_flag.setFx( lambda frame, cel : renderTxt(frame,cel.getData() ) )
-
-
-#Cria um pipeLine de Renderização
-pipe_render = PipeLine()
-pipe_render.addFlag(edh_flag,1)
-pipe_render.addFlag(barra_flag,1)
-pipe_render.addFlag(dados_flag,1)
-
-
+flags = [barra_flag, edh_flag, dados_flag]
 
 #Cria os buttons
 btns:List[ButtonSketch] = [
@@ -34,10 +24,15 @@ btns:List[ButtonSketch] = [
     ButtonSketch("Dados",dados_flag)
 ]
 
+#Cria um pipeLine de Renderização
+pipe_render = PipeLine()
+pipe_render.addFlag(edh_flag,1)
+pipe_render.addFlag(barra_flag,1)
+pipe_render.addFlag(dados_flag,1)
 
 
 try:
-    MainWindow(btns=btns, preRender=pipe_render.exec)
+    MainWindow(btns=btns, flags=flags, preRender=pipe_render.exec)
 except Exception as e:
     print(e)
     exit()

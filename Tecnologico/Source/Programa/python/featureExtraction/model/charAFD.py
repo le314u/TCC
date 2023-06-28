@@ -14,13 +14,16 @@ class char:
 
     def process_mao_barra(self,meta):
         """Processa mao_barra apartir dos meta-dados do frame"""
-        #pega os dados pos_d=meta.braço_direito
-        #pega os dados pos_e=meta.braço_esquerdo
-        #pega posiBAr
+        #pega os dados pos_d=get_right_wrist()
+        #pega os dados pos_e=get_left_wrist()
         #define um valor de tolerancia
+        #pega pos_bar
         #checa se pos_d e pos_e esta proximo o suficiente de posiBar
         #altera o valor de self.mao_barra
 
+        #verifica o tamanho do membro: ombro ate punho
+        #Se diminuir significa uma anomalia e tem que ter uma tolerancia maior  em relação a barra
+        
         pass
 
     def process_concentrica(self,meta):

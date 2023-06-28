@@ -17,26 +17,30 @@ from util.flag import Flag
 class MainWindow():
     
     def __init__(self, btns = None, flags:List[Flag] = [None], preRender = lambda frame,cel:frame):
-
-        #Apos o pre processamento libera os buttons
         finished = Flag("Processed")
+        all_flags = [finished] + flags
+        initial_state = {
+          "frame":0,
+          "velocidade":1.0,
+          "flags":flags
+        }      
+        fy = lambda : self.player.setState(initial_state)
+        finished.setFx(lambda : (self.fix(), fy()))
+
         #inicia a UI
-        self.render(btns=btns, flags=[finished], preRender=preRender)
+        self.render(btns=btns, flags=all_flags, preRender=preRender)
         
     def render(self, btns , flags , preRender = lambda id,frame:frame):
         '''Inicia a parte grafica'''
 
-        self.path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/lazy_white.mp4" #getPath()
         #self.path = getPath()
+        self.path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/lazy_white.mp4" 
         self.controller = VideoController(path=self.path)
         self.player = PlayerWin(self.controller, btns, flags, preRender)
-        fy = lambda : self.player.setState()
-        finished = flags[0]            
-        finished.setFx(lambda : (self.fix(), fy()))
 
 
         #pre processamento ocorre em paralelo
-        thread_process = threading.Thread(target=preProcess, args=(self.controller, finished),daemon=True)
+        thread_process = threading.Thread(target=preProcess, args=(self.controller, flags),daemon=True)
         thread_process.start()
         #Persiste o Player
         self.player.run()

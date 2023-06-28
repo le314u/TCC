@@ -25,7 +25,7 @@ class Flag:
     def getState(self):
         return self.state
 
-    def name(self):
+    def getName(self):
         return self.name
 
     def run(self, *args):

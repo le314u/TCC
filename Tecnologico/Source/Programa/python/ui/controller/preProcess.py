@@ -49,11 +49,11 @@ def get_range_to_analyze(buffer:Buffer,index:int):
         start = index - variation
     return ( round(start),round(end) )
 
-
-def preProcess(controller:VideoController, flag:Flag):
-    total = controller.getTotalFrame()
+def preProcess(controller:VideoController, flags:List[Flag]):
     controller.setFrame(0)
-    angulo = 10
+    total = controller.getTotalFrame()
+    angulo = 0
+
     for i in range(2):
         #Pega a barra em todos os frames
         for id in range(total):
@@ -82,9 +82,11 @@ def preProcess(controller:VideoController, flag:Flag):
             frame = controller.getFrameId(id)
             new_frame = rotate(frame,angulo)
             controller.setNewFrame(id,new_frame)
-
-
-
+    #Ativa a flag da Barra
+    for flag in flags:
+        if flag.getName() == "Barra":
+            flag.activate()
+   
     #Extrai dados do frame
     for id in range(total):
         #printa a porcentagem ja feita 
@@ -93,19 +95,25 @@ def preProcess(controller:VideoController, flag:Flag):
         frame = controller.getFrameId(id)
         feature = process_frame(frame)
         controller.buffer.set_cell(id, feature)
-
+    #Ativa a flag EDH
+    for flag in flags:
+        if flag.getName() == "EDH":
+            flag.activate()
+    
     barra:LineModel = fix_barra_moda(controller.buffer)
     pt1,pt2 = barra.getPoints()
     pt1 = (0, pt1[1])
     angulo = angle_point(pt1,pt2)
     process(controller)
     beep()
+    #Ativa a flag Dados
+    for flag in flags:
+        if flag.name == "Dados":
+            flag.activate()
     #Apos o termino ativa a flag para desbloquear os buttons
-    flag.activate()
-    flag.run()
-
-
-
+    finished_flag = flags[0]
+    finished_flag.activate()
+    finished_flag.run()
 
 def indice_not_process(buffer:Buffer):
     '''Retorna os indices que nao foi possivel fazer a extração da imagem'''
@@ -296,3 +304,5 @@ def fix_pose(buffer:Buffer, index:int):
     data = buffer.get_cell(index).getData()
     feature = CelulaModel(line=line, pose=pose, data=data)
     buffer.set_cell(index, feature)
+
+#END

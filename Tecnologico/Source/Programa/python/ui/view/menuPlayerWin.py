@@ -53,8 +53,6 @@ class MenuPlayerWin():
         self.playButton =self._createButton("PLAY",self.alter)
         self.activeButton(self.playButton)
 
-        
-
         if not buttons  is None:
             for button in buttons:
                 name, fx, flag = button.get()
@@ -93,11 +91,22 @@ class MenuPlayerWin():
 
     def setState(self, state = None):
         '''Altera o estado dos buttons de acordo com o State'''
+        order_flag = {}
         switchers:List[Dict[Button, Flag]] = self.switchers
-        for switcher in switchers:
+        for i, switcher in enumerate(switchers):
             button = switcher["button"]
             flag = switcher["flag"]
-            self.activeButton(button)
+            order_flag[flag.getName()] = button
+
+        if "frame" in state:
+            self.controller.setFrame(state["frame"])
+        if "velocidade" in state:
+            self.conf_player["velocidade"] = state["velocidade"]
+        if "flags" in state:
+            for flag in state["flags"]:
+                if(flag.state):
+                    button = order_flag[flag.getName()]
+                    self.activeButton(button)
 
 
     def switchController(self, controller:VideoController):
