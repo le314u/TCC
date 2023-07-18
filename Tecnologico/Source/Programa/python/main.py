@@ -1,9 +1,12 @@
+import traceback
 from typing import List
 from controller.render.pipe             import PipeLine
 from controller.render.renderBar        import renderBar
 from controller.render.renderPose       import renderPose
 from controller.render.renderTxt        import renderTxt
 from controller.util.flag               import Flag
+from controller.util.coloredMsg         import msg
+from controller.util.progress_bar       import progress_bar
 from view.ui.components.buttonSketch    import ButtonSketch
 from view.ui.mainWindow                 import MainWindow
 
@@ -35,5 +38,7 @@ pipe_render.addFlag(dados_flag,1)
 try:
     MainWindow(btns=btns, flags=flags, preRender=pipe_render.exec)
 except Exception as e:
-    print(e)
+    traceback_msg = traceback.format_exc()
+    print(f"Erro: {e}")
+    print(f"Traceback: {traceback_msg}")
     exit()

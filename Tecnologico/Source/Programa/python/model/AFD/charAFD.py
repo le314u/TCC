@@ -23,7 +23,7 @@ class charAFD:
         """Processa mao_barra apartir dos meta-dados do frame"""
 
         #define um valor de tolerancia
-        tolerancia = 100
+        tolerancia = 150
         pose = cel_meta.getPose()
         pos_d=pose.get_right_wrist()
         pos_e=pose.get_left_wrist()
@@ -35,6 +35,7 @@ class charAFD:
             self.mao_barra = 1
         else:
             self.mao_barra = 0
+            
         #verifica o tamanho do membro: ombro ate punho
         #Se diminuir significa uma anomalia e tem que ter uma tolerancia maior  em relação a barra
         pass

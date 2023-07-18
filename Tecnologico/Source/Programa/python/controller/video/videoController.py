@@ -33,7 +33,7 @@ class VideoController():
         self.buffer = Buffer(self.conf['fps'], [{}] * self.getTotalFrame() )
         self._video2frames()
         #Rebobina o video
-        self.setFrame(0)
+        self.gotoFrame(0)
         
 
     def _loadVideo(self, video):
@@ -98,11 +98,12 @@ class VideoController():
         _, frame = self.conf['video'].read()
         self.conf['frame']  = self.process_frame(frame)
 
-    def setFrame(self, id_frame):
+    def gotoFrame(self, id_frame):
+        '''Vai para o frame idFrame'''
         self.conf["id_frame"] = id_frame
         self.conf["frame"] = self.getFrameId(id_frame)
 
-    def setNewFrame(self, id_frame, frame):
+    def setFrame(self, id_frame, frame):
         '''Define um frame especifico no ID'''
         id_next_frame = id_frame  if id_frame < self.getTotalFrame() else self.getTotalFrame()
         new_frame = self.process_frame(frame)
@@ -127,7 +128,7 @@ class VideoController():
 
     def restart(self):
         '''Move o video para o frame 1'''
-        self.setFrame(1)
+        self.gotoFrame(1)
     
     def play(self):
         '''Define que o video esta em execução'''

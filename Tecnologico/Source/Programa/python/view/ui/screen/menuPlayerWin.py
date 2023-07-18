@@ -91,7 +91,7 @@ class MenuPlayerWin():
             order_flag[flag.getName()] = button
 
         if "frame" in state:
-            self.controller.setFrame(state["frame"])
+            self.controller.gotoFrame(state["frame"])
         if "velocidade" in state:
             self.conf_player["velocidade"] = state["velocidade"]
         if "flags" in state:
@@ -119,7 +119,7 @@ class MenuPlayerWin():
     def slider2Frame(self):
         '''Atualiza o controller de acordo com a barra'''
         val_slider = self.frameSlider.get()
-        self.controller.setFrame(val_slider)
+        self.controller.gotoFrame(val_slider)
     
     def frame2Slider(self):
         '''Atualiza a barra de acordo com o controller'''

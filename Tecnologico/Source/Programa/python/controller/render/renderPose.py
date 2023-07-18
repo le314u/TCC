@@ -19,7 +19,7 @@ def renderPose(image, pose:PoseModel):
 
 def _draw_segment(image,pose:PoseModel,color:Tuple[int,int,int],segmento:Segmento):
     '''Desenha o Segmento na imagem a partir dos pontos de referencia'''
-
+    
     if segmento is None:
         print("Erro na obtenção do Segmento")
         return image
@@ -28,19 +28,24 @@ def _draw_segment(image,pose:PoseModel,color:Tuple[int,int,int],segmento:Segment
     img = image.copy()
     segmentos = segmento.value
     cycle = (segmento == Segmento.CORPO)
+    thickness = 3
+    a = 1.5
 
     # Desenha uma linha entre cada par de poses consecutivas
     for i in range( len(segmentos)-1 ):
-        points = pose.getPoint()
+        points = pose.getPoints()
         start = points[segmentos[i]]
         end = points[segmentos[i+1]]
-        img = cv2.line(img, start, end, color)
+        img = cv2.line(img, start, end, color,thickness)
+        
+        color = (color[0]/a,color[1]/a,color[2]/a)
 
     # Desenha uma linha entre a última e a primeira pose, caso cycle=True
     if cycle:
-        points = pose.getPoint()
+        points = pose.getPoints()
         points[segmentos[i]]
         start, end = points[segmentos[-1]],points[segmentos[0]]
-        img =  cv2.line(img, start, end, color)
+        img =  cv2.line(img, start, end, color,thickness)
+        color = (color[0]/a,color[1]/a,color[2]/a)
     
     return img

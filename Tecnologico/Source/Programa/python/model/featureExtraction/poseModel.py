@@ -64,7 +64,7 @@ class PoseModel():
     def __str__(self):
         return str(self.ponto)
         
-    def getPoint(self):
+    def getPoints(self):
         return self.ponto
 
     def get_left_ankle(self):

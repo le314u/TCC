@@ -47,9 +47,9 @@ def fix_barra(buffer:Buffer, index:int):
     getMean = lambda i,j: round(DeltaCalculator.get_mean(array, extract(i,j)))
     x1,y1,x2,y2 = getMean(0,0), getMean(0,1), getMean(1,0), getMean(1,1)
     line = LineModel(x1,y1,x2,y2)
-    pose = buffer.get_cell(index).getPose()
-    data = buffer.get_cell(index).getData()
-    cel = CelulaModel(line=line, pose=pose, data=data)
+    celData = buffer.get_cell(index).get()
+    celData["line"]=line
+    cel = CelulaModel(**celData)
     buffer.set_cell(index, cel)
 
 def fix_barra_moda(buffer:Buffer):
@@ -62,9 +62,9 @@ def fix_barra_moda(buffer:Buffer):
 
     for index in range(end):
         line = LineModel(x1,y1,x2,y2)
-        pose = buffer.get_cell(index).getPose()
-        data = buffer.get_cell(index).getData()
-        cel = CelulaModel(line=line, pose=pose, data=data)
+        celData = buffer.get_cell(index).get()
+        celData["line"]=line
+        cel = CelulaModel(**celData)
         buffer.set_cell(index, cel)
 
 def fix_pose(buffer:Buffer, index:int):
@@ -82,9 +82,7 @@ def fix_pose(buffer:Buffer, index:int):
     for part in parts:
         points.append( point(part) )
      
-    cel = buffer.get_cell(index)
-    line = cel.getLine()
-    pose = PoseModel(*points)
-    data = buffer.get_cell(index).getData()
-    feature = CelulaModel(line=line, pose=pose, data=data)
-    buffer.set_cell(index, feature)
+    celData = buffer.get_cell(index).get()
+    celData["pose"]=PoseModel(*points)
+    cel = CelulaModel(**celData)
+    buffer.set_cell(index, cel)

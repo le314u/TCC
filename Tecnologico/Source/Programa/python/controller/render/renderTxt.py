@@ -2,9 +2,9 @@
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
-from model.featureExtraction.contracaoModel import ContracaoModel
+from model.featureExtraction.dataModel import DataModel
 
-def renderTxt(image, data:ContracaoModel):
+def renderTxt(image, data:DataModel):
     '''Desenha os segmentos detectados'''
     data = str(data)
     

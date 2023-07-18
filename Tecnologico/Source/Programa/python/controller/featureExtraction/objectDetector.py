@@ -4,8 +4,9 @@ import numpy as np
 import mediapipe as mp
 from model.featureExtraction.poseModel import PoseModel,Segmento
 from model.featureExtraction.lineModel import LineModel 
-from controller.featureExtraction.geometria import angle_point,segment
+from model.video.celulaModel import CelulaModel
 
+from controller.featureExtraction.geometria import angle_point,segment
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
