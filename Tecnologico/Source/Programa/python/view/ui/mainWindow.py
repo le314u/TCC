@@ -1,7 +1,6 @@
 import threading
 from tkinter                                            import *
 from typing                                             import List
-from controller.featureExtraction.process.fix           import indice_not_process,fix_barra,fix_barra_moda,fix_pose
 from controller.preProcess                              import preProcess
 from view.ui.screen.getPath                             import getPath
 from view.ui.screen.playerWin                           import PlayerWin
@@ -18,8 +17,8 @@ class MainWindow():
           "velocidade":1.0,
           "flags":flags
         }      
-        fy = lambda : self.player.setState(initial_state)
-        finished.setFx(lambda : (self.fix(), fy()))
+        fx = lambda : self.player.setState(initial_state)
+        finished.setFx(lambda : (fx())) 
 
         #inicia a UI
         self.render(btns=btns, flags=all_flags, preRender=preRender)
@@ -37,11 +36,3 @@ class MainWindow():
         thread_process.start()
         #Persiste o Player
         self.player.run()
-
-    def fix(self):
-        not_allocated = indice_not_process(self.controller.buffer)
-        for i in not_allocated['line']:
-            fix_barra(self.controller.buffer, i)
-        for i in not_allocated['pose']:
-            fix_pose(self.controller.buffer, i)
-        fix_barra_moda(self.controller.buffer)

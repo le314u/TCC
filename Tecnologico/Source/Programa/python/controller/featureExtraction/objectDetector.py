@@ -2,11 +2,15 @@
 import cv2
 import numpy as np
 import mediapipe as mp
-from model.featureExtraction.poseModel import PoseModel,Segmento
-from model.featureExtraction.lineModel import LineModel 
-from model.video.celulaModel import CelulaModel
-
 from controller.featureExtraction.geometria import angle_point,segment
+from controller.processImg.debug import save_img, display_img, display_imgs
+from controller.processImg.filter import limiarizacao, pixelizacao, imagem_cinza, suavizacao, rotacao
+from controller.processImg.mask import Mask
+from model.featureExtraction.lineModel import LineModel 
+from model.featureExtraction.poseModel import PoseModel,Segmento
+from model.video.celulaModel import CelulaModel
+from controller.processImg.others import count_white_pixels, count_discontinuities
+
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
@@ -26,6 +30,9 @@ pose_midia_pipe = mp_pose.Pose(
 		min_detection_confidence=0.5,
 		min_tracking_confidence=0.5
 	)
+
+
+MASK = Mask()
 
 class PosePoints():
     #Variavel de classe
@@ -128,3 +135,60 @@ def detectBar(frame) -> LineModel:
     x1,y1 = points[0]
     x2,y2 = points[1]
     return LineModel(x1,y1,x2,y2)
+
+def verify_maoBarra(cel:CelulaModel):
+    size = 10*3    # Tamanho do kernel de Blur e Pixelização
+    limiar = 100    # Definir um limiar para identificar a descontinuidade
+
+    #Start
+    frame = cel.getFrame()
+    barra = cel.getLine()
+    mask_barra = MASK.createLineMask(frame,barra.getStart(),barra.getEnd(),round(size/2))
+    mask_frame = MASK.getMask()
+    newFrame = MASK.putMask(frame, mask_frame)
+    
+    # Converter a imagem para o espaço de cores HSV
+    imagem_hsv = cv2.cvtColor(newFrame, cv2.COLOR_BGR2HSV)
+
+    #Definir os intervalos de cor da pele
+    lower_skin = np.array([0, 25, 0], dtype=np.uint8)
+    upper_skin = np.array([20, 255, 255], dtype=np.uint8)
+
+    # Aplicar uma máscara para obter apenas a parte da cor da imagem
+    mascara = cv2.inRange(imagem_hsv, lower_skin, upper_skin)
+    canal_x = cv2.bitwise_and(frame, frame, mask=mascara)
+
+    # Converter a imagem apenas para P&B
+    gray = imagem_cinza(canal_x)
+    limited = limiarizacao(gray,100)
+    # Aplcia um desfoque
+    blur = suavizacao(limited,size)
+    limited = limiarizacao(blur,100)
+    # Aplica a pixelização
+    pixel = pixelizacao(limited,size)
+    #Aplica a Mascara da area de interesse
+    only_hand = cv2.bitwise_and(mask_barra, pixel)
+
+    # Aplicar o operador de Sobel
+    gradient_x = cv2.Sobel(only_hand, cv2.CV_64F, 1, 0, ksize=3)
+    gradient_y = cv2.Sobel(only_hand, cv2.CV_64F, 0, 1, ksize=3)
+
+    # Calcular o módulo do gradiente
+    gradient = np.sqrt(gradient_x ** 2 + gradient_y ** 2)
+    
+    # Verificar a descontinuidade em cada pixel
+    descontinuidade = gradient > limiar
+
+    # Aplicar um limiar para obter uma imagem binária
+    gradient_binary = np.uint8(descontinuidade)
+
+    # Encontrar contornos na imagem binária
+    contornos, hier = cv2.findContours(gradient_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Verificar se houve ou não descontinuidade na imagem ou seja se a mão esta ou não na barra
+    # Se houve descontinuidade do preto logo algo estava na barra 
+    # So valida se encontrar 2 contornos ou mais ou seja as 2 mãos
+  
+    
+    return len(contornos) >=2
+

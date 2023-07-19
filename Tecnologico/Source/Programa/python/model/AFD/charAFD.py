@@ -1,5 +1,6 @@
 from model.video.celulaModel import CelulaModel
 from controller.featureExtraction.geometria import distance_point_line
+from controller.featureExtraction.objectDetector import verify_maoBarra
 
 class charAFD:
     def __init__(self, cel_meta:CelulaModel = None, mao_barra=None ,concentrica=None ,excentrica=None ,extensao_cotovelo=None ,ultrapassar_barra=None ,movimento_quadrilPerna=None ) -> None:
@@ -21,24 +22,8 @@ class charAFD:
 
     def process_mao_barra(self, cel_meta:CelulaModel):
         """Processa mao_barra apartir dos meta-dados do frame"""
-
-        #define um valor de tolerancia
-        tolerancia = 150
-        pose = cel_meta.getPose()
-        pos_d=pose.get_right_wrist()
-        pos_e=pose.get_left_wrist()
-        barra = cel_meta.getLine()
-        dis_d = distance_point_line(pos_d,barra)
-        dis_e = distance_point_line(pos_e,barra)
-        #checa se pos_d e pos_e esta proximo o suficiente de posiBar
-        if( dis_d <= tolerancia and dis_e <= tolerancia):
-            self.mao_barra = 1
-        else:
-            self.mao_barra = 0
-            
-        #verifica o tamanho do membro: ombro ate punho
-        #Se diminuir significa uma anomalia e tem que ter uma tolerancia maior  em relação a barra
-        pass
+        self.mao_barra = verify_maoBarra(cel_meta)
+        
 
     def process_concentrica(self,meta):
         """Processa concentrica apartir dos meta-dados do frame"""

@@ -1,14 +1,16 @@
+from datetime import timedelta
+
 def r2(numero):
     return round(numero, 2)
 
 class DataModel:
 
-    def __init__(self, concentrica=None, excentrica=None, isometrica=None, quantidade_movimentos=None, meta=None, angulo=None,):
-        self.concentrica = concentrica
-        self.excentrica = excentrica
-        self.isometrica = isometrica
-        self.quantidade_movimentos = quantidade_movimentos
-        self.meta = meta
+    def __init__(self, concentrica=None, excentrica=None, isometrica=None, quantidade_movimentos=None, angulo=None, meta=None):
+        check = lambda variavel : timedelta(minutes=0,seconds=0,milliseconds=0) if variavel is None else variavel
+        self.concentrica = check(concentrica)
+        self.excentrica = check(excentrica)
+        self.isometrica = check(isometrica)
+        self.quantidade_movimentos = 0 if quantidade_movimentos is None else quantidade_movimentos
         if angulo is None:
             self.angulo_braco_dir = None
             self.angulo_braco_esq = None
@@ -19,26 +21,28 @@ class DataModel:
             self.angulo_braco_esq = r2(angulo.get("braco_esq"))
             self.angulo_perna_dir = r2(angulo.get("perna_dir"))
             self.angulo_perna_esq = r2(angulo.get("perna_esq"))
+        self.meta = {} if meta is None else meta
 
-    
     def __str__(self):
-        return str(self.formatStr())
+        return str(self.__formatStr())
     
-    def string(self):
-        return str(
+    def __formatStr(self):
+        time = lambda var: f"{int(var.total_seconds() // 60)} m {int(var.total_seconds() % 60)} s"
+
+        string = str(
             f"execucoes:{self.quantidade_movimentos}\n"
-            f"concentrica:{self.concentrica}\n"
-            f"excentrica:{self.excentrica}\n"
-            f"isometrica:{self.isometrica}\n"
+            f"concentrica:{time(self.concentrica)}\n"
+            f"excentrica:{time(self.excentrica)}\n"
+            f"isometrica:{time(self.isometrica)}\n"
             f"movimentos:{self.quantidade_movimentos}\n"
             f"angulo braco_dir:{self.angulo_braco_dir}\n"
             f"angulo braco_esq:{self.angulo_braco_esq}\n"
             f"angulo perna_dir:{self.angulo_perna_dir}\n"
             f"angulo perna_esq:{self.angulo_perna_esq}\n"
-        )+str(self.meta)
-    
-    def formatStr(self):
-        string = self.string()
+        )+str(
+            self.meta
+        )
+
         pares = string.split("\n")
 
         maior_string = ""
@@ -62,9 +66,17 @@ class DataModel:
             except:
                 break;
 
-        print(saida)
         return saida
+        
 
+    def get(self, key):
+        if key in self.meta.keys() :
+            return self.meta[key]
+        else:
+            return None
+
+    def set(self,key,data):
+        self.meta[key] = data
 
     def getConcentrica(self):
         return self.concentrica
@@ -104,6 +116,12 @@ class DataModel:
 
     def setQtd(self, quantidade_movimentos):
         self.quantidade_movimentos = quantidade_movimentos
+
+    def setAngulo(self,angulo_braco_dir=None ,angulo_braco_esq=None ,angulo_perna_dir=None ,angulo_perna_esq=None ):
+        self.angulo_braco_dir = self.angulo_braco_dir if angulo_braco_dir is None else angulo_braco_dir
+        self.angulo_braco_esq = self.angulo_braco_esq if angulo_braco_esq is None else angulo_braco_esq
+        self.angulo_perna_dir = self.angulo_perna_dir if angulo_perna_dir is None else angulo_perna_dir
+        self.angulo_perna_esq = self.angulo_perna_esq if angulo_perna_esq is None else angulo_perna_esq
 
     def setAnguloBracoDir(self, angulo):
         self.angulo_braco_dir = angulo

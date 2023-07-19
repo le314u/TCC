@@ -33,4 +33,15 @@ class Flag:
             return self.function(*args)
         else:
             return self.function()    
-    
+        
+def enable_flag(flags:Flag, flag_name):
+    '''Passa por uma lista de Flags e ativa a flag que der match com name'''
+    for flag in flags:
+        if flag.getName() == flag_name:
+            flag.activate()
+
+def disable_flag(flags:Flag, flag_name):
+    '''Passa por uma lista de Flags e desativa a flag que der match com name'''
+    for flag in flags:
+        if flag.getName() == flag_name:
+            flag.deactivate()
