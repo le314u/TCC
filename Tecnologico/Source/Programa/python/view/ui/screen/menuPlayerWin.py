@@ -1,16 +1,17 @@
 import numpy as np 
+import re
 from typing import Callable, Dict, List
 from tkinter import *
-from view.ui.components.buttonSketch import ButtonSketch
-from controller.video.videoController import VideoController
 from controller.util.flag import Flag
+from controller.video.videoController import VideoController
+from view.ui.components.buttonSketch import ButtonSketch
 from view.ui.components.input import Input
             
 class MenuPlayerWin():
     
     def __init__(self, configurations, controller:VideoController , buttons:List[ButtonSketch] = None, flags:List[Flag]=[None]):
-        self.controller = controller
-        self.flags = flags
+        self.controller:VideoController = controller
+        self.flags:List[Flag] = flags
         self.conf_player = configurations
         self.conf = {
             "title":"Controlador",
@@ -36,11 +37,17 @@ class MenuPlayerWin():
         self.frameSlider.bind("<ButtonRelease-1>", lambda e: self.slider_release())
 
         #Cria o botao de velocidade
-        self.speed = Input(self.window, self.fx_speed, "Speed")
+        self.speed = Input(self.window, self.fx_speed, "Speed", "1.0", size=4)
         self.speed_input = self.speed.get_button()
+        self.speed.setPlaceButton(0)
+        
+        #Cria o botao de frame
+        self.frame = Input(self.window, self.fx_frame, "Frame", "1")
+        self.frame_input = self.frame.get_button()
+        self.frame.setPlaceButton(1)
 
         #Cria o botao Play/Pause e N botoes Switcher de flag
-        self.n_buttons = 1
+        self.n_buttons = 2 # Ja possui 2 buttons
         self.switchers = []
         self.playButton =self._createButton("PLAY",self.alter)
         self.activeButton(self.playButton)
@@ -58,20 +65,20 @@ class MenuPlayerWin():
         
     def _createButton(self, name, fx = lambda : None):
         '''Função interna usado para criar um button na tela'''
-        WIDTH, BORDER, INTER_BORDER = 50, 50, 10
-        i = self.n_buttons
-        x = BORDER+(WIDTH*i)+(INTER_BORDER*i)
-        
-        #Cria o Button
         newButton = Button(self.window, text = name)
-        newButton.place(x=x, y=0, width=WIDTH)
         newButton.bind("<ButtonPress-1>", lambda e: fx())
+        self.placeButton(newButton,self.n_buttons)
         self.desactiveButton(newButton)
-        #Atualiza o indice :
-        self.n_buttons = self.n_buttons + 1
-
+        self.n_buttons += 1
         return newButton
-
+    
+    def placeButton(self, button, indice = 0):
+        '''Função interna usado para criar um button na tela'''
+        WIDTH, BORDER, INTER_BORDER = 50, 50, 10
+        x = BORDER+(WIDTH*indice)+(INTER_BORDER*indice)
+        button.place(x=x, y=0, width=WIDTH)
+        return button
+    
 
     def activeButton(self, btn:Button):
         '''Ativa um button na tela'''
@@ -104,24 +111,24 @@ class MenuPlayerWin():
     def switchController(self, controller:VideoController):
         '''Altera o controller associado a tela'''
         self.controller = controller
-        self.slider2Frame()
+        self.update_controller_based_slider()
         old_value = self.frameSlider.get()
         self.frameSlider.config(from_=0, to=self.controller.getTotalFrame() - 1)
         self.frameSlider.set(old_value)        
        
-    def attSlider(self):
+    def attFrame(self):
         '''Atualiza o player de acordo com o controlador de midia'''
         if(self.controller.isRunning()):
-            self.frame2Slider()
+            self.update_slider()
         else:
-            self.slider2Frame()
+            self.update_controller_based_slider()
 
-    def slider2Frame(self):
+    def update_controller_based_slider(self):
         '''Atualiza o controller de acordo com a barra'''
         val_slider = self.frameSlider.get()
         self.controller.gotoFrame(val_slider)
     
-    def frame2Slider(self):
+    def update_slider(self):
         '''Atualiza a barra de acordo com o controller'''
         id_frame = self.controller.getIdFrame()
         self.frameSlider.set(id_frame)
@@ -150,6 +157,24 @@ class MenuPlayerWin():
             val = self.speed_input.get()
             if(float(val) > 0 ):
                 self.conf_player["velocidade"]=float(val)
+        except:
+            #valor float = "" vai dar problema
+            pass
+    
+    def fx_frame(self,arg=None):
+        try:
+            total = self.controller.getTotalFrame()
+            val = self.frame_input.get()
+            lint_val = val.split(".")[0]
+            num_val = int(lint_val)
+            fixed_value = min( max(0,num_val),total)
+            #Altera Texto
+            self.frame.switchText(fixed_value)
+            #Altera o Frame
+            self.controller.gotoFrame(fixed_value)
+
+            #BUG
+            self.update_slider()
         except:
             #valor float = "" vai dar problema
             pass

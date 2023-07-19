@@ -160,12 +160,14 @@ def verify_maoBarra(cel:CelulaModel):
 
     # Converter a imagem apenas para P&B
     gray = imagem_cinza(canal_x)
-    limited = limiarizacao(gray,100)
+    limited = limiarizacao(gray,limiar)
     # Aplcia um desfoque
     blur = suavizacao(limited,size)
-    limited = limiarizacao(blur,100)
-    # Aplica a pixelização
+    limited = limiarizacao(blur,limiar)
+
+    #Aplica a pixelização
     pixel = pixelizacao(limited,size)
+
     #Aplica a Mascara da area de interesse
     only_hand = cv2.bitwise_and(mask_barra, pixel)
 
@@ -180,10 +182,21 @@ def verify_maoBarra(cel:CelulaModel):
     descontinuidade = gradient > limiar
 
     # Aplicar um limiar para obter uma imagem binária
-    gradient_binary = np.uint8(descontinuidade)
+    gradient_binary = np.uint8(only_hand)
+    limited = limiarizacao(gradient_binary,limiar)
 
     # Encontrar contornos na imagem binária
-    contornos, hier = cv2.findContours(gradient_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contornos, hier = cv2.findContours(limited, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # if(cel.getData().get("id")==131):
+    #     print(len(contornos))
+    #     display_img(limited )
+
+
+    if(len(contornos) != 2):
+        print(f"   {cel.getData().get('id')} {len(contornos)}")
+        display_img(limited )
+
 
     # Verificar se houve ou não descontinuidade na imagem ou seja se a mão esta ou não na barra
     # Se houve descontinuidade do preto logo algo estava na barra 

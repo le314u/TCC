@@ -85,7 +85,7 @@ class PlayerWin():
     def play(self):
         '''Executa o video frame a frame'''
         try:
-            self.menuPlayer.attSlider()
+            self.menuPlayer.attFrame()
             if self.controller.isRunning():
                 self.controller.next()
             newFrame = self.preRender(self.controller)

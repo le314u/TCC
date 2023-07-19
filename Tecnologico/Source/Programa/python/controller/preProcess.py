@@ -63,8 +63,8 @@ def preProcess(controller:VideoController, flags:List[Flag]):
         beep()
 
 
-        check(controller,check_AFD,"char AFD")
-        msg("\r"+"Transpilação alfabeto AFD")
+        # check(controller,check_AFD,"char AFD")
+        # msg("\r"+"Transpilação alfabeto AFD")
         
 
         enable_flag(flags,"Dados")
@@ -248,7 +248,6 @@ def check_edh(cel:CelulaModel):
 
 def check_AFD(cel:CelulaModel):
     m = charAFD(cel_meta=cel)
-    print(f" {cel.getData().get('id')} {m.getChar()}")
 
 def check_data(cel: CelulaModel):
     pose: PoseModel = cel.getPose()  # Obtém o objeto de pose da célula
