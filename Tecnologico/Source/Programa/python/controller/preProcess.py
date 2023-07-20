@@ -5,7 +5,8 @@ import traceback
 from typing import List
 from controller.featureExtraction.deltaCalculator import DeltaCalculator
 from controller.featureExtraction.geometria import angle_line, angle_point, intercept, segment, inclinacao_reta, rotate_segment
-from controller.featureExtraction.objectDetector import PosePoints, detectBar
+from controller.featureExtraction.objectDetector import PosePoints,detectBar,verify_maoBarra,verify_extensaoCotovelo
+from controller.processImg.debug import display_img,resize
 from controller.processImg.filter import limiarizacao, pixelizacao, imagem_cinza, suavizacao, rotacao
 from controller.processImg.mask import Mask
 from controller.util.beep import beep
@@ -20,7 +21,6 @@ from model.featureExtraction.lineModel import LineModel
 from model.featureExtraction.poseModel import PoseModel, Segmento
 from model.video.celulaModel import CelulaModel
 
-
 MASK = Mask()
 
 
@@ -32,7 +32,7 @@ def preProcess(controller:VideoController, flags:List[Flag]):
         enable_flag(flags,"Dados")
 
         #Detecção da Barra
-        check(controller,check_barra,"get Barra")
+        check(controller,verify_barra,"get Barra")
         msg("\r"+"detecção da Barra")
 
         #Faz inferencia quando não consegue detectar a barra
@@ -44,31 +44,36 @@ def preProcess(controller:VideoController, flags:List[Flag]):
         tendency_barra_moda(controller.buffer)
         msg("\r"+"Predominancia da Barra")
 
-        # #Rotaciona o frame de acordo com a Barra
-        # check(controller,check_inclination,"rotaciona")
-        # att_frames(controller)
-        # msg("\r"+"Rotação")
+        #Rotaciona o frame de acordo com a Barra
+        check(controller,verify_inclination,"rotaciona")
+        att_frames(controller)
+        msg("\r"+"Rotação")
 
-        # enable_flag(flags,"Barra")
+        enable_flag(flags,"Barra")
 
 
         # Estimativa de pose Humana
-        # check(controller,check_edh,"Estimativa de pose")
-        # msg("\r"+"Pose")
-        # enable_flag(flags,"EDH")    
+        check(controller,verify_eph,"Estimativa de pose")
+        msg("\r"+"Pose")
+        enable_flag(flags,"EPH")    
+
+        # Dados
+        check(controller,verify_data,"meta Dados")
+        # Meta Dado para Transpilação do Alfabeto
+        check(controller,verify_mao_barra,"mão na barra")
+        # Meta Dado para Transpilação do Alfabeto
+        check(controller,verify_meta_extensao,"extensao cotovelo")
 
         # Transpilação Alfabeto AFD
-        check(controller,check_AFD,"char AFD")
+        check(controller,verify_AFD,"char AFD")
         msg("\r"+"Transpilação alfabeto AFD")
 
-        # # Dados
-        # check(controller,check_data,"meta Dados")
-        # msg("\r"+"meta data and display data")
+        
 
 
 
-        # beep()
-        # enable_flag(flags,"Processed")
+        beep()
+        enable_flag(flags,"Processed")
         
 
 def indice_not_process(buffer:Buffer):
@@ -210,7 +215,7 @@ def check(controller:VideoController,verify_fx:callable, name:str):
         cel:CelulaModel = controller.buffer.get_cell(id)
         verify_fx(cel)
 
-def check_barra(cel:CelulaModel):
+def verify_barra(cel:CelulaModel):
     '''Para cada frame Extrai a barra'''
     frame = MASK.putMask(cel.getFrame(), MASK.getMask())
     try:
@@ -219,7 +224,7 @@ def check_barra(cel:CelulaModel):
         barra = None
     cel.setLine(barra)
 
-def check_inclination(cel:CelulaModel):
+def verify_inclination(cel:CelulaModel):
     '''Apartir da inclinação da barra rotaciona o frame'''
 
     #Calcula a inclinação
@@ -240,16 +245,14 @@ def check_inclination(cel:CelulaModel):
     newBarra:LineModel = LineModel(*p1,*p2)
     cel.setLine(newBarra)
 
-def check_edh(cel:CelulaModel):
+def verify_eph(cel:CelulaModel):
+    '''Para cada frame Extrai a pose EPH - Estimativa de pose Humana'''
     frame = cel.getFrame()
     posePoints:PosePoints = PosePoints(frame)
     pose:PoseModel = posePoints.getPose()   
     cel.setPose(pose)
 
-def check_AFD(cel:CelulaModel):
-    m = charAFD(cel_meta=cel)
-
-def check_data(cel: CelulaModel):
+def verify_data(cel: CelulaModel):
     pose: PoseModel = cel.getPose()  # Obtém o objeto de pose da célula
 
     # Obtém as linhas dos segmentos do corpo (braços e pernas) da pose
@@ -269,5 +272,54 @@ def check_data(cel: CelulaModel):
     # Cria um objeto DataModel com os ângulos e outras informações
     data = cel.getData()
     data.setAngulo(**struct_angulo)
+
+def verify_mao_barra(cel:CelulaModel):
+    '''Para cada frame verifica se a mão esta encostada na barra'''
+    mao_barra = verify_maoBarra(cel)
+    cel.getData().set("mao_barra",mao_barra)
+
+def verify_meta_extensao(cel: CelulaModel):
+    '''Verifica o menor ponto que o peito atinge quando esta quando a mao na barra'''
+    
+    #So analisa caso a mão esteja na barra
+    mao_barra = cel.getData().get("mao_barra")
+    if(not mao_barra):
+        return None
+    
+    #Alias
+    x,y = (0,1)
+
+    #Data Classe
+    menor_ombro_esq = CelulaModel.getAggregate("menor_ombro_esq")
+    menor_ombro_dir = CelulaModel.getAggregate("menor_ombro_dir")
+
+    #Data da celula
+    ombro_esq = cel.getPose().get_left_elbow()
+    ombro_dir = cel.getPose().get_right_elbow()
+
+    #Inicializando a classe
+    if(menor_ombro_esq is None):
+        CelulaModel.setAggregate("menor_ombro_esq",ombro_esq)
+    if(menor_ombro_dir is None):
+        CelulaModel.setAggregate("menor_ombro_dir",ombro_dir)
+    if(menor_ombro_esq is None and menor_ombro_dir is None ):
+        return
+    
+    #OBS: esta '>' pq  o eixo 'Y' em openCv é invertido
+    if ombro_esq[y] > menor_ombro_esq[y]:
+        CelulaModel.setAggregate("menor_ombro_esq",ombro_esq)
+    if ombro_dir[y] > menor_ombro_dir[y]:
+        CelulaModel.setAggregate("menor_ombro_dir",ombro_dir)
+
+def verify_extensao_cotovelo(cel: CelulaModel):
+    '''Para cada frame verifica se o cotovelo esta extendido'''
+    extensao_cotovelo = verify_extensaoCotovelo(cel)
+    cel.getData().set("extensao_cotovelo",extensao_cotovelo)
+
+def verify_AFD(cel:CelulaModel):
+    '''Transforma o frame em uma letra do alfabeto para o AFD'''
+    char_AFD = charAFD(cel_meta=cel)
+    cel.getData().set("AFD",char_AFD)
+
 
 #END

@@ -160,7 +160,6 @@ def verify_maoBarra(cel:CelulaModel):
 
     newFrame = MASK.putMask(frame, mask_frame)
    
-   
     # Converter a imagem para o espaço de cores HSV
     imagem_hsv = cv2.cvtColor(newFrame, cv2.COLOR_BGR2HSV)
 
@@ -209,6 +208,34 @@ def verify_maoBarra(cel:CelulaModel):
     # Se houve descontinuidade do preto logo algo estava na barra 
     # So valida se encontrar 2 contornos ou mais ou seja as 2 mãos
   
-    
-    return len(contornos) >= 2
+    ret = len(contornos) >= 2
+    return ret
 
+
+def verify_extensaoCotovelo(cel: CelulaModel):
+    '''Verifica quando o cotovelo esta esticado'''
+    
+    #Alias
+    x,y = (0,1)
+    limite=100
+
+    #So analisa a extensão caso a mão esteja na barra
+    mao_barra = cel.getData().get("mao_barra")
+    if( not mao_barra):
+        return False
+    
+    #Pego o valor minimo do peito quando a mão esta na barra necessita de 'verify_meta_extensao'
+    menor_ombro_esq = CelulaModel.getAggregate("menor_ombro_esq")
+    menor_ombro_dir = CelulaModel.getAggregate("menor_ombro_dir")
+
+    #Pega o valor atual do peito na celula
+    ombro_esq = cel.getPose().get_left_elbow()
+    ombro_dir = cel.getPose().get_right_elbow()
+
+    check = None
+    if (abs(ombro_esq[y] - menor_ombro_esq[y]) < limite) or (abs(ombro_dir[y] - menor_ombro_dir[y]) < limite):
+        check=True
+    else:
+        check=False
+
+    return check

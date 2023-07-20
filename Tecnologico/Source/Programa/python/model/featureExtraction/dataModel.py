@@ -24,9 +24,6 @@ class DataModel:
         self.meta = {} if meta is None else meta
 
     def __str__(self):
-        return str(self.__formatStr())
-    
-    def __formatStr(self):
         time = lambda var: f"{int(var.total_seconds() // 60)} m {int(var.total_seconds() % 60)} s"
 
         string = str(
@@ -39,34 +36,54 @@ class DataModel:
             f"angulo braco_esq:{self.angulo_braco_esq}\n"
             f"angulo perna_dir:{self.angulo_perna_dir}\n"
             f"angulo perna_esq:{self.angulo_perna_esq}\n"
-        )+str(
-            self.meta
-        )
+        )+self.__formatStr( self.meta )
 
-        pares = string.split("\n")
+        return string
+    
+    def __formatStr(self,dict_value):
+        str_ret = ""
+        for key in dict_value:
+            str_ret = str_ret + f"{key}:{dict_value[key]}\n"
+        return str_ret
 
-        maior_string = ""
-        for par in pares:
-            try:
-                chave, valor = par.split(":")
-                if len(chave) > len(maior_string):
-                    maior_string = chave
-            except:
-                break;
-        # Reformatar os pares com ":" alinhados
-        size = len(maior_string)
-        saida = ""
-        for par in pares:
-            try:
-                chave, valor = par.split(":")
-                offset = size - len(chave)
-                newChave = chave + " "*offset
-                linha_formatada = f"{newChave}:{valor}\n"
-                saida += linha_formatada
-            except:
-                break;
+    #     time = lambda var: f"{int(var.total_seconds() // 60)} m {int(var.total_seconds() % 60)} s"
 
-        return saida
+    #     string = str(
+    #         f"execucoes:{self.quantidade_movimentos}\n"
+    #         f"concentrica:{time(self.concentrica)}\n"
+    #         f"excentrica:{time(self.excentrica)}\n"
+    #         f"isometrica:{time(self.isometrica)}\n"
+    #         f"movimentos:{self.quantidade_movimentos}\n"
+    #         f"angulo braco_dir:{self.angulo_braco_dir}\n"
+    #         f"angulo braco_esq:{self.angulo_braco_esq}\n"
+    #         f"angulo perna_dir:{self.angulo_perna_dir}\n"
+    #         f"angulo perna_esq:{self.angulo_perna_esq}\n"
+    #     )+str( self.meta )
+
+    #     pares = string.split("\n")
+
+    #     maior_string = ""
+    #     for par in pares:
+    #         try:
+    #             chave, valor = par.split(":")
+    #             if len(chave) > len(maior_string):
+    #                 maior_string = chave
+    #         except:
+    #             break;
+    #     # Reformatar os pares com ":" alinhados
+    #     size = len(maior_string)
+    #     saida = ""
+    #     for par in pares:
+    #         try:
+    #             chave, valor = par.split(":")
+    #             offset = size - len(chave)
+    #             newChave = chave + " "*offset
+    #             linha_formatada = f"{newChave}:{valor}\n"
+    #             saida += linha_formatada
+    #         except:
+    #             break;
+
+    #     return saida
         
 
     def get(self, key):

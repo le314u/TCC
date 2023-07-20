@@ -5,6 +5,23 @@ from model.featureExtraction.poseModel import PoseModel
 from model.featureExtraction.dataModel import DataModel
 
 class CelulaModel:
+
+    aggregate = {}
+
+    @classmethod
+    def getAggregate(cls, key=None):
+        if key is None:
+            return cls.aggregate
+        if not key in cls.aggregate:
+            return None
+        else:
+            return cls.aggregate[key]
+        
+    @classmethod
+    def setAggregate(cls, key, data):
+        cls.aggregate[key] = data
+
+
     def __init__(self,pose:Optional[PoseModel]=None, line:Optional[LineModel]=None, data:Optional[DataModel]=None, frame=None) -> None:
         self.pose:PoseModel = pose
         self.line:LineModel = line
@@ -17,6 +34,8 @@ class CelulaModel:
             f"Line:{not self.line is None} "+\
             f"Data:{not self.data is None} "+\
             f"Frame:{not self.frame is None} ";
+
+   
 
     def getFrame(self):
         return None if self.frame is None else self.frame.copy()
