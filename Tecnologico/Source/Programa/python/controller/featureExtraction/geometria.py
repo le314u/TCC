@@ -116,3 +116,8 @@ def rotate_segment(ponto1:Tuple[int,int], ponto2:Tuple[int,int], angle)->Tuple[i
     # Retorna as coordenadas rotacionadas com o ponto de referência adicionado novamente
     return (round(p1_rotated[x] + reference_point[x]), round(p1_rotated[y] + reference_point[y])
         ), (round(p2_rotated[x] + reference_point[x]), round(p2_rotated[y] + reference_point[y]))
+
+def ponto_medio(x1, y1, x2, y2):
+    ponto_medio_x = (x1 + x2) / 2
+    ponto_medio_y = (y1 + y2) / 2
+    return (ponto_medio_x, ponto_medio_y)

@@ -30,6 +30,7 @@ class Mask():
         return cv2.bitwise_and(frame, mask)
     
     def createLineMask(self, frame,p1,p2,thickness=10):
+        thickness = round(thickness)
         color = (255,255,255)
         # Criar uma imagem preta
         mask_blank = np.zeros((300, 300), dtype=np.uint8)

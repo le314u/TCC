@@ -49,13 +49,13 @@ class MenuPlayerWin():
         #Cria o botao Play/Pause e N botoes Switcher de flag
         self.n_buttons = 2 # Ja possui 2 buttons
         self.switchers = []
-        self.playButton =self._createButton("PLAY",self.alter)
+        self.playButton =self.__createButton("PLAY",self.alter)
         self.activeButton(self.playButton)
 
         if not buttons  is None:
             for button in buttons:
                 name, fx, flag = button.get()
-                btn = self._createButton(name, fx) 
+                btn = self.__createButton(name, fx) 
                 storage_struct = {
                     "button":btn,
                     "flag": flag
@@ -63,7 +63,7 @@ class MenuPlayerWin():
                 self.switchers.append(storage_struct)
 
         
-    def _createButton(self, name, fx = lambda : None):
+    def __createButton(self, name, fx = lambda : None):
         '''Função interna usado para criar um button na tela'''
         newButton = Button(self.window, text = name)
         newButton.bind("<ButtonPress-1>", lambda e: fx())
@@ -120,6 +120,7 @@ class MenuPlayerWin():
         '''Atualiza o player de acordo com o controlador de midia'''
         if(self.controller.isRunning()):
             self.update_slider()
+            self.update_button_frame()
         else:
             self.update_controller_based_slider()
 
@@ -132,6 +133,11 @@ class MenuPlayerWin():
         '''Atualiza a barra de acordo com o controller'''
         id_frame = self.controller.getIdFrame()
         self.frameSlider.set(id_frame)
+    
+    def update_button_frame(self):
+        '''Atualiza o input de frame de acordo com o controller'''
+        id_frame = self.controller.getIdFrame()
+        self.frame.switchText(id_frame)
 
     def slider_press(self):
         '''Quando clicado'''

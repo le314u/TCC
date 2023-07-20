@@ -6,7 +6,6 @@ from typing import List
 from controller.featureExtraction.deltaCalculator import DeltaCalculator
 from controller.featureExtraction.geometria import angle_line, angle_point, intercept, segment, inclinacao_reta, rotate_segment
 from controller.featureExtraction.objectDetector import PosePoints, detectBar
-from controller.processImg.debug import save_img, display_img, display_imgs
 from controller.processImg.filter import limiarizacao, pixelizacao, imagem_cinza, suavizacao, rotacao
 from controller.processImg.mask import Mask
 from controller.util.beep import beep
@@ -30,6 +29,7 @@ def preProcess(controller:VideoController, flags:List[Flag]):
         #Inicia o Buffer para que possa usar a função check
         start_check(controller)
         msg("\r"+"Buffer inicializado")
+        enable_flag(flags,"Dados")
 
         #Detecção da Barra
         check(controller,check_barra,"get Barra")
@@ -44,7 +44,6 @@ def preProcess(controller:VideoController, flags:List[Flag]):
         tendency_barra_moda(controller.buffer)
         msg("\r"+"Predominancia da Barra")
 
-        
         # #Rotaciona o frame de acordo com a Barra
         # check(controller,check_inclination,"rotaciona")
         # att_frames(controller)
@@ -52,22 +51,25 @@ def preProcess(controller:VideoController, flags:List[Flag]):
 
         # enable_flag(flags,"Barra")
 
-        # #Estimativa de pose Humana
+
+        # Estimativa de pose Humana
         # check(controller,check_edh,"Estimativa de pose")
         # msg("\r"+"Pose")
         # enable_flag(flags,"EDH")    
-        
+
+        # Transpilação Alfabeto AFD
+        check(controller,check_AFD,"char AFD")
+        msg("\r"+"Transpilação alfabeto AFD")
+
+        # # Dados
         # check(controller,check_data,"meta Dados")
         # msg("\r"+"meta data and display data")
 
-        beep()
 
 
-        # check(controller,check_AFD,"char AFD")
-        # msg("\r"+"Transpilação alfabeto AFD")
+        # beep()
+        # enable_flag(flags,"Processed")
         
-
-        enable_flag(flags,"Dados")
 
 def indice_not_process(buffer:Buffer):
     '''Retorna os indices que nao foi possivel fazer a extração da imagem'''
@@ -126,8 +128,6 @@ def fix_barra(buffer:Buffer, index:int):
     line = LineModel(x1,y1,x2,y2)
     cel:CelulaModel = buffer.get_cell(index)
     cel.setLine(line)
-
-
     
 def fix_pose(buffer:Buffer, index:int):
     '''Inferencia da pose'''

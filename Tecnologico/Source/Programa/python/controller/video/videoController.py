@@ -10,9 +10,8 @@ from controller.video.buffer import Buffer
     
 class VideoController():
 
-    def __init__(self, path=None, video=None , process_frame = lambda x:x):
+    def __init__(self, path=None, video=None ):
         #Função de pre processamentoi
-        self.process_frame = process_frame
         self.conf = {
             "video":None,
             "fps":0,
@@ -76,7 +75,7 @@ class VideoController():
         '''Passa para o proximo frame e aplica o pre processamento'''
         if(not self.isFinished()):
             _, frame= self.conf['video'].read()
-            self.conf['frame']  = self.process_frame(frame)
+            self.conf['frame']  = frame
             self.conf['id_frame'] = self.conf['id_frame']+1
     
     def getFrame(self):
@@ -96,7 +95,7 @@ class VideoController():
         self.conf['id_frame'] = id_next_frame
         self.conf['video'].set(cv2.CAP_PROP_POS_FRAMES, id_next_frame-1)
         _, frame = self.conf['video'].read()
-        self.conf['frame']  = self.process_frame(frame)
+        self.conf['frame']  = frame
 
     def gotoFrame(self, id_frame):
         '''Vai para o frame idFrame'''
@@ -105,11 +104,12 @@ class VideoController():
 
     def setFrame(self, id_frame, frame):
         '''Define um frame especifico no ID'''
-        id_next_frame = id_frame  if id_frame < self.getTotalFrame() else self.getTotalFrame()
-        new_frame = self.process_frame(frame)
-        self.conf['frame']  = new_frame
-        self.conf['frames'][id_frame] = new_frame
-               
+        if id_frame > self.getTotalFrame() or id_frame < 0:
+            print("Id Invalido")
+        else:
+            self.conf['frame']  = frame
+            self.conf['frames'][id_frame] = frame
+                
     def getIdFrame(self):
         '''retorna o id no frame que o video está'''
         return self.conf['id_frame']

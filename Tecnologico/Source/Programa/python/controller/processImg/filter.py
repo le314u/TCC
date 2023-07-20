@@ -3,7 +3,8 @@ import math
 import numpy as np
 
 
-def pixelizacao(frame,size_block):
+def pixelizacao(frame,size):
+    size_block = round(size)
     # Carregar a imagem
     imagem = frame
     # Obter as dimensões da imagem
@@ -27,7 +28,8 @@ def imagem_cinza(frame):
     return imagem_cinza
 
 def suavizacao(frame,size):
-    return cv2.blur(frame, (size, size))
+    newSize = round(size)
+    return cv2.blur(frame, (newSize, newSize))
 
 def rotacao(frame, angulo):
     # Obtém a altura e a largura da imagem

@@ -2,8 +2,8 @@
 import cv2
 import numpy as np
 import mediapipe as mp
-from controller.featureExtraction.geometria import angle_point,segment
-from controller.processImg.debug import save_img, display_img, display_imgs
+from controller.featureExtraction.geometria import angle_point,segment,ponto_medio,rotate_segment
+from controller.processImg.debug import save_img, display_img, join_imgs,resize, matchGeral
 from controller.processImg.filter import limiarizacao, pixelizacao, imagem_cinza, suavizacao, rotacao
 from controller.processImg.mask import Mask
 from model.featureExtraction.lineModel import LineModel 
@@ -137,16 +137,30 @@ def detectBar(frame) -> LineModel:
     return LineModel(x1,y1,x2,y2)
 
 def verify_maoBarra(cel:CelulaModel):
-    size = 10*3    # Tamanho do kernel de Blur e Pixelização
+    #Constante
+    size = 30    # Tamanho do kernel de Blur e Pixelização
     limiar = 100    # Definir um limiar para identificar a descontinuidade
 
-    #Start
+    #Data
     frame = cel.getFrame()
     barra = cel.getLine()
-    mask_barra = MASK.createLineMask(frame,barra.getStart(),barra.getEnd(),round(size/2))
+    #pose = cel.getPose()
+    altura, largura  = frame.shape[:2]
+    #center_point = ponto_medio(*pose.get_left_elbow(),*pose.get_right_elbow())
+    center_point = (622, 613)
+
+    center_start = (round(center_point[0]), round(center_point[1]-largura))
+    center_end = (round(center_point[0]), round(center_point[1]+largura))
+
+    #Mascaras
     mask_frame = MASK.getMask()
+    mask_barra = MASK.createLineMask(frame,barra.getStart(),barra.getEnd(), size*3)
+    mask_center = MASK.createLineMask(frame,center_start,center_end, size*1.5)
+    mask_center = cv2.bitwise_not(mask_center)
+
     newFrame = MASK.putMask(frame, mask_frame)
-    
+   
+   
     # Converter a imagem para o espaço de cores HSV
     imagem_hsv = cv2.cvtColor(newFrame, cv2.COLOR_BGR2HSV)
 
@@ -161,19 +175,22 @@ def verify_maoBarra(cel:CelulaModel):
     # Converter a imagem apenas para P&B
     gray = imagem_cinza(canal_x)
     limited = limiarizacao(gray,limiar)
-    # Aplcia um desfoque
-    blur = suavizacao(limited,size)
-    limited = limiarizacao(blur,limiar)
+    
+    # Aplcia o desfoque
+    blur = suavizacao(limited, size/2 )
+    limited2 = limiarizacao(blur,limiar)
 
     #Aplica a pixelização
-    pixel = pixelizacao(limited,size)
+    pixel = pixelizacao(limited2,size)
+    limited3 = limiarizacao(pixel,limiar)
 
-    #Aplica a Mascara da area de interesse
-    only_hand = cv2.bitwise_and(mask_barra, pixel)
+    #Aplica as Mascaras da area de interesse
+    only_bar_region = cv2.bitwise_and(mask_barra, limited3)
+    only_hands = MASK.putMask(only_bar_region, mask_center)
 
     # Aplicar o operador de Sobel
-    gradient_x = cv2.Sobel(only_hand, cv2.CV_64F, 1, 0, ksize=3)
-    gradient_y = cv2.Sobel(only_hand, cv2.CV_64F, 0, 1, ksize=3)
+    gradient_x = cv2.Sobel(only_hands, cv2.CV_64F, 1, 0, ksize=3)
+    gradient_y = cv2.Sobel(only_hands, cv2.CV_64F, 0, 1, ksize=3)
 
     # Calcular o módulo do gradiente
     gradient = np.sqrt(gradient_x ** 2 + gradient_y ** 2)
@@ -182,26 +199,16 @@ def verify_maoBarra(cel:CelulaModel):
     descontinuidade = gradient > limiar
 
     # Aplicar um limiar para obter uma imagem binária
-    gradient_binary = np.uint8(only_hand)
-    limited = limiarizacao(gradient_binary,limiar)
+    gradient_binary = np.uint8(descontinuidade)
 
     # Encontrar contornos na imagem binária
-    contornos, hier = cv2.findContours(limited, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    # if(cel.getData().get("id")==131):
-    #     print(len(contornos))
-    #     display_img(limited )
-
-
-    if(len(contornos) != 2):
-        print(f"   {cel.getData().get('id')} {len(contornos)}")
-        display_img(limited )
-
+    contornos, hier = cv2.findContours(gradient_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
 
     # Verificar se houve ou não descontinuidade na imagem ou seja se a mão esta ou não na barra
     # Se houve descontinuidade do preto logo algo estava na barra 
     # So valida se encontrar 2 contornos ou mais ou seja as 2 mãos
   
     
-    return len(contornos) >=2
+    return len(contornos) >= 2
 
