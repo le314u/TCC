@@ -144,11 +144,10 @@ def verify_maoBarra(cel:CelulaModel):
     #Data
     frame = cel.getFrame()
     barra = cel.getLine()
-    #pose = cel.getPose()
+    pose = cel.getPose()
     altura, largura  = frame.shape[:2]
-    #center_point = ponto_medio(*pose.get_left_elbow(),*pose.get_right_elbow())
-    center_point = (622, 613)
 
+    center_point = ponto_medio(*pose.get_left_elbow(),*pose.get_right_elbow())
     center_start = (round(center_point[0]), round(center_point[1]-largura))
     center_end = (round(center_point[0]), round(center_point[1]+largura))
 
@@ -160,19 +159,11 @@ def verify_maoBarra(cel:CelulaModel):
 
     newFrame = MASK.putMask(frame, mask_frame)
    
-    # Converter a imagem para o espaço de cores HSV
-    imagem_hsv = cv2.cvtColor(newFrame, cv2.COLOR_BGR2HSV)
-
-    #Definir os intervalos de cor da pele
-    lower_skin = np.array([0, 25, 0], dtype=np.uint8)
-    upper_skin = np.array([20, 255, 255], dtype=np.uint8)
-
-    # Aplicar uma máscara para obter apenas a parte da cor da imagem
-    mascara = cv2.inRange(imagem_hsv, lower_skin, upper_skin)
-    canal_x = cv2.bitwise_and(frame, frame, mask=mascara)
+    #Destaca a pele
+    skin = MASK.highLight_skin(newFrame)
 
     # Converter a imagem apenas para P&B
-    gray = imagem_cinza(canal_x)
+    gray = imagem_cinza(skin)
     limited = limiarizacao(gray,limiar)
     
     # Aplcia o desfoque
@@ -211,7 +202,6 @@ def verify_maoBarra(cel:CelulaModel):
     ret = len(contornos) >= 2
     return ret
 
-
 def verify_extensaoCotovelo(cel: CelulaModel):
     '''Verifica quando o cotovelo esta esticado'''
     
@@ -238,4 +228,70 @@ def verify_extensaoCotovelo(cel: CelulaModel):
     else:
         check=False
 
+    cel.getData().set("extensao_cotovelo",check)
+
+    
     return check
+
+def verify_ultrapassarBarra(cel: CelulaModel):
+    #Verifica se encontrou algo acima da barra (cabeça)
+    #Constante
+    size = 30    # Tamanho do kernel de Blur e Pixelização
+    limiar = 100    # Definir um limiar para identificar a descontinuidade
+    limiar_angulo = 5    # Definir um limiar para identificar a descontinuidade
+    limiar_barra = 290
+
+    #Data
+    frame = cel.getFrame()
+    barra = cel.getLine()
+    pose = cel.getPose()
+    barra_start = barra.getStart()
+    ombro_start = pose.get_left_elbow()
+    ombro_end = pose.get_right_elbow()
+    anguloBracoEsq = cel.getData().getAnguloBracoEsq()
+    anguloBracoDir = cel.getData().getAnguloBracoDir()
+
+    extract_height = lambda ponto: ponto[1]
+    extract_width = lambda ponto: ponto[0]
+
+    offset_esq = abs(extract_height(barra_start) - extract_height(ombro_start))
+    offset_dir = abs(extract_height(barra_start) - extract_height(ombro_end))
+   
+    #Cria a mascara para a cabeça acima da barra
+    center_point = ponto_medio(*ombro_start,*ombro_end)   
+    size_block = round( (ombro_end[0]-ombro_start[0])/3 )
+    mask_head = MASK.createBlockMask(frame, (center_point[0]-size_block,0), (center_point[0]+size_block,barra_start[1]-(size*2)))
+
+    #Destaca a pele
+    skin = MASK.highLight_skin(frame)
+   
+    # Converter a imagem apenas para P&B
+    gray = imagem_cinza(skin)
+    limited = limiarizacao(gray,limiar)
+    
+    #Aplica as Mascaras da area de interesse
+    only_interesse = cv2.bitwise_and(mask_head, limited)
+
+    # Aplicar o operador de Sobel
+    gradient_x = cv2.Sobel(only_interesse, cv2.CV_64F, 1, 0, ksize=3)
+    gradient_y = cv2.Sobel(only_interesse, cv2.CV_64F, 0, 1, ksize=3)
+
+    # Calcular o módulo do gradiente
+    gradient = np.sqrt(gradient_x ** 2 + gradient_y ** 2)
+    
+    # Verificar a descontinuidade em cada pixel
+    descontinuidade = gradient > limiar
+    
+    # Verificar se:
+    #   houve ou não descontinuidade na imagem acima da barra no rumo do peito
+    #   Se o peito está proximo da barra
+    #   Se o angulo do braço é proximo de 180
+ 
+    peito_na_barra = (offset_esq < limiar_barra) or (offset_dir < limiar_barra)
+    braco_dobrado = (anguloBracoEsq > (180-limiar_angulo)) or (anguloBracoDir > (180-limiar_angulo))
+    has_head = True in descontinuidade
+
+    
+    return (peito_na_barra and braco_dobrado and has_head)
+
+

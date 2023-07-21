@@ -1,6 +1,6 @@
 from model.video.celulaModel import CelulaModel
 from controller.featureExtraction.geometria import distance_point_line
-from controller.featureExtraction.objectDetector import verify_maoBarra,verify_extensaoCotovelo
+from controller.featureExtraction.objectDetector import verify_maoBarra,verify_extensaoCotovelo,verify_ultrapassarBarra
 
 class charAFD:
     def __init__(self, cel_meta:CelulaModel = None, mao_barra=None ,concentrica=None ,excentrica=None ,extensao_cotovelo=None ,ultrapassar_barra=None ,movimento_quadrilPerna=None ) -> None:
@@ -19,6 +19,7 @@ class charAFD:
         """Apartir dos meta-dados do frame preenche o "vetor caracter" """ 
         self.process_mao_barra(cel_meta)
         self.process_extensao_cotovelo(cel_meta)
+        self.process_ultrapassar_barra(cel_meta)
         pass
 
     def process_mao_barra(self, cel_meta:CelulaModel):
@@ -38,9 +39,9 @@ class charAFD:
         """Processa extensao_cotovelo apartir dos meta-dados do frame ou seja se so braços estão ou não esticados"""
         self.extensao_cotovelo = verify_extensaoCotovelo(cel_meta)
 
-    def process_ultrapassar_barra(self,meta):
+    def process_ultrapassar_barra(self,cel_meta:CelulaModel):
         """Processa ultrapassar_barra apartir dos meta-dados do frame"""
-        pass
+        self.ultrapassar_barra = verify_ultrapassarBarra(cel_meta)
 
     def process_movimento_quadrilPerna(self,meta):
         """Processa movimento_quadrilPerna apartir dos meta-dados do frame"""

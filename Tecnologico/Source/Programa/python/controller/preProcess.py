@@ -5,7 +5,7 @@ import traceback
 from typing import List
 from controller.featureExtraction.deltaCalculator import DeltaCalculator
 from controller.featureExtraction.geometria import angle_line, angle_point, intercept, segment, inclinacao_reta, rotate_segment
-from controller.featureExtraction.objectDetector import PosePoints,detectBar,verify_maoBarra,verify_extensaoCotovelo
+from controller.featureExtraction.objectDetector import PosePoints,detectBar,verify_maoBarra,verify_extensaoCotovelo,verify_ultrapassarBarra
 from controller.processImg.debug import display_img,resize
 from controller.processImg.filter import limiarizacao, pixelizacao, imagem_cinza, suavizacao, rotacao
 from controller.processImg.mask import Mask
@@ -59,10 +59,10 @@ def preProcess(controller:VideoController, flags:List[Flag]):
 
         # Dados
         check(controller,verify_data,"meta Dados")
-        # Meta Dado para Transpilação do Alfabeto
         check(controller,verify_mao_barra,"mão na barra")
         # Meta Dado para Transpilação do Alfabeto
         check(controller,verify_meta_extensao,"extensao cotovelo")
+
 
         # Transpilação Alfabeto AFD
         check(controller,verify_AFD,"char AFD")
@@ -263,10 +263,10 @@ def verify_data(cel: CelulaModel):
 
     # Calcula os ângulos das linhas dos segmentos do corpo
     struct_angulo = {
-        "angulo_braco_dir": angle_line(braco_dir[0], braco_dir[1]),
-        "angulo_braco_esq": angle_line(braco_esq[0], braco_esq[1]),
-        "angulo_perna_dir": angle_line(perna_dir[0], perna_dir[1]),
-        "angulo_perna_esq": angle_line(perna_esq[0], perna_esq[1])
+        "angulo_braco_dir": round(angle_line(braco_dir[0], braco_dir[1]),2) ,
+        "angulo_braco_esq": round(angle_line(braco_esq[0], braco_esq[1]),2) ,
+        "angulo_perna_dir": round(angle_line(perna_dir[0], perna_dir[1]),2) ,
+        "angulo_perna_esq": round(angle_line(perna_esq[0], perna_esq[1]),2) 
     }
 
     # Cria um objeto DataModel com os ângulos e outras informações
@@ -316,6 +316,10 @@ def verify_extensao_cotovelo(cel: CelulaModel):
     extensao_cotovelo = verify_extensaoCotovelo(cel)
     cel.getData().set("extensao_cotovelo",extensao_cotovelo)
 
+def verify_ultrapassar_barra(cel: CelulaModel):
+    ultrapassar_barra = verify_ultrapassarBarra(cel)
+    cel.getData().set("ultrapassar_barra",ultrapassar_barra)
+    
 def verify_AFD(cel:CelulaModel):
     '''Transforma o frame em uma letra do alfabeto para o AFD'''
     char_AFD = charAFD(cel_meta=cel)
