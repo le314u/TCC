@@ -294,4 +294,11 @@ def verify_ultrapassarBarra(cel: CelulaModel):
     
     return (peito_na_barra and braco_dobrado and has_head)
 
+def verify_movimentoQuadrilPerna(cel: CelulaModel):
+    limiar_angulo = 15    # Definir um limiar para identificar a descontinuidade
 
+    anguloPernaEsq = cel.getData().getAnguloPernaEsq()
+    anguloPernaDir = cel.getData().getAnguloPernaDir()
+    pernaDobrada = (anguloPernaEsq > limiar_angulo) or (anguloPernaDir > limiar_angulo)
+    cel.getData().set("pernaDobrada",pernaDobrada)
+    return pernaDobrada

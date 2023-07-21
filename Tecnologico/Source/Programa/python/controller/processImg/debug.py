@@ -45,7 +45,7 @@ def display_img(frame,name="DEBUG_IMAGE"):
     cv2.destroyAllWindows()
 
 
-def save_img(frame,name):
+def save_img(frame,name=None):
     cv2.imwrite(f"{name}.png", frame)
 
 

@@ -122,7 +122,7 @@ class VideoController():
         '''Retorna as dimensoes do video'''
         return self.conf['size']
     
-    def getMeta(self,id):
+    def getCel(self,id):
         '''Retorna metaDados do frame ID '''
         return self.buffer.buffer[id]
 

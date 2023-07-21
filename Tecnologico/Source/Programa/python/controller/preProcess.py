@@ -1,5 +1,6 @@
 import cv2
 import math
+import sys
 import numpy as np
 import traceback
 from typing import List
@@ -26,54 +27,61 @@ MASK = Mask()
 
 
 def preProcess(controller:VideoController, flags:List[Flag]):
-        #Inicia o Buffer para que possa usar a função check
-        start_check(controller)
-        msg("\r"+"Buffer inicializado")
-        enable_flag(flags,"Dados")
+    try:
+        while True:
+           
+            #Inicia o Buffer para que possa usar a função check
+            start_check(controller)
+            msg("\r"+"Buffer inicializado")
+            enable_flag(flags,"Dados")
 
-        #Detecção da Barra
-        check(controller,verify_barra,"get Barra")
-        msg("\r"+"detecção da Barra")
+            #Detecção da Barra
+            check(controller,verify_barra,"get Barra")
+            msg("\r"+"detecção da Barra")
 
-        #Faz inferencia quando não consegue detectar a barra
-        not_allocated = indice_not_process(controller.buffer)
-        for i in not_allocated['line']:
-            fix_barra(controller.buffer, i)
-        msg("\r"+"Inferencia da Barra")
-        #Pega a predominancia da posição da barra
-        tendency_barra_moda(controller.buffer)
-        msg("\r"+"Predominancia da Barra")
+            #Faz inferencia quando não consegue detectar a barra
+            not_allocated = indice_not_process(controller.buffer)
+            for i in not_allocated['line']:
+                fix_barra(controller.buffer, i)
+            msg("\r"+"Inferencia da Barra")
+            #Pega a predominancia da posição da barra
+            tendency_barra_moda(controller.buffer)
+            msg("\r"+"Predominancia da Barra")
 
-        #Rotaciona o frame de acordo com a Barra
-        check(controller,verify_inclination,"rotaciona")
-        att_frames(controller)
-        msg("\r"+"Rotação")
+            #Rotaciona o frame de acordo com a Barra
+            check(controller,verify_inclination,"rotaciona")
+            att_frames(controller)
+            msg("\r"+"Rotação")
 
-        enable_flag(flags,"Barra")
-
-
-        # Estimativa de pose Humana
-        check(controller,verify_eph,"Estimativa de pose")
-        msg("\r"+"Pose")
-        enable_flag(flags,"EPH")    
-
-        # Dados
-        check(controller,verify_data,"meta Dados")
-        check(controller,verify_mao_barra,"mão na barra")
-        # Meta Dado para Transpilação do Alfabeto
-        check(controller,verify_meta_extensao,"extensao cotovelo")
+            enable_flag(flags,"Barra")
 
 
-        # Transpilação Alfabeto AFD
-        check(controller,verify_AFD,"char AFD")
-        msg("\r"+"Transpilação alfabeto AFD")
+            # Estimativa de pose Humana
+            check(controller,verify_eph,"Estimativa de pose")
+            msg("\r"+"Pose")
+            enable_flag(flags,"EPH")    
 
-        
+            # Meta Dado para Transpilação do Alfabeto
+            check(controller,verify_data,"meta Dados")
+            check(controller,verify_mao_barra,"mão na barra")
+            check(controller,verify_meta_extensao,"extensao cotovelo")
 
 
+            # Transpilação Alfabeto AFD
+            check(controller,verify_AFD,"char AFD")
+            msg("\r"+"Transpilação alfabeto AFD")
 
-        beep()
-        enable_flag(flags,"Processed")
+            
+            beep()
+            enable_flag(flags,"Save")
+
+            enable_flag(flags,"Processed")
+
+    except Exception as e:
+        traceback_msg = traceback.format_exc()
+        print(f"Erro: {e}")
+        print(f"Traceback: {traceback_msg}")
+        sys.exit()
         
 
 def indice_not_process(buffer:Buffer):

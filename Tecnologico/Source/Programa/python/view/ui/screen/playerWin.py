@@ -1,5 +1,6 @@
 import sys
 import cv2
+import signal
 import multiprocessing as mltp
 import numpy as np
 import traceback
@@ -14,7 +15,7 @@ from view.ui.screen.menuPlayerWin import MenuPlayerWin
 
 
 class PlayerWin():
-    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None, flags:List[Flag]=[None], preRender = lambda c:c.getFrame()):
+    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None, flags:List[Flag]=[None], pip_render=None):
         #Meta dados da Janela Tkinter
         self.conf = {
             "title":"TCC - Lucas Mateus Fernandes",
@@ -27,7 +28,7 @@ class PlayerWin():
         }
         #Carrega arg's do construtor
         self.controller = controller
-        self.preRender = preRender
+        self.pip_render = pip_render
         self.flags = flags
 
         #Cria a Janela baseada nas configurações do video
@@ -46,8 +47,13 @@ class PlayerWin():
             player.destroy()
             menu.destroy()
             sys.exit()
+
+
+
         player.protocol("WM_DELETE_WINDOW", on_close)
         menu.protocol("WM_DELETE_WINDOW", on_close)
+        # Configura o tratamento para o sinal de interrupção (SIGINT)
+        signal.signal(signal.SIGINT, on_close)
 
         #Cria uma tred para desenhar
         processo = mltp.Process(target=self.play)
@@ -88,7 +94,7 @@ class PlayerWin():
             self.menuPlayer.attFrame()
             if self.controller.isRunning():
                 self.controller.next()
-            newFrame = self.preRender(self.controller)
+            newFrame = self.pip_render.exec(self.controller)
             time = round(1/self.conf['velocidade']*20)
             self.draw( newFrame )
             self.window.after( time , self.play  )
