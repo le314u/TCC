@@ -75,7 +75,7 @@ class MainWindow():
 			if cel is None:
 				id = self.controller.getIdFrame()
 				cel = self.controller.getCel(id)
-				path = "./midia/dist"
+				path = "./midia/dist/"
 				fixPath(path)
 			save_img( 
 				pipe_render.processImg(frame,cel),
