@@ -26,7 +26,7 @@ class PipeLine():
     def exec(self,controller:VideoController):
         '''Executa cada função do pipeline sobre o frame atual de acordo com a ordem '''
         #Pega as variaveis de controle
-        id,frame = controller.getIdFrame(), controller.getFrame()
+        id,frame = controller.getIdCurrentFrame(), controller.getFrame()
         if id <= controller.getTotalFrame()-1:
             frame_cp = frame.copy()
         else:

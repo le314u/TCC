@@ -26,15 +26,26 @@ MASK = Mask()
 THREAD = {"thread_controller":True}
 
 
+
+
+
 def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
     global THREAD 
     THREAD = thread_controller
+
+    def enable_button(flag_name):
+        try:
+            enable_flag(flags,flag_name)
+            #Triga a Flag Processed para Atualizar os buttons ativos e inativos
+            disable_flag(flags,"Processed")
+            enable_flag(flags,"Processed")
+        except:
+            pass
+
+
     try:
         #Inicia o Buffer para que possa usar a função check
-        start_check(controller)
-        msg("\r"+"Buffer inicializado")
-        enable_flag(flags,"Dados")
-
+        enable_button("Dados")
         #Detecção da Barra
         check(controller,verify_barra,"get Barra")
         msg("\r"+"detecção da Barra")
@@ -50,15 +61,14 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
 
         #Rotaciona o frame de acordo com a Barra
         check(controller,verify_inclination,"rotaciona")
-        att_frames(controller)
         msg("\r"+"Rotação")
 
-        enable_flag(flags,"Barra")
+        enable_button("Barra")
 
         # Estimativa de pose Humana
         check(controller,verify_eph,"Estimativa de pose")
         msg("\r"+"Pose")
-        enable_flag(flags,"EPH")    
+        enable_button("EPH")    
 
         # Meta Dado para Transpilação do Alfabeto
         check(controller,verify_data,"meta Dados")
@@ -71,9 +81,8 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
 
         
         beep()
-        enable_flag(flags,"Save")
+        enable_button("SaveF")
 
-        enable_flag(flags,"Processed")
 
     except Exception as e:
         print(f"\n{e}")
@@ -171,27 +180,9 @@ def tendency_barra_moda(buffer:Buffer):
     
     return LineModel(x1,y1,x2,y2)
 
-def att_frames(controller:VideoController):
-    '''Transfere os frames de cada celula para controller'''
-    try:
-        controller.gotoFrame(0)
-        total = controller.getTotalFrame()
-        #Pega a barra em todos os frames
-        for id in range(total):
-            #printa a porcentagem ja feita 
-            percent = round(100*(id/total))
-            progress_bar(percent ,"Att Frames")
-            cel = controller.buffer.get_cell(id)
-            frame = cel.getFrame()
-            controller.setFrame(id,frame)
-    except Exception as e:
-        traceback_msg = traceback.format_exc()
-        print(f"Erro: {e}")
-        print(f"Traceback: {traceback_msg}")
-
 def start_check(controller:VideoController):
     try:
-        controller.gotoFrame(0)
+        controller.rebobina
         total = controller.getTotalFrame()
         #Pega a barra em todos os frames
         for id in range(total):
@@ -200,7 +191,7 @@ def start_check(controller:VideoController):
             progress_bar(percent ,"Iniciando Buffer")
             data = DataModel()
             data.set("id",id)
-            frame = controller.getFrameId(id)
+            frame = controller.getFrameById(id)
             cel = CelulaModel(data=data,frame=frame)
             controller.buffer.set_cell(id, cel)                
     except Exception as e:
@@ -211,7 +202,7 @@ def start_check(controller:VideoController):
 def check(controller:VideoController,verify_fx:callable, name:str):
     """Roda os verify em todos os frames do buffer"""
     total = controller.getTotalFrame()
-    controller.gotoFrame(0)
+    controller.restart()
     for id in range(total):
         #printa a porcentagem ja feita 
         percent = round(100*(id/total))
@@ -223,7 +214,6 @@ def check(controller:VideoController,verify_fx:callable, name:str):
                 f"thread_controller : False.... thread desligada\n"
                 f"pre processamento {name} incompleto\n"
             )
-
 
 def verify_barra(cel:CelulaModel):
     '''Para cada frame Extrai a barra'''

@@ -46,13 +46,15 @@ class MainWindow():
 
 		#Persiste o Player
 		self.player.run()
+
+		#Encerra a Thread e evita Erros
 		thread_controller["thread_controller"]=False
 		self.thread_process.join()
 
 	def TESTE(self):
 		#Cria as flags
-		finished = Flag("Processed",triguer=True)
-		saveFrame_flag = Flag("SaveFe",triguer=True)
+		finished = Flag("Processed",state=False,triguer=True)
+		saveFrame_flag = Flag("SaveF",state=True,triguer=True)
 		barra_flag = Flag("Barra")
 		dados_flag = Flag("Dados")
 		eph_flag = Flag("EPH")
@@ -62,6 +64,7 @@ class MainWindow():
 		barra_flag.setFx( lambda frame, cel : renderBar(frame,cel.getLine() ) )
 		dados_flag.setFx( lambda frame, cel : renderTxt(frame,cel.getData() ) )
 		eph_flag.setFx( lambda frame, cel : renderPose(frame,cel.getPose() ) )
+
 		#Cria um pipeLine de Renderização
 		pipe_render = PipeLine()
 		pipe_render.addFlag(barra_flag,1)
@@ -73,7 +76,7 @@ class MainWindow():
 			if frame is None:
 				frame = self.controller.getFrame()
 			if cel is None:
-				id = self.controller.getIdFrame()
+				id = self.controller.getIdCurrentFrame()
 				cel = self.controller.getCel(id)
 				path = "./midia/dist/"
 				fixPath(path)
@@ -81,7 +84,6 @@ class MainWindow():
 				pipe_render.processImg(frame,cel),
 				f"{path}/{id}_processed"
 			)
-
 		saveFrame_flag.setFx(save_frame)
 
 		createListButtons = lambda flags: [ButtonSketch(flag.getName(),flag) for flag in flags  ]
@@ -95,8 +97,10 @@ class MainWindow():
 		  "velocidade":1.0,
 		  "flags":all_flags[1:]
 		}		
-			
-		fx = lambda : self.player.setState(initial_state)
+		
+		def fx():
+			self.player.setState(initial_state)
+
 		finished.setFx(lambda : (fx())) 
 			
 		return {

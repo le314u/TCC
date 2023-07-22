@@ -82,7 +82,7 @@ class PlayerWin():
 
     def hasModifcation(self):
         '''Verifica se o frame foi alterado e precisa redesenhar'''
-        return self.conf['last_frame'] != self.controller.getIdFrame()  
+        return self.conf['last_frame'] != self.controller.getIdCurrentFrame()  
     
     def play(self):
         '''Executa o video frame a frame'''
@@ -119,7 +119,7 @@ class PlayerWin():
         '''Desenha o frame no Player apenas se teve modificação'''
         try:
             if(self.hasModifcation()):
-                self.conf['last_frame'] = self.controller.getIdFrame()
+                self.conf['last_frame'] = self.controller.getIdCurrentFrame()
                 frame_cp = frame_cv.copy()
                 frame_cp = cv2.resize(frame_cp, self._getSizeFrame() )
                 frame_cp = cv2.cvtColor(frame_cp, cv2.COLOR_BGRA2RGB)

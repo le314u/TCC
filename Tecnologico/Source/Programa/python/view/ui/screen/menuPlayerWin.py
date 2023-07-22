@@ -131,12 +131,12 @@ class MenuPlayerWin():
     
     def update_slider(self):
         '''Atualiza a barra de acordo com o controller'''
-        id_frame = self.controller.getIdFrame()
+        id_frame = self.controller.getIdCurrentFrame()
         self.frameSlider.set(id_frame)
     
     def update_button_frame(self):
         '''Atualiza o input de frame de acordo com o controller'''
-        id_frame = self.controller.getIdFrame()
+        id_frame = self.controller.getIdCurrentFrame()
         self.frame.switchText(id_frame)
 
     def slider_press(self):

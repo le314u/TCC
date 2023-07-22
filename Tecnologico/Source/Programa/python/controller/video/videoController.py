@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 from io import BytesIO
 from controller.video.buffer import Buffer
+from model.featureExtraction.dataModel import DataModel
+from model.video.celulaModel import CelulaModel
 
     
 class VideoController():
@@ -16,7 +18,6 @@ class VideoController():
             "video":None,
             "fps":0,
             "frame":None,
-            "frames":[],
             "play":False,
             "size":(0,0),
             "total_frame":0,
@@ -27,13 +28,30 @@ class VideoController():
         if path is not None:
             video = cv2.VideoCapture( path )
         self._loadVideo(video)
-
-        #Instancia o Buffer de acordo com  o video e Carrega um vetor de frames
-        self.buffer = Buffer(self.conf['fps'], [{}] * self.getTotalFrame() )
-        self._video2frames()
-        #Rebobina o video
-        self.gotoFrame(0)
+        #Instancia o Buffer de acordo com o video e Carrega um vetor de frames
+        self.start_buffer()
         
+
+    def start_buffer(self):
+        '''Instancia o Buffer de acordo com o video e Carrega Celulas e frames'''
+        total_frames = self.getTotalFrame()
+        self.buffer = Buffer(self.conf['fps'], [{}] * total_frames )
+        self.rebobina()
+        if(not self.isFinished()):
+            self.nextInVideo()
+        #Passa por todos os frames
+        for id in range(total_frames):
+            frame = self.getFrame()
+            data = DataModel()
+            data.set("id",id)
+            cel = CelulaModel(data=data,frame=frame)
+            self.buffer.set_cell(id, cel)    
+            if(not self.isFinished()):
+                self.nextInVideo()  
+        self.rebobina()
+           
+
+
 
     def _loadVideo(self, video):
         '''Carrega o video'''
@@ -48,31 +66,15 @@ class VideoController():
         )
         return video
     
-    def _video2frames(self):
-        #Rebobina o video para o primeiro frame
-        self.rebobina()
-        #Pega o primeiro frame
-        if(not self.isFinished()):
-            self.nextInVideo()
-        #Rebobina o video para o primeiro frame
-        self.rebobina()
-        #Começa a copiar frame por frame
-        for i in range(self.getTotalFrame()):
-            frame = self.getFrame()
-            if frame is not None:
-                self.conf['frames'].append(frame)
-            if(not self.isFinished()):
-                self.nextInVideo()
-
     def next(self):
-        '''Passa para o proximo frame e aplica o pre processamento'''
+        '''Passa para o proximo frame'''
         if(not self.isFinished()):
             id = self.conf['id_frame']+1
             self.conf['id_frame'] = id
-            self.conf['frame']  = self.conf['frames'][id]
+            self.conf['frame']  = self.buffer.get_cell(id).getFrame()
             
     def nextInVideo(self):
-        '''Passa para o proximo frame e aplica o pre processamento'''
+        '''Passa para o proximo frame'''
         if(not self.isFinished()):
             _, frame= self.conf['video'].read()
             self.conf['frame']  = frame
@@ -82,11 +84,11 @@ class VideoController():
         '''Pega o frame atual ou ultimo frame'''
         return self.conf['frame']
 
-    def getFrameId(self,id):
+    def getFrameById(self,id):
         '''Pega o frame[id] de acordo com o range'''
         max_frame = self.getTotalFrame()
         id = min( max(id, 0), max_frame)
-        return self.conf['frames'][id] 
+        return self.buffer.get_cell(id).getFrame()
         
     def rebobina(self):
         '''Volta o video para o id 0'''
@@ -100,17 +102,17 @@ class VideoController():
     def gotoFrame(self, id_frame):
         '''Vai para o frame idFrame'''
         self.conf["id_frame"] = id_frame
-        self.conf["frame"] = self.getFrameId(id_frame)
+        self.conf["frame"] = self.getFrameById(id_frame)
 
     def setFrame(self, id_frame, frame):
         '''Define um frame especifico no ID'''
         if id_frame > self.getTotalFrame() or id_frame < 0:
             print("Id Invalido")
         else:
+            self.buffer.get_cell(id_frame).setFrame(frame)
             self.conf['frame']  = frame
-            self.conf['frames'][id_frame] = frame
                 
-    def getIdFrame(self):
+    def getIdCurrentFrame(self):
         '''retorna o id no frame que o video está'''
         return self.conf['id_frame']
 
@@ -140,7 +142,7 @@ class VideoController():
 
     def isFinished(self):
         '''Verifica se o video chegou ao fim'''
-        self.conf['play'] = self.getIdFrame() < self.getTotalFrame()-1
+        self.conf['play'] = self.getIdCurrentFrame() < self.getTotalFrame()-1
         return not self.conf['play']
 
     def isRunning(self):
