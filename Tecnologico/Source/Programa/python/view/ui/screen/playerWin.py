@@ -1,6 +1,7 @@
 import sys
 import cv2
 import signal
+import threading
 import multiprocessing as mltp
 import numpy as np
 import traceback
@@ -15,7 +16,7 @@ from view.ui.screen.menuPlayerWin import MenuPlayerWin
 
 
 class PlayerWin():
-    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None, flags:List[Flag]=[None], pip_render=None):
+    def __init__(self,controller:VideoController,  buttons:List[ButtonSketch] = None, flags:List[Flag]=[None], pip_render=None, controller_thread=None):
         #Meta dados da Janela Tkinter
         self.conf = {
             "title":"TCC - Lucas Mateus Fernandes",
@@ -40,26 +41,21 @@ class PlayerWin():
         self.canvas = Label( self.window )
         self.menuPlayer = MenuPlayerWin(self.conf, self.controller, buttons, self.flags)
 
-        #Linka o Player e o ControllerPlayer para fecharem juntas
-        player = self.window
-        menu = self.menuPlayer.window
+        self.controller_thread = controller_thread
         def on_close():
             player.destroy()
             menu.destroy()
-            sys.exit()
+            self.window.quit()
 
 
-
+        #Linka o Player e o ControllerPlayer para fecharem juntas
+        player = self.window
+        menu = self.menuPlayer.window
         player.protocol("WM_DELETE_WINDOW", on_close)
         menu.protocol("WM_DELETE_WINDOW", on_close)
-        # Configura o tratamento para o sinal de interrupção (SIGINT)
-        signal.signal(signal.SIGINT, on_close)
+        
+        self.play()    
 
-        #Cria uma tred para desenhar
-        processo = mltp.Process(target=self.play)
-        #processo.start()       
-
-        self.play()
 
     def setState(self, state=None):
         '''Altera o estado do Menu ativando os buttons'''
@@ -99,8 +95,10 @@ class PlayerWin():
             self.draw( newFrame )
             self.window.after( time , self.play  )
         except Exception as e:
-            traceback.print_exc()
-            print(f"Ocorreu um erro na thread: {e}")
+            traceback_msg = traceback.format_exc()
+            print(f"Erro: {e}")
+            print(f"Traceback: {traceback_msg}")
+            
 
        
     def resize(self):

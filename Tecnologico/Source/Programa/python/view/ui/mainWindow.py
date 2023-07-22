@@ -10,36 +10,44 @@ from controller.render.renderPose import renderPose
 from controller.render.renderTxt import renderTxt
 from controller.util.coloredMsg import msg
 from controller.util.flag import Flag
+from util.path import fixPath
 from controller.util.progress_bar import progress_bar
 from controller.video.videoController import VideoController
 from view.ui.components.buttonSketch import ButtonSketch
 from view.ui.screen.getPath import getPath
 from view.ui.screen.playerWin import PlayerWin
 
-class MainWindow():
 
+
+
+class MainWindow():
+	controller_thread = {"run":True}
 	def __init__(self, flags:List[Flag] = [None]):
 		#TODO verificar o clocal correto de TESTE
 		DATA = self.TESTE()
 		pipeRender = DATA['pipeRender']
 		btns = DATA['btns']
-		flags = DATA['flags']
+		list_flags = DATA['flags']
 		path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/lazy_white.mp4" 
+		
 
 		#Inicia a parte grafica'''
 		#path = getPath()
 		self.controller = VideoController(path=path)
-		self.player = PlayerWin(self.controller, btns, flags, pipeRender)
 
 		#Pre processamento ocorre em paralelo
-		thread_args = (self.controller, flags)
+		thread_controller = {"thread_controller":True}
+		thread_args = (self.controller, list_flags, thread_controller)
 		thread_func = preProcess
-		thread_process = threading.Thread(target=thread_func, args=thread_args)
-		thread_process.daemon = True
-		thread_process.start()
-		
+		self.thread_process = threading.Thread(target=thread_func, args=thread_args)
+		self.thread_process.daemon = True
+		self.thread_process.start()
+		self.player = PlayerWin(self.controller, btns, list_flags, pipeRender, controller_thread= MainWindow.controller_thread)
+
 		#Persiste o Player
 		self.player.run()
+		thread_controller["thread_controller"]=False
+		self.thread_process.join()
 
 	def TESTE(self):
 		#Cria as flags
@@ -67,9 +75,11 @@ class MainWindow():
 			if cel is None:
 				id = self.controller.getIdFrame()
 				cel = self.controller.getCel(id)
+				path = "./midia/dist"
+				fixPath(path)
 			save_img( 
 				pipe_render.processImg(frame,cel),
-				f"{id}_processed"
+				f"{path}/{id}_processed"
 			)
 
 		saveFrame_flag.setFx(save_frame)
@@ -94,3 +104,4 @@ class MainWindow():
 			'btns':btns,
 			'pipeRender':pipe_render
 		}
+	

@@ -23,65 +23,61 @@ from model.featureExtraction.poseModel import PoseModel, Segmento
 from model.video.celulaModel import CelulaModel
 
 MASK = Mask()
+THREAD = {"thread_controller":True}
 
 
-
-def preProcess(controller:VideoController, flags:List[Flag]):
+def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
+    global THREAD 
+    THREAD = thread_controller
     try:
-        while True:
-           
-            #Inicia o Buffer para que possa usar a função check
-            start_check(controller)
-            msg("\r"+"Buffer inicializado")
-            enable_flag(flags,"Dados")
+        #Inicia o Buffer para que possa usar a função check
+        start_check(controller)
+        msg("\r"+"Buffer inicializado")
+        enable_flag(flags,"Dados")
 
-            #Detecção da Barra
-            check(controller,verify_barra,"get Barra")
-            msg("\r"+"detecção da Barra")
+        #Detecção da Barra
+        check(controller,verify_barra,"get Barra")
+        msg("\r"+"detecção da Barra")
 
-            #Faz inferencia quando não consegue detectar a barra
-            not_allocated = indice_not_process(controller.buffer)
-            for i in not_allocated['line']:
-                fix_barra(controller.buffer, i)
-            msg("\r"+"Inferencia da Barra")
-            #Pega a predominancia da posição da barra
-            tendency_barra_moda(controller.buffer)
-            msg("\r"+"Predominancia da Barra")
+        #Faz inferencia quando não consegue detectar a barra
+        not_allocated = indice_not_process(controller.buffer)
+        for i in not_allocated['line']:
+            fix_barra(controller.buffer, i)
+        msg("\r"+"Inferencia da Barra")
+        #Pega a predominancia da posição da barra
+        tendency_barra_moda(controller.buffer)
+        msg("\r"+"Predominancia da Barra")
 
-            #Rotaciona o frame de acordo com a Barra
-            check(controller,verify_inclination,"rotaciona")
-            att_frames(controller)
-            msg("\r"+"Rotação")
+        #Rotaciona o frame de acordo com a Barra
+        check(controller,verify_inclination,"rotaciona")
+        att_frames(controller)
+        msg("\r"+"Rotação")
 
-            enable_flag(flags,"Barra")
+        enable_flag(flags,"Barra")
 
+        # Estimativa de pose Humana
+        check(controller,verify_eph,"Estimativa de pose")
+        msg("\r"+"Pose")
+        enable_flag(flags,"EPH")    
 
-            # Estimativa de pose Humana
-            check(controller,verify_eph,"Estimativa de pose")
-            msg("\r"+"Pose")
-            enable_flag(flags,"EPH")    
+        # Meta Dado para Transpilação do Alfabeto
+        check(controller,verify_data,"meta Dados")
+        check(controller,verify_mao_barra,"mão na barra")
+        check(controller,verify_meta_extensao,"extensao cotovelo")
 
-            # Meta Dado para Transpilação do Alfabeto
-            check(controller,verify_data,"meta Dados")
-            check(controller,verify_mao_barra,"mão na barra")
-            check(controller,verify_meta_extensao,"extensao cotovelo")
+        # Transpilação Alfabeto AFD
+        check(controller,verify_AFD,"char AFD")
+        msg("\r"+"Transpilação alfabeto AFD")
 
+        
+        beep()
+        enable_flag(flags,"Save")
 
-            # Transpilação Alfabeto AFD
-            check(controller,verify_AFD,"char AFD")
-            msg("\r"+"Transpilação alfabeto AFD")
-
-            
-            beep()
-            enable_flag(flags,"Save")
-
-            enable_flag(flags,"Processed")
+        enable_flag(flags,"Processed")
 
     except Exception as e:
-        traceback_msg = traceback.format_exc()
-        print(f"Erro: {e}")
-        print(f"Traceback: {traceback_msg}")
-        sys.exit()
+        print(f"\n{e}")
+
         
 
 def indice_not_process(buffer:Buffer):
@@ -222,6 +218,12 @@ def check(controller:VideoController,verify_fx:callable, name:str):
         progress_bar(percent, name)
         cel:CelulaModel = controller.buffer.get_cell(id)
         verify_fx(cel)
+        if(not THREAD["thread_controller"]):
+            raise Exception(
+                f"thread_controller : False.... thread desligada\n"
+                f"pre processamento {name} incompleto\n"
+            )
+
 
 def verify_barra(cel:CelulaModel):
     '''Para cada frame Extrai a barra'''
