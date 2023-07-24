@@ -1,8 +1,12 @@
-
+import os
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from model.featureExtraction.dataModel import DataModel
+
+
+
+
 
 def renderTxt(image, data:DataModel):
     '''Desenha os segmentos detectados'''
@@ -14,9 +18,13 @@ def renderTxt(image, data:DataModel):
     # Converter a imagem do OpenCV para o formato Pillow
     pillow_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pillow_image)
+
+    # Caminho absoluto para a fonte desejada
+    #font_path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/static/Cabin-Bold.ttf"  # Substitua pelo caminho para a fonte que deseja usar
     
-    # Definir a fonte
-    font_path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/static/Cabin-Bold.ttf"  # Substitua pelo caminho para a fonte que deseja usar
+    # Caminho relativo
+    font_path = "./midia/static/Cabin-Bold.ttf"
+
     font_size = int(min(largura, altura) * 0.03)  # Ajuste o fator multiplicador conforme necessário
     font = ImageFont.truetype(font_path, font_size)
     color = (255,255,0)

@@ -21,6 +21,7 @@ from model.featureExtraction.dataModel import DataModel
 from model.featureExtraction.lineModel import LineModel
 from model.featureExtraction.poseModel import PoseModel, Segmento
 from model.video.celulaModel import CelulaModel
+from util.decorators import memory_usage, timed
 
 MASK = Mask()
 THREAD = {"thread_controller":True}
@@ -40,30 +41,31 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
             pass
 
     try:
+        init_tab = ""
         #Inicia o Buffer para que possa usar a função check
         enable_button("Dados")
         #Detecção da Barra
         check(controller,verify_barra,"get Barra")
-        msg("\r"+"detecção da Barra")
+        msg(f"{init_tab} detecção da Barra")
 
         #Faz inferencia quando não consegue detectar a barra
         not_allocated = indice_not_process(controller.buffer)
         for i in not_allocated['line']:
             fix_barra(controller.buffer, i)
-        msg("\r"+"Inferencia da Barra")
+        msg(f"{init_tab} Inferencia da Barra")
         #Pega a predominancia da posição da barra
         tendency_barra_moda(controller.buffer)
-        msg("\r"+"Predominancia da Barra")
+        msg(f"{init_tab} Predominancia da Barra")
 
         #Rotaciona o frame de acordo com a Barra
         check(controller,verify_inclination,"rotaciona")
-        msg("\r"+"Rotação")
+        msg(f"{init_tab} Rotação")
 
         enable_button("Barra")
 
         # Estimativa de pose Humana
         check(controller,verify_eph,"Estimativa de pose")
-        msg("\r"+"Pose")
+        msg(f"{init_tab} Pose")
         enable_button("EPH")    
 
         # Meta Dado para Transpilação do Alfabeto
@@ -73,7 +75,7 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
 
         # Transpilação Alfabeto AFD
         check(controller,verify_AFD,"char AFD")
-        msg("\r"+"Transpilação alfabeto AFD")
+        msg(f"{init_tab} Transpilação alfabeto AFD")
 
         
         beep()
@@ -195,8 +197,11 @@ def start_check(controller:VideoController):
         print(f"Erro: {e}")
         print(f"Traceback: {traceback_msg}")
 
+@timed
+@memory_usage
 def check(controller:VideoController,verify_fx:callable, name:str):
     """Roda os verify em todos os frames do buffer"""
+    check.__name__ = check.__name__  +str
     total = controller.getTotalFrame()
     controller.restart()
     for id in range(total):
@@ -210,6 +215,7 @@ def check(controller:VideoController,verify_fx:callable, name:str):
                 f"thread_controller : False.... thread desligada\n"
                 f"pre processamento {name} incompleto\n"
             )
+    print("\n")
 
 def verify_barra(cel:CelulaModel):
     '''Para cada frame Extrai a barra'''
@@ -243,10 +249,13 @@ def verify_inclination(cel:CelulaModel):
 
 def verify_eph(cel:CelulaModel):
     '''Para cada frame Extrai a pose EPH - Estimativa de pose Humana'''
-    frame = cel.getFrame()
-    posePoints:PosePoints = PosePoints(frame)
-    pose:PoseModel = posePoints.getPose()   
-    cel.setPose(pose)
+    try:
+        frame = cel.getFrame()
+        posePoints:PosePoints = PosePoints(frame)
+        pose:PoseModel = posePoints.getPose()   
+        cel.setPose(pose)
+    except:
+        cel.setPose(None)
 
 def verify_data(cel: CelulaModel):
     pose: PoseModel = cel.getPose()  # Obtém o objeto de pose da célula

@@ -8,6 +8,7 @@ from io import BytesIO
 from controller.video.buffer import Buffer
 from model.featureExtraction.dataModel import DataModel
 from model.video.celulaModel import CelulaModel
+from util.progress_bar import progress_bar
 
     
 class VideoController():
@@ -51,6 +52,8 @@ class VideoController():
             self.nextInVideo()
         #Passa por todos os frames
         for id in range(total_frames):
+            percent = round(100*(id/total_frames))
+            progress_bar(percent, 'start')
             frame = self.getFrame()
             data = DataModel()
             data.set("id",id)
@@ -59,6 +62,13 @@ class VideoController():
             if(not self.isFinished()):
                 self.nextInVideo()  
         self.rebobina()
+
+
+
+
+
+
+
            
     def _loadVideo(self, video):
         '''Carrega o video'''
