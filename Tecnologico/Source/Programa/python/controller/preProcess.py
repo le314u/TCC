@@ -201,7 +201,6 @@ def start_check(controller:VideoController):
 @memory_usage
 def check(controller:VideoController,verify_fx:callable, name:str):
     """Roda os verify em todos os frames do buffer"""
-    check.__name__ = check.__name__  +str
     total = controller.getTotalFrame()
     controller.restart()
     for id in range(total):
