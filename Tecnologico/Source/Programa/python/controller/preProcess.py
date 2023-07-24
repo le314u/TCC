@@ -26,9 +26,6 @@ MASK = Mask()
 THREAD = {"thread_controller":True}
 
 
-
-
-
 def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
     global THREAD 
     THREAD = thread_controller
@@ -41,7 +38,6 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
             enable_flag(flags,"Processed")
         except:
             pass
-
 
     try:
         #Inicia o Buffer para que possa usar a função check

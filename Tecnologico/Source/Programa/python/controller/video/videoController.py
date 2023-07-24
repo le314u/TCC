@@ -30,8 +30,18 @@ class VideoController():
         self._loadVideo(video)
         #Instancia o Buffer de acordo com o video e Carrega um vetor de frames
         self.start_buffer()
+    
+    def getMetaVideo(self):
+        # Obtenha informações sobre o vídeo
+        cap = self.getVideo()
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        return {
+            "fps":fps,
+            "size":(width,height),
+        }
         
-
     def start_buffer(self):
         '''Instancia o Buffer de acordo com o video e Carrega Celulas e frames'''
         total_frames = self.getTotalFrame()
@@ -50,9 +60,6 @@ class VideoController():
                 self.nextInVideo()  
         self.rebobina()
            
-
-
-
     def _loadVideo(self, video):
         '''Carrega o video'''
         #Seta as configurações / metaDados
@@ -79,6 +86,9 @@ class VideoController():
             _, frame= self.conf['video'].read()
             self.conf['frame']  = frame
             self.conf['id_frame'] = self.conf['id_frame']+1
+    
+    def getVideo(self):
+        return self.conf["video"]
     
     def getFrame(self):
         '''Pega o frame atual ou ultimo frame'''
@@ -148,7 +158,6 @@ class VideoController():
     def isRunning(self):
         '''Retorna se o video esta rodando ou pausado'''
         return self.conf['play']
-
 
 def Video(video_original, frames):
     '''Pega um conjunto de frames e cria um video'''

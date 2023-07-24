@@ -48,6 +48,22 @@ def display_img(frame,name="DEBUG_IMAGE"):
 def save_img(frame,name=None):
     cv2.imwrite(f"{name}.png", frame)
 
+def save_video(metaVideo, frames, name=None):
+    newName = f"{name}.avi"
+    fps = metaVideo['fps']
+    width ,height = metaVideo['size']
+
+    # Defina o codec e outras configurações do vídeo de saída
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Codec a ser usado para salvar o vídeo (neste exemplo, XVID)
+    out = cv2.VideoWriter(newName, fourcc, fps, (width, height))
+
+    for frame in frames:
+        # Escreva o quadro processado no arquivo de saída
+        out.write(frame)
+
+    # Libere os recursos
+    out.release()
+
 
 def matchGeral(foto,mask):
 

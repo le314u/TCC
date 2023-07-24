@@ -3,7 +3,8 @@ from typing import List
 from tkinter import *
 
 from controller.preProcess import preProcess
-from controller.processImg.debug import save_img
+from controller.processImg.debug import save_img, save_video
+from controller.processImg.others import createVideo
 from controller.render.pipe import PipeLine
 from controller.render.renderBar import renderBar
 from controller.render.renderPose import renderPose
@@ -55,10 +56,11 @@ class MainWindow():
 		#Cria as flags
 		finished = Flag("Processed",state=False,triguer=True)
 		saveFrame_flag = Flag("SaveF",state=True,triguer=True)
+		saveVideo_flag = Flag("SaveV",state=True,triguer=True)
 		barra_flag = Flag("Barra")
 		dados_flag = Flag("Dados")
 		eph_flag = Flag("EPH")
-		all_flags = [finished,barra_flag, eph_flag, dados_flag, saveFrame_flag]
+		all_flags = [finished,saveFrame_flag, saveVideo_flag,barra_flag, dados_flag,eph_flag]
 
 		#Seta uma Função para cada Flag
 		barra_flag.setFx( lambda frame, cel : renderBar(frame,cel.getLine() ) )
@@ -71,7 +73,7 @@ class MainWindow():
 		pipe_render.addFlag(dados_flag,1)
 		pipe_render.addFlag(eph_flag,1)
 
-		def save_frame(frame=None, cel=None):
+		def saveFrame(frame=None, cel=None):
 			id = 0
 			if frame is None:
 				frame = self.controller.getFrame()
@@ -80,18 +82,39 @@ class MainWindow():
 				cel = self.controller.getCel(id)
 				path = "./midia/dist/"
 				fixPath(path)
+
 			save_img( 
 				pipe_render.processImg(frame,cel),
 				f"{path}/{id}_processed"
 			)
-		saveFrame_flag.setFx(save_frame)
+			print(f"Save:{id}_processed")
 
-		createListButtons = lambda flags: [ButtonSketch(flag.getName(),flag) for flag in flags  ]
+		def saveVideo(frame=None, cel=None):
+			path = "./midia/dist/"
+			name = f"{path}video_processed"
+			fixPath(path)
+			
+			controller = self.controller
+			metaVideo = controller.getMetaVideo()
+			frames = []
+
+			#Processamento dos frames
+			for id in range(controller.getTotalFrame()):
+				cel = controller.getCel(id)
+				frame = cel.getFrame()
+				frame_processed = pipe_render.processImg(frame, cel)
+				frames.append(frame_processed)
+			
+			save_video(metaVideo, frames, name)
+			print(f"Save:video_processed")
+
+						
+		saveFrame_flag.setFx(saveFrame)
+		saveVideo_flag.setFx(saveVideo)
+
 		#Cria os buttons
-		btns:List[ButtonSketch] =  createListButtons([barra_flag,dados_flag,eph_flag,saveFrame_flag])
-
-
-		
+		createListButtons = lambda flags: [ButtonSketch(flag.getName(),flag) for flag in flags  ]
+		btns:List[ButtonSketch] =  createListButtons(all_flags[1:])
 		initial_state = {
 		  "frame":0,
 		  "velocidade":1.0,

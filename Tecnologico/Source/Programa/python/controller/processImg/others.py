@@ -1,5 +1,9 @@
+from io import BytesIO
 import cv2
 import numpy as np
+from controller.render.pipe import PipeLine
+
+from controller.video.videoController import VideoController
 
 def count_white_pixels(frame):
     # Converter o frame para escala de cinza (isso é importante para trabalhar com cores)
@@ -29,3 +33,36 @@ def count_discontinuities(frame, threshold):
     count = np.count_nonzero(gradient_magnitude > threshold)
 
     return count
+
+
+def createVideo(pipeRender:PipeLine, controller:VideoController):
+    '''Pega um conjunto de frames e cria um video'''
+
+    #Video Original
+    video_original = controller.getVideo()
+
+    #Frames
+    frames = []
+    for id in range(controller.getTotalFrame()):
+        cel = controller.getCel(id)
+        frame = cel.getFrame()
+        frame_processed = pipeRender.processImg(frame, cel)
+        frames.append(frame_processed)
+
+    #Quantidade de fps
+    fps = int(video_original.get(cv2.CAP_PROP_FPS))
+    #Dimensão do video
+    frame_size = (int(video_original.get(cv2.CAP_PROP_FRAME_WIDTH)), int(video_original.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+    #codex
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # ou outro codec
+    #Salva na memoria
+    buffer = BytesIO()
+    writer = cv2.VideoWriter(buffer, fourcc, fps, frame_size)
+    #Passa frame a frame
+    for f in frames:
+        writer.write(f)
+    #Encerra o video
+    writer.release()
+    #retorna o novo video
+    video_data = buffer.getvalue()
+    return video_data
