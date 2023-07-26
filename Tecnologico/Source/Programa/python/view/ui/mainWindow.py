@@ -29,11 +29,11 @@ class MainWindow():
 		pipeRender = DATA['pipeRender']
 		btns = DATA['btns']
 		list_flags = DATA['flags']
-		#path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/lazy_white.mp4" 
+		path = "/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/lazy_white.mp4" 
 		
 
 		#Inicia a parte grafica'''
-		path = getPath()
+		#path = getPath()
 		self.controller = VideoController(path=path)
 
 		#Pre processamento ocorre em paralelo

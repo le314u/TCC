@@ -27,15 +27,14 @@ class DataModel:
         time = lambda var: f"{int(var.total_seconds() // 60)} m {int(var.total_seconds() % 60)} s"
 
         string = str(
-            f"execucoes:{self.quantidade_movimentos}\n"
+            f"movimentos:{self.quantidade_movimentos}\n"
             f"concentrica:{time(self.concentrica)}\n"
             f"excentrica:{time(self.excentrica)}\n"
             f"isometrica:{time(self.isometrica)}\n"
-            f"movimentos:{self.quantidade_movimentos}\n"
-            f"angulo braco_dir:{self.angulo_braco_dir}\n"
-            f"angulo braco_esq:{self.angulo_braco_esq}\n"
-            f"angulo perna_dir:{self.angulo_perna_dir}\n"
-            f"angulo perna_esq:{self.angulo_perna_esq}\n"
+            f"angulo braco_dir:{r2(self.angulo_braco_dir)}\n"
+            f"angulo braco_esq:{r2(self.angulo_braco_esq)}\n"
+            f"angulo perna_dir:{r2(self.angulo_perna_dir)}\n"
+            f"angulo perna_esq:{r2(self.angulo_perna_esq)}\n"
         )+self.__formatStr( self.meta )
 
         return string
@@ -104,7 +103,7 @@ class DataModel:
     def getIsometrica(self):
         return self.isometrica
 
-    def getQtd(self):
+    def getQtdMovimentos(self):
         return self.quantidade_movimentos
 
     def getAnguloBracoDir(self):
@@ -131,7 +130,7 @@ class DataModel:
     def setIsometrica(self, isometrica):
         self.isometrica = isometrica
 
-    def setQtd(self, quantidade_movimentos):
+    def setQtdMovimentos(self, quantidade_movimentos):
         self.quantidade_movimentos = quantidade_movimentos
 
     def setAngulo(self,angulo_braco_dir=None ,angulo_braco_esq=None ,angulo_perna_dir=None ,angulo_perna_esq=None ):

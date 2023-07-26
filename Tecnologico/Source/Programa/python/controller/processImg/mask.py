@@ -3,7 +3,7 @@ import numpy as np
 
 class Mask():
     
-    def __init__(self, path_mask="/home/guest/Área de Trabalho/TCC/Tecnologico/Source/Programa/python/midia/mascara/mask.png"):
+    def __init__(self, path_mask="./midia/mascara/mask.png"):
         #Cada flag é associada a um numero que define a ordem de prioridade
         self.path_mask = path_mask 
         self.mask = cv2.imread(self.path_mask)

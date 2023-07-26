@@ -16,7 +16,7 @@ from controller.util.flag import Flag, enable_flag, disable_flag
 from controller.util.progress_bar import progress_bar
 from controller.video.buffer import Buffer
 from controller.video.videoController import VideoController
-from model.AFD.charAFD import charAFD
+from model.AFD.AFD import Cel2Char, Char, Machine, possibleChar
 from model.featureExtraction.dataModel import DataModel
 from model.featureExtraction.lineModel import LineModel
 from model.featureExtraction.poseModel import PoseModel, Segmento
@@ -25,8 +25,98 @@ from util.decorators import memory_usage, timed
 
 MASK = Mask()
 THREAD = {"thread_controller":True}
+AFD:Machine = None
+
+def create_AFD():
+    '''Processa o Frame'''
+    try:  
+        # Definir o alfabeto do AFD (caracteres válidos para a entrada)
+        alfabeto = [
+            "[False, False, False, False]",
+            "[False, False, False, True]",
+            "[False, False, True, False]",
+            "[False, False, True, True]",
+            "[False, True, False, False]",
+            "[False, True, False, True]",
+            "[False, True, True, False]",
+            "[False, True, True, True]",
+            "[True, False, False, False]",
+            "[True, False, False, True]",
+            "[True, False, True, False]",
+            "[True, False, True, True]",
+            "[True, True, False, False]",
+            "[True, True, False, True]",
+            "[True, True, True, False]",
+            "[True, True, True, True]",
+        ]
+        # Definir os estados do AFD
+        estados = ['preparando','inicio', 'extensao,' 'meta','concentrica','excentrica','erro', 'fim']
+        # Definir o estado inicial do AFD
+        estado_inicial = 'preparando'
+        # Definir os estados finais do AFD
+        estados_finais = ['fim']
+        # Definir as transições de estado do AFD
+        transicoes = {}
+        #Função que facilita Multi transiçoes de state->end_point com uma lista de chars
+        def transition(state,chars,end_point,fx):
+            for char in chars:
+                s = f"{state},{str(char)}"
+                transicoes[s]=(end_point,fx)
+        # preparando -> inicio
+        char = [True, True, False, False]
+        transition(state="preparando",end_point="inicio",fx=lambda x:None,chars=[char] )
+        # inicio -> inicio
+        vets = []
+        possibleChar(vets=vets,vet=[False, False, None, None])
+        possibleChar(vets=vets,vet=[True, False, None, None])
+        possibleChar(vets=vets,vet=[False, True, None, None])
+        transition(state="inicio",end_point="inicio",fx=lambda x:None,chars=vets )
+        # inicio -> concentrica
+        char = [True, False, False, False]
+        transition(state="inicio",end_point="concentrica",fx=lambda x:None,chars=[char] )
+        # concentrica -> meta
+        def fx(cel:CelulaModel):
+           print("\n")
+           qtd = cel.getData().getQtdMovimentos()
+           print(qtd)
+           cel.getData().setQtdMovimentos(int(qtd)+1)
+           qtd = cel.getData().getQtdMovimentos()
+           print(qtd)
+           print(f"iD {cel.getData().get('id')}")
+        char = [True,False,True,False]
+        transition(state="concentrica",end_point="meta",fx=fx,chars=[char] )
+        # meta -> excentrica
+        char = [True,False,False,False]
+        transition(state="meta",end_point="excentrica",fx=lambda x:None,chars=[char] )
+        # Ação Invalida  -> erro
+        vets = []
+        possibleChar(vets=vets,vet=[True,None,None,True])
+        transition(state="inicio",end_point="erro",fx=lambda x:None,chars=vets )
+        transition(state="concentrica",end_point="erro",fx=lambda x:None,chars=vets )
+        transition(state="meta",end_point="erro",fx=lambda x:None,chars=vets )
+        transition(state="excentrica",end_point="erro",fx=lambda x:None,chars=vets )
+        # erro -> inicio
+        char = [True,False,False,False]
+        transition(state="erro",end_point="inicio",fx=lambda x:None,chars=[char] )
+        # anyway -> fim
+        vets = []
+        possibleChar(vets=vets,vet=[False,None,None,None])
+        transition(state="inicio",end_point="fim",fx=lambda x:None,chars=vets )
+        transition(state="concentrica",end_point="fim",fx=lambda x:None,chars=vets )
+        transition(state="meta",end_point="fim",fx=lambda x:None,chars=vets )
+        transition(state="excentrica",end_point="fim",fx=lambda x:None,chars=vets )
+
+        AFD = Machine(alfabeto,estados,estado_inicial,estados_finais,transicoes)
+        return AFD
 
 
+
+        
+    except:
+        pass
+
+
+AFD = create_AFD()
 def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
     global THREAD 
     THREAD = thread_controller
@@ -42,12 +132,12 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
 
     try:
         init_tab = ""
-        #Inicia o Buffer para que possa usar a função check
         enable_button("Dados")
+
+        
         #Detecção da Barra
         check(controller,verify_barra,"get Barra")
         msg(f"{init_tab} detecção da Barra")
-
         #Faz inferencia quando não consegue detectar a barra
         not_allocated = indice_not_process(controller.buffer)
         for i in not_allocated['line']:
@@ -56,30 +146,32 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
         #Pega a predominancia da posição da barra
         tendency_barra_moda(controller.buffer)
         msg(f"{init_tab} Predominancia da Barra")
-
         #Rotaciona o frame de acordo com a Barra
         check(controller,verify_inclination,"rotaciona")
         msg(f"{init_tab} Rotação")
-
         enable_button("Barra")
 
+    
         # Estimativa de pose Humana
         check(controller,verify_eph,"Estimativa de pose")
         msg(f"{init_tab} Pose")
         enable_button("EPH")    
 
+       
         # Meta Dado para Transpilação do Alfabeto
         check(controller,verify_data,"meta Dados")
         check(controller,verify_mao_barra,"mão na barra")
         check(controller,verify_meta_extensao,"extensao cotovelo")
-
         # Transpilação Alfabeto AFD
-        check(controller,verify_AFD,"char AFD")
+        check(controller,verify_char_AFD,"char AFD")
         msg(f"{init_tab} Transpilação alfabeto AFD")
+        # Processamento Alfabeto AFD
+        check(controller,verify_AFD,"char AFD")
+        msg(f"{init_tab} Processamento AFD")
 
-        
-        beep()
+
         enable_button("SaveF")
+        beep()
 
 
     except Exception as e:
@@ -257,77 +349,108 @@ def verify_eph(cel:CelulaModel):
         cel.setPose(None)
 
 def verify_data(cel: CelulaModel):
-    pose: PoseModel = cel.getPose()  # Obtém o objeto de pose da célula
+    try:
+        pose: PoseModel = cel.getPose()  # Obtém o objeto de pose da célula
 
-    # Obtém as linhas dos segmentos do corpo (braços e pernas) da pose
-    braco_dir = pose.getSegmentLine(Segmento.BRACO_DIR)
-    braco_esq = pose.getSegmentLine(Segmento.BRACO_ESQ)
-    perna_dir = pose.getSegmentLine(Segmento.PERNA_DIR)
-    perna_esq = pose.getSegmentLine(Segmento.PERNA_ESQ)
+        # Obtém as linhas dos segmentos do corpo (braços e pernas) da pose
+        braco_dir = pose.getSegmentLine(Segmento.BRACO_DIR)
+        braco_esq = pose.getSegmentLine(Segmento.BRACO_ESQ)
+        perna_dir = pose.getSegmentLine(Segmento.PERNA_DIR)
+        perna_esq = pose.getSegmentLine(Segmento.PERNA_ESQ)
 
-    # Calcula os ângulos das linhas dos segmentos do corpo
-    struct_angulo = {
-        "angulo_braco_dir": round(angle_line(braco_dir[0], braco_dir[1]),2) ,
-        "angulo_braco_esq": round(angle_line(braco_esq[0], braco_esq[1]),2) ,
-        "angulo_perna_dir": round(angle_line(perna_dir[0], perna_dir[1]),2) ,
-        "angulo_perna_esq": round(angle_line(perna_esq[0], perna_esq[1]),2) 
-    }
+        # Calcula os ângulos das linhas dos segmentos do corpo
+        struct_angulo = {
+            "angulo_braco_dir": round(angle_line(braco_dir[0], braco_dir[1]),2) ,
+            "angulo_braco_esq": round(angle_line(braco_esq[0], braco_esq[1]),2) ,
+            "angulo_perna_dir": round(angle_line(perna_dir[0], perna_dir[1]),2) ,
+            "angulo_perna_esq": round(angle_line(perna_esq[0], perna_esq[1]),2) 
+        }
 
-    # Cria um objeto DataModel com os ângulos e outras informações
-    data = cel.getData()
-    data.setAngulo(**struct_angulo)
+        # Cria um objeto DataModel com os ângulos e outras informações
+        data = cel.getData()
+        data.setAngulo(**struct_angulo)
+    except:
+        struct_angulo = {
+            "angulo_braco_dir": 0 ,
+            "angulo_braco_esq": 0 ,
+            "angulo_perna_dir": 0 ,
+            "angulo_perna_esq": 0 
+        }
 
 def verify_mao_barra(cel:CelulaModel):
     '''Para cada frame verifica se a mão esta encostada na barra'''
-    mao_barra = verify_maoBarra(cel)
-    cel.getData().set("mao_barra",mao_barra)
+    try:
+        mao_barra = verify_maoBarra(cel)
+        cel.getData().set("mao_barra",mao_barra)
+    except:
+        cel.getData().set("mao_barra",False)
 
 def verify_meta_extensao(cel: CelulaModel):
     '''Verifica o menor ponto que o peito atinge quando esta quando a mao na barra'''
-    
-    #So analisa caso a mão esteja na barra
-    mao_barra = cel.getData().get("mao_barra")
-    if(not mao_barra):
-        return None
-    
-    #Alias
-    x,y = (0,1)
+    try:
+        #So analisa caso a mão esteja na barra
+        mao_barra = cel.getData().get("mao_barra")
+        if(not mao_barra):
+            return None
+        
+        #Alias
+        x,y = (0,1)
 
-    #Data Classe
-    menor_ombro_esq = CelulaModel.getAggregate("menor_ombro_esq")
-    menor_ombro_dir = CelulaModel.getAggregate("menor_ombro_dir")
+        #Data Classe
+        menor_ombro_esq = CelulaModel.getAggregate("menor_ombro_esq")
+        menor_ombro_dir = CelulaModel.getAggregate("menor_ombro_dir")
 
-    #Data da celula
-    ombro_esq = cel.getPose().get_left_elbow()
-    ombro_dir = cel.getPose().get_right_elbow()
+        #Data da celula
+        ombro_esq = cel.getPose().get_left_elbow()
+        ombro_dir = cel.getPose().get_right_elbow()
 
-    #Inicializando a classe
-    if(menor_ombro_esq is None):
-        CelulaModel.setAggregate("menor_ombro_esq",ombro_esq)
-    if(menor_ombro_dir is None):
-        CelulaModel.setAggregate("menor_ombro_dir",ombro_dir)
-    if(menor_ombro_esq is None and menor_ombro_dir is None ):
-        return
-    
-    #OBS: esta '>' pq  o eixo 'Y' em openCv é invertido
-    if ombro_esq[y] > menor_ombro_esq[y]:
-        CelulaModel.setAggregate("menor_ombro_esq",ombro_esq)
-    if ombro_dir[y] > menor_ombro_dir[y]:
-        CelulaModel.setAggregate("menor_ombro_dir",ombro_dir)
+        #Inicializando a classe
+        if(menor_ombro_esq is None):
+            CelulaModel.setAggregate("menor_ombro_esq",ombro_esq)
+        if(menor_ombro_dir is None):
+            CelulaModel.setAggregate("menor_ombro_dir",ombro_dir)
+        if(menor_ombro_esq is None and menor_ombro_dir is None ):
+            return
+        
+        #OBS: esta '>' pq  o eixo 'Y' em openCv é invertido
+        if ombro_esq[y] > menor_ombro_esq[y]:
+            CelulaModel.setAggregate("menor_ombro_esq",ombro_esq)
+        if ombro_dir[y] > menor_ombro_dir[y]:
+            CelulaModel.setAggregate("menor_ombro_dir",ombro_dir)
+    except:
+        pass
 
 def verify_extensao_cotovelo(cel: CelulaModel):
     '''Para cada frame verifica se o cotovelo esta extendido'''
-    extensao_cotovelo = verify_extensaoCotovelo(cel)
-    cel.getData().set("extensao_cotovelo",extensao_cotovelo)
+    try:
+        extensao_cotovelo = verify_extensaoCotovelo(cel)
+        cel.getData().set("extensao_cotovelo",extensao_cotovelo)
+    except:
+        cel.getData().set("extensao_cotovelo",False)
 
 def verify_ultrapassar_barra(cel: CelulaModel):
-    ultrapassar_barra = verify_ultrapassarBarra(cel)
-    cel.getData().set("ultrapassar_barra",ultrapassar_barra)
+    try:
+        ultrapassar_barra = verify_ultrapassarBarra(cel)
+        cel.getData().set("ultrapassar_barra",ultrapassar_barra)
+    except:
+        cel.getData().set("ultrapassar_barra",False)
     
+def verify_char_AFD(cel:CelulaModel):
+    '''Transforma o frame em uma letra do alfabeto para o AFD'''
+    try:
+        char_AFD:Char = Cel2Char(cel_meta=cel)
+        cel.getData().set("AFD",char_AFD)
+    except:
+        pass
+
 def verify_AFD(cel:CelulaModel):
     '''Transforma o frame em uma letra do alfabeto para o AFD'''
-    char_AFD = charAFD(cel_meta=cel)
-    cel.getData().set("AFD",char_AFD)
-
+    try:
+        char = cel.getData().get("AFD")
+        char_str = str(char)
+        AFD.process_char(char_str,cel)
+        cel.getData().set("state",AFD.getState())
+    except:
+        pass
 
 #END

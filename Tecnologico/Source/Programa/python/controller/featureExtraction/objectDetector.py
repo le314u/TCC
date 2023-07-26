@@ -1,4 +1,5 @@
 
+import traceback
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -138,7 +139,7 @@ def detectBar(frame) -> LineModel:
 
 def verify_maoBarra(cel:CelulaModel):
     #Constante
-    size = 30    # Tamanho do kernel de Blur e Pixelização
+    size = 10    # Tamanho do kernel de Blur e Pixelização
     limiar = 100    # Definir um limiar para identificar a descontinuidade
 
     #Data
@@ -198,7 +199,21 @@ def verify_maoBarra(cel:CelulaModel):
     # Verificar se houve ou não descontinuidade na imagem ou seja se a mão esta ou não na barra
     # Se houve descontinuidade do preto logo algo estava na barra 
     # So valida se encontrar 2 contornos ou mais ou seja as 2 mãos
-  
+    try:
+        if(cel.getData().get("id") == 32):
+            display_img(limited)
+            display_img(limited2)
+            display_img(limited3)
+            display_img(mask_barra)
+            display_img(matchGeral(limited3,mask_barra))
+            imgs = join_imgs(limited,limited2,limited3)
+            display_img(imgs)
+    except Exception as e:
+        traceback_msg = traceback.format_exc()
+        print(f"Erro: {e}")
+        print(f"Traceback: {traceback_msg}")
+            
+    
     ret = len(contornos) >= 2
     return ret
 
@@ -208,6 +223,7 @@ def verify_extensaoCotovelo(cel: CelulaModel):
     #Alias
     x,y = (0,1)
     limite=100
+    limiar_angulo = 13    # Definir um limiar para identificar a descontinuidade
 
     #So analisa a extensão caso a mão esteja na barra
     mao_barra = cel.getData().get("mao_barra")
@@ -222,15 +238,21 @@ def verify_extensaoCotovelo(cel: CelulaModel):
     ombro_esq = cel.getPose().get_left_elbow()
     ombro_dir = cel.getPose().get_right_elbow()
 
-    check = None
+    anguloBracoEsq = cel.getData().getAnguloBracoEsq()
+    anguloBracoDir = cel.getData().getAnguloBracoDir()
+
+    offset_braco = abs(anguloBracoEsq - anguloBracoDir)
+    limiar_aceitavel = limiar_angulo+offset_braco
+    check_1 = anguloBracoEsq < limiar_aceitavel and anguloBracoDir < limiar_aceitavel
+
+    check_2 = False
     if (abs(ombro_esq[y] - menor_ombro_esq[y]) < limite) or (abs(ombro_dir[y] - menor_ombro_dir[y]) < limite):
-        check=True
+        check_2=True
     else:
-        check=False
+        check_2 = False
 
+    check = check_1 and check_2
     cel.getData().set("extensao_cotovelo",check)
-
-    
     return check
 
 def verify_ultrapassarBarra(cel: CelulaModel):
