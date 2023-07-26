@@ -76,13 +76,9 @@ def create_AFD():
         transition(state="inicio",end_point="concentrica",fx=lambda x:None,chars=[char] )
         # concentrica -> meta
         def fx(cel:CelulaModel):
-           print("\n")
            qtd = cel.getData().getQtdMovimentos()
-           print(qtd)
            cel.getData().setQtdMovimentos(int(qtd)+1)
-           qtd = cel.getData().getQtdMovimentos()
-           print(qtd)
-           print(f"iD {cel.getData().get('id')}")
+           DataModel.agregate["aux"] = DataModel.agregate["aux"] +1
         char = [True,False,True,False]
         transition(state="concentrica",end_point="meta",fx=fx,chars=[char] )
         # meta -> excentrica
@@ -448,9 +444,11 @@ def verify_AFD(cel:CelulaModel):
     try:
         char = cel.getData().get("AFD")
         char_str = str(char)
+        qtd = cel.getData().getQtdMovimentos()
+        qtd_offset = DataModel.agregate["aux"]
+        cel.getData().setQtdMovimentos(int(qtd)+qtd_offset)
         AFD.process_char(char_str,cel)
+
         cel.getData().set("state",AFD.getState())
     except:
         pass
-
-#END

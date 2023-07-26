@@ -5,6 +5,7 @@ def r2(numero):
 
 class DataModel:
 
+    agregate = {"aux":0}
     def __init__(self, concentrica=None, excentrica=None, isometrica=None, quantidade_movimentos=None, angulo=None, meta=None):
         check = lambda variavel : timedelta(minutes=0,seconds=0,milliseconds=0) if variavel is None else variavel
         self.concentrica = check(concentrica)
@@ -27,15 +28,16 @@ class DataModel:
         time = lambda var: f"{int(var.total_seconds() // 60)} m {int(var.total_seconds() % 60)} s"
 
         string = str(
-            f"movimentos:{self.quantidade_movimentos}\n"
-            f"concentrica:{time(self.concentrica)}\n"
-            f"excentrica:{time(self.excentrica)}\n"
-            f"isometrica:{time(self.isometrica)}\n"
-            f"angulo braco_dir:{r2(self.angulo_braco_dir)}\n"
-            f"angulo braco_esq:{r2(self.angulo_braco_esq)}\n"
-            f"angulo perna_dir:{r2(self.angulo_perna_dir)}\n"
-            f"angulo perna_esq:{r2(self.angulo_perna_esq)}\n"
-        )+self.__formatStr( self.meta )
+            f"ID: {self.meta.get('id')}\n"
+            f"State: {self.meta.get('state')}\n"
+        )+str(
+            f"Quantidade Barras:{self.quantidade_movimentos}\n"
+            f"Angulo braco:{r2(self.angulo_braco_dir)}, {r2(self.angulo_braco_esq)}\n"
+            f"Angulo perna:{r2(self.angulo_perna_dir)}, {r2(self.angulo_perna_esq)}\n"
+            # f"concentrica:{time(self.concentrica)}\n"
+            # f"excentrica:{time(self.excentrica)}\n"
+            # f"isometrica:{time(self.isometrica)}\n"
+        )
 
         return string
     
