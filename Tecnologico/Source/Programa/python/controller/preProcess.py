@@ -16,7 +16,7 @@ from controller.util.flag import Flag, enable_flag, disable_flag
 from controller.util.progress_bar import progress_bar
 from controller.video.buffer import Buffer
 from controller.video.videoController import VideoController
-from model.AFD.AFD import Cel2Char, Char, Machine, possibleChar
+from model.AFD.AFD import Cel2Char, Char, Machine, create_AFD, possibleChar
 from model.featureExtraction.dataModel import DataModel
 from model.featureExtraction.lineModel import LineModel
 from model.featureExtraction.poseModel import PoseModel, Segmento
@@ -25,95 +25,57 @@ from util.decorators import memory_usage, timed
 
 MASK = Mask()
 THREAD = {"thread_controller":True}
-AFD:Machine = None
-
-def create_AFD():
-    '''Processa o Frame'''
-    try:  
-        # Definir o alfabeto do AFD (caracteres válidos para a entrada)
-        alfabeto = [
-            "[False, False, False, False]",
-            "[False, False, False, True]",
-            "[False, False, True, False]",
-            "[False, False, True, True]",
-            "[False, True, False, False]",
-            "[False, True, False, True]",
-            "[False, True, True, False]",
-            "[False, True, True, True]",
-            "[True, False, False, False]",
-            "[True, False, False, True]",
-            "[True, False, True, False]",
-            "[True, False, True, True]",
-            "[True, True, False, False]",
-            "[True, True, False, True]",
-            "[True, True, True, False]",
-            "[True, True, True, True]",
-        ]
-        # Definir os estados do AFD
-        estados = ['preparando','inicio', 'extensao,' 'meta','concentrica','excentrica','erro', 'fim']
-        # Definir o estado inicial do AFD
-        estado_inicial = 'preparando'
-        # Definir os estados finais do AFD
-        estados_finais = ['fim']
-        # Definir as transições de estado do AFD
-        transicoes = {}
-        #Função que facilita Multi transiçoes de state->end_point com uma lista de chars
-        def transition(state,chars,end_point,fx):
-            for char in chars:
-                s = f"{state},{str(char)}"
-                transicoes[s]=(end_point,fx)
-        # preparando -> inicio
-        char = [True, True, False, False]
-        transition(state="preparando",end_point="inicio",fx=lambda x:None,chars=[char] )
-        # inicio -> inicio
-        vets = []
-        possibleChar(vets=vets,vet=[False, False, None, None])
-        possibleChar(vets=vets,vet=[True, False, None, None])
-        possibleChar(vets=vets,vet=[False, True, None, None])
-        transition(state="inicio",end_point="inicio",fx=lambda x:None,chars=vets )
-        # inicio -> concentrica
-        char = [True, False, False, False]
-        transition(state="inicio",end_point="concentrica",fx=lambda x:None,chars=[char] )
-        # concentrica -> meta
-        def fx(cel:CelulaModel):
-           qtd = cel.getData().getQtdMovimentos()
-           cel.getData().setQtdMovimentos(int(qtd)+1)
-           DataModel.agregate["aux"] = DataModel.agregate["aux"] +1
-        char = [True,False,True,False]
-        transition(state="concentrica",end_point="meta",fx=fx,chars=[char] )
-        # meta -> excentrica
-        char = [True,False,False,False]
-        transition(state="meta",end_point="excentrica",fx=lambda x:None,chars=[char] )
-        # Ação Invalida  -> erro
-        vets = []
-        possibleChar(vets=vets,vet=[True,None,None,True])
-        transition(state="inicio",end_point="erro",fx=lambda x:None,chars=vets )
-        transition(state="concentrica",end_point="erro",fx=lambda x:None,chars=vets )
-        transition(state="meta",end_point="erro",fx=lambda x:None,chars=vets )
-        transition(state="excentrica",end_point="erro",fx=lambda x:None,chars=vets )
-        # erro -> inicio
-        char = [True,False,False,False]
-        transition(state="erro",end_point="inicio",fx=lambda x:None,chars=[char] )
-        # anyway -> fim
-        vets = []
-        possibleChar(vets=vets,vet=[False,None,None,None])
-        transition(state="inicio",end_point="fim",fx=lambda x:None,chars=vets )
-        transition(state="concentrica",end_point="fim",fx=lambda x:None,chars=vets )
-        transition(state="meta",end_point="fim",fx=lambda x:None,chars=vets )
-        transition(state="excentrica",end_point="fim",fx=lambda x:None,chars=vets )
-
-        AFD = Machine(alfabeto,estados,estado_inicial,estados_finais,transicoes)
-        return AFD
-
-
-
-        
-    except:
-        pass
-
-
 AFD = create_AFD()
+
+def enable_button(flags,flag_name):
+        try:
+            enable_flag(flags,flag_name)
+            #Triga a Flag Processed para Atualizar os buttons ativos e inativos
+            disable_flag(flags,"Processed")
+            enable_flag(flags,"Processed")
+        except:
+            pass
+
 def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
+    global THREAD 
+    THREAD = thread_controller
+    total = controller.getTotalFrame()
+    controller.restart()
+
+    if(True):
+        for id in range(total):
+            #printa a porcentagem ja feita 
+            percent = round(100*(id/total))
+            progress_bar(percent, "process")
+            if(THREAD['thread_controller']):
+                cel:CelulaModel = controller.buffer.get_cell(id)
+                try:
+                    process_cel(cel)
+                except:
+                    print(f"erro no frame {id}")
+
+            else:
+                print(f"erro no frame {id}")
+                return
+        enable_button(flags,"Dados")
+        enable_button(flags,"Barra")
+        enable_button(flags,"EPH")    
+        enable_button(flags,"SaveF")
+    else:
+        stepBystep(controller, flags, thread_controller)
+
+def process_cel(cel:CelulaModel):
+    verify_barra(cel)
+    fix_barra(cel) #Garante uma barra mais suave sem mudançar bruscas
+    verify_inclination(cel) #
+    verify_eph(cel)
+    verify_angle_member(cel)
+    verify_mao_barra(cel)
+    verify_meta_extensao(cel)
+    verify_char_AFD(cel)
+    verify_AFD(cel)
+
+def stepBystep(controller:VideoController, flags:List[Flag], thread_controller):
     global THREAD 
     THREAD = thread_controller
 
@@ -137,7 +99,7 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
         #Faz inferencia quando não consegue detectar a barra
         not_allocated = indice_not_process(controller.buffer)
         for i in not_allocated['line']:
-            fix_barra(controller.buffer, i)
+            fix_barras(controller.buffer, i)
         msg(f"{init_tab} Inferencia da Barra")
         #Pega a predominancia da posição da barra
         tendency_barra_moda(controller.buffer)
@@ -155,7 +117,7 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
 
        
         # Meta Dado para Transpilação do Alfabeto
-        check(controller,verify_data,"meta Dados")
+        check(controller,verify_angle_member,"meta Dados")
         check(controller,verify_mao_barra,"mão na barra")
         check(controller,verify_meta_extensao,"extensao cotovelo")
         # Transpilação Alfabeto AFD
@@ -222,7 +184,7 @@ def indice_not_process(buffer:Buffer):
             not_allocated['pose'].append(i)
     return not_allocated
 
-def fix_barra(buffer:Buffer, index:int):
+def fix_barras(buffer:Buffer, index:int):
     '''Inferencia da posição da barra'''
     start,end = get_range_to_analyze(buffer,index)
     array = buffer.get_slice((start,end), lambda data: data.getLine() )    
@@ -306,11 +268,13 @@ def check(controller:VideoController,verify_fx:callable, name:str):
 
 def verify_barra(cel:CelulaModel):
     '''Para cada frame Extrai a barra'''
-    frame = MASK.putMask(cel.getFrame(), MASK.getMask())
+    barra = None
     try:
+        frame = MASK.putMask(cel.getFrame(), MASK.getMask())
         barra:LineModel = detectBar(frame)
+        cel.setAggregate("last_bar",barra)
     except:
-        barra = None
+        barra = cel.getAggregate("last_bar")
     cel.setLine(barra)
 
 def verify_inclination(cel:CelulaModel):
@@ -344,7 +308,8 @@ def verify_eph(cel:CelulaModel):
     except:
         cel.setPose(None)
 
-def verify_data(cel: CelulaModel):
+def verify_angle_member(cel: CelulaModel):
+    '''Define angulo pernas e braço'''
     try:
         pose: PoseModel = cel.getPose()  # Obtém o objeto de pose da célula
 
@@ -452,3 +417,41 @@ def verify_AFD(cel:CelulaModel):
         cel.getData().set("state",AFD.getState())
     except:
         pass
+
+
+def fix_barra(cel:CelulaModel):
+    '''Inferencia da posição da barra de acordo com os valores acumulados e a ideia de votação majoritaria'''
+    #alias
+    x,y = 0,1
+    start,end = 0,1
+    x1 = lambda line: line.getPoints()[start][x]
+    y1 = lambda line: line.getPoints()[start][y]
+    x2 = lambda line: line.getPoints()[end][x]
+    y2 = lambda line: line.getPoints()[end][y]
+    
+    #barra atual
+    data = cel.getAggregate("acumulate_barra")
+    current_bar = cel.getLine()
+
+    if data is None:
+        new_data = {
+            "x1_ac": x1(current_bar),
+            "x2_ac": x2(current_bar),
+            "y1_ac": y1(current_bar),
+            "y2_ac": y2(current_bar),
+            "n": 1
+        }
+    else:
+        new_data = {
+            "x1_ac": data["x1_ac"] + x1(current_bar),
+            "x2_ac": data["x2_ac"] + x2(current_bar),
+            "y1_ac": data["y1_ac"] + y1(current_bar),
+            "y2_ac": data["y2_ac"] + y2(current_bar),
+            "n": data["n"] + 1
+        }
+    
+    cel.setAggregate("acumulate_barra",new_data)
+    total = new_data["n"]
+
+    new_bar = LineModel(new_data["x1_ac"]/total,new_data["y1_ac"]/total,new_data["x2_ac"]/total,new_data["y2_ac"]/total)
+    cel.setLine(new_bar)

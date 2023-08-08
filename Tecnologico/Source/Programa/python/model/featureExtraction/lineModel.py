@@ -1,11 +1,11 @@
 class LineModel:
     def __init__(self,x1,y1,x2,y2) -> None:
         #point 1
-        self.x1 = x1
-        self.y1 = y1
+        self.x1 = round(x1)
+        self.y1 = round(y1)
         #point 2
-        self.x2 = x2
-        self.y2 = y2
+        self.x2 = round(x2)
+        self.y2 = round(y2)
 
     def __str__(self):
         return f"Start:{self.getStart()} End:{self.getEnd()}"

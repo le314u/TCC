@@ -18,18 +18,18 @@ mp_pose = mp.solutions.pose
 
 # Argumentos para mp_pose.Pose()
 # STATIC_IMAGE_MODE  ->  Se definido como false, a solução trata as imagens de entrada como um fluxo de vídeo. Ele tentará detectar a pessoa mais proeminente nas primeiras imagens e, após uma detecção bem-sucedida, localiza ainda mais os marcos da pose. Em imagens subsequentes, ele simplesmente rastreia esses pontos de referência sem invocar outra detecção até que perca o rastreamento, reduzindo a computação e a latência. Se definido como true, a detecção de pessoas executa cada imagem de entrada, ideal para processar um lote de imagens estáticas, possivelmente não relacionadas. Padrão para false.
-# MODEL_COMPLEXITY  ->  Complexidade do modelo marco postura: 0, 1ou 2. A precisão do ponto de referência, bem como a latência de inferência, geralmente aumentam com a complexidade do modelo. Padrão para 1.
+# MODEL_COMPLEXITY  ->  Complexidade do modelo marco postura: 0, 1 ou 2. A precisão do ponto de referência, bem como a latência de inferência, geralmente aumentam com a complexidade do modelo. Padrão para 1.
 # SMOOTH_LANDMARKS  ->  Se definido como true, os filtros de solução representam pontos de referência em diferentes imagens de entrada para reduzir o jitter, mas são ignorados se static_image_mode também estiver definido como true. Padrão para true.
 # ENABLE_SEGMENTATION  ->  Se definido como true, além dos marcos de pose, a solução também gera a máscara de segmentação. Padrão para false.
 # SMOOTH_SEGMENTATION  ->  Se definido como true, a solução filtra as máscaras de segmentação em diferentes imagens de entrada para reduzir o jitter. Ignorado se enable_segmentation for false ou static_image_mode for true. Padrão para true.
 # MIN_DETECTION_CONFIDENCE  ->  Valor de confiança mínimo ( [0.0, 1.0]) do modelo de detecção de pessoa para que a detecção seja considerada bem-sucedida. Padrão para 0.5.
 # MIN_TRACKING_CONFIDENCE  ->  Valor de confiança mínimo ( [0.0, 1.0]) do modelo de rastreamento de pontos de referência para os pontos de referência de pose a serem considerados rastreados com sucesso, caso contrário, a detecção de pessoa será chamada automaticamente na próxima imagem de entrada. Configurá-lo com um valor mais alto pode aumentar a robustez da solução, às custas de uma latência mais alta. Ignorado se static_image_mode for true, em que a detecção de pessoas simplesmente é executada em todas as imagens. Padrão para 0.5.
 pose_midia_pipe = mp_pose.Pose(
-		static_image_mode=True,
-		enable_segmentation=True,
+		static_image_mode=False,
+		enable_segmentation=False,
 		model_complexity=2,
-		min_detection_confidence=0.5,
-		min_tracking_confidence=0.5
+		min_detection_confidence=0.3,
+		min_tracking_confidence=0.9
 	)
 
 
@@ -139,7 +139,7 @@ def detectBar(frame) -> LineModel:
 
 def verify_maoBarra(cel:CelulaModel):
     #Constante
-    size = 10    # Tamanho do kernel de Blur e Pixelização
+    size = 30    # Tamanho do kernel de Blur e Pixelização
     limiar = 100    # Definir um limiar para identificar a descontinuidade
 
     #Data
@@ -154,7 +154,7 @@ def verify_maoBarra(cel:CelulaModel):
 
     #Mascaras
     mask_frame = MASK.getMask()
-    mask_barra = MASK.createLineMask(frame,barra.getStart(),barra.getEnd(), size*3)
+    mask_barra = MASK.createLineMask(frame,barra.getStart(),barra.getEnd(), size*4)
     mask_center = MASK.createLineMask(frame,center_start,center_end, size*1.5)
     mask_center = cv2.bitwise_not(mask_center)
 
@@ -201,10 +201,6 @@ def verify_maoBarra(cel:CelulaModel):
     # So valida se encontrar 2 contornos ou mais ou seja as 2 mãos
     try:
         if(cel.getData().get("id") == 32):
-            display_img(limited)
-            display_img(limited2)
-            display_img(limited3)
-            display_img(mask_barra)
             display_img(matchGeral(limited3,mask_barra))
             imgs = join_imgs(limited,limited2,limited3)
             display_img(imgs)

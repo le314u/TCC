@@ -1,4 +1,5 @@
 import traceback
+from model.featureExtraction.dataModel import DataModel
 from model.video.celulaModel import CelulaModel
 from controller.featureExtraction.geometria import distance_point_line
 from controller.featureExtraction.objectDetector import verify_maoBarra,verify_extensaoCotovelo,verify_ultrapassarBarra,verify_movimentoQuadrilPerna
@@ -91,9 +92,6 @@ class Machine:
             print(f"Erro: {e}")
             print(f"Traceback: {traceback_msg}")
         
-            
-
-
     def reset(self):
         self.estado_atual = self.estado_inicial
 
@@ -124,4 +122,95 @@ def possibleChar(vets=None,vet=None,i=None):
         else:
             possibleChar(vets=vets, vet=vet, i=i-1)
     return vets
+
+
+def create_AFD():
+    '''Processa o Frame'''
+    try:  
+        # Definir o alfabeto do AFD (caracteres válidos para a entrada)
+        alfabeto = [
+            "[False, False, False, False]",
+            "[False, False, False, True]",
+            "[False, False, True, False]",
+            "[False, False, True, True]",
+            "[False, True, False, False]",
+            "[False, True, False, True]",
+            "[False, True, True, False]",
+            "[False, True, True, True]",
+            "[True, False, False, False]",
+            "[True, False, False, True]",
+            "[True, False, True, False]",
+            "[True, False, True, True]",
+            "[True, True, False, False]",
+            "[True, True, False, True]",
+            "[True, True, True, False]",
+            "[True, True, True, True]",
+        ]
+        # Definir os estados do AFD
+        estados = ['preparando','inicio', 'extensao,' 'meta','concentrica','excentrica','erro', 'fim']
+        # Definir o estado inicial do AFD
+        estado_inicial = 'preparando'
+        # Definir os estados finais do AFD
+        estados_finais = ['fim']
+        # Definir as transições de estado do AFD
+        transicoes = {}
+        #Função que facilita Multi transiçoes de state->end_point com uma lista de chars
+        transition = lambda state, chars, end_point, fx: [transicoes.update({f"{state},{str(char)}": (end_point, fx)}) for char in chars]
+        # def transition(state,chars,end_point,fx):
+        #     for char in chars:
+        #         s = f"{state},{str(char)}"
+        #         transicoes[s]=(end_point,fx)
+
+
+        # preparando -> inicio
+        char = [True, True, False, False]
+        transition(state="preparando",end_point="inicio",fx=lambda x:None,chars=[char] )
+
+        # inicio -> inicio
+        vets = []
+        possibleChar(vets=vets,vet=[False, False, None, None])
+        possibleChar(vets=vets,vet=[True, False, None, None])
+        possibleChar(vets=vets,vet=[False, True, None, None])
+        transition(state="inicio",end_point="inicio",fx=lambda x:None,chars=vets )
+
+        # inicio -> concentrica
+        char = [True, False, False, False]
+        transition(state="inicio",end_point="concentrica",fx=lambda x:None,chars=[char] )
+
+        # concentrica -> meta
+        def fx(cel:CelulaModel):
+           qtd = cel.getData().getQtdMovimentos()
+           cel.getData().setQtdMovimentos(int(qtd)+1)
+           DataModel.agregate["aux"] = DataModel.agregate["aux"] +1
+        char = [True,False,True,False]
+        transition(state="concentrica",end_point="meta",fx=fx,chars=[char] )
+
+        # meta -> excentrica
+        char = [True,False,False,False]
+        transition(state="meta",end_point="excentrica",fx=lambda x:None,chars=[char] )
+
+        # Ação Invalida  -> erro
+        vets = []
+        possibleChar(vets=vets,vet=[True,None,None,True])
+        transition(state="inicio",end_point="erro",fx=lambda x:None,chars=vets )
+        transition(state="concentrica",end_point="erro",fx=lambda x:None,chars=vets )
+        transition(state="meta",end_point="erro",fx=lambda x:None,chars=vets )
+        transition(state="excentrica",end_point="erro",fx=lambda x:None,chars=vets )
+
+        # erro -> inicio
+        char = [True,True,False,False]
+        transition(state="erro",end_point="inicio",fx=lambda x:None,chars=[char] )
+
+        # anyway -> fim
+        vets = []
+        possibleChar(vets=vets,vet=[False,None,None,None])
+        transition(state="inicio",end_point="fim",fx=lambda x:None,chars=vets )
+        transition(state="concentrica",end_point="fim",fx=lambda x:None,chars=vets )
+        transition(state="meta",end_point="fim",fx=lambda x:None,chars=vets )
+        transition(state="excentrica",end_point="fim",fx=lambda x:None,chars=vets )
+
+        return Machine(alfabeto,estados,estado_inicial,estados_finais,transicoes)
+    except:
+        return None
+
 
