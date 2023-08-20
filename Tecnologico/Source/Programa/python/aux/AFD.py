@@ -37,11 +37,6 @@ def AlessB(A, B):
             pass
     return "\n".join(new_items)
 
-
-
-def states(A,B):
-    return AlessB( gen(A), gen(B) )
-
 # Cria um objeto Digraph
 dot = Digraph()
 
@@ -105,10 +100,11 @@ dot.edge('Inicio', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando
 dot.edge('Concentrica', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
 dot.edge('Meta', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
 dot.edge('Excentrica', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
+dot.edge('Erro', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
 
 
 #Erro -> Inicio
-label = gen([1, 0, 0, 1])
+label = gen([1, 1, 0, 0])
 dot.edge('Erro','Inicio',label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial      
 
 #anyway -> fim
