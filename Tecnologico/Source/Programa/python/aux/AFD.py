@@ -7,10 +7,8 @@ class char:
         self.extensao_cotovelo = extensao_cotovelo         #Extensão de Cotovelo  
         self.ultrapassar_barra = ultrapassar_barra         #Ultrapassar a barra  
         self.movimento_quadrilPerna = movimento_quadrilPerna         #Movimento de Quadril ou Perna  
-
     def get(self):
         return [ self.mao_barra, self.extensao_cotovelo, self.ultrapassar_barra, self.movimento_quadrilPerna ]
-
     def __str__(self) -> str:
         attributes = [str(attr) if not isinstance(attr, str) else f'"{attr}"' for attr in self.get()]
         return f"[{', '.join(attributes)}]"
@@ -26,18 +24,20 @@ def gen(lst):
     lst[index] = 1
     possibilities_1 = gen(lst)  # Chamada recursiva com "1"
     lst[index] = "?"  # Restaura o caractere "?"
-    return possibilities_0 +", "+ possibilities_1  # Retorna a combinação das possibilidades com "0" e "1"
+    return possibilities_0 +"\n"+ possibilities_1  # Retorna a combinação das possibilidades com "0" e "1"
 
-def AlessB(A,B):
-    A = str(A)
-    B = str(B)
-    # Remove os colchetes no início e no final da string
-    B = re.sub(r'^\[|\]$', '', B)
-    # Separa a string em listas usando vírgulas e colchetes como separadores
-    B = re.split(r'\],\s*\[', B)
-    for vet in B:
-        A = A.replace(f"[{str(vet)}]","")
-    return A
+def AlessB(A, B):  
+    A_itens = str(A).split("\n")
+    B_itens = str(B).split("\n")
+    new_items = A_itens.copy()
+    for item in B_itens:
+        try:
+            new_items.remove(item)
+        except ValueError:
+            pass
+    return "\n".join(new_items)
+
+
 
 def states(A,B):
     return AlessB( gen(A), gen(B) )
@@ -45,53 +45,80 @@ def states(A,B):
 # Cria um objeto Digraph
 dot = Digraph()
 
+
+
 # Define os estados
-dot.node('Start', shape='point')
-dot.node('Inicio', shape='doublecircle')
-dot.node('Concentrica', shape='doublecircle')
-dot.node('Excentrica', shape='doublecircle')
-dot.node('Meta', shape='doublecircle')
+dot.node('Preparacao', shape='circle')
+dot.node('Inicio', shape='circle')
+dot.node('Concentrica', shape='circle')
+dot.node('Excentrica', shape='circle')
+dot.node('Meta', shape='circle')
 dot.node('Fim', shape='doublecircle')
-dot.node('Erro', shape='doublecircle')
+dot.node('Erro', shape='circle')
 
-#Preparando
-label = gen([0, 0, "?", "?"]) + gen([1, 0, "?", "?"]) + gen([0, 1, "?", "?"])
-dot.edge('Start', 'Start', label=label) #Não Houve a posição Inicial
 
-#Passo a Passo
+
+#Não Houve a posição Inicial
+label = gen([0, 0, "?", "?"])+"\n"
+label += gen([1, 0, "?", "?"])+"\n"
+label += gen([0, 1, "?", "?"])+"\n"
+label += gen([1, 1, 0, 1])+"\n"
+label += gen([1, 1, 1, 0])+"\n"
+label += gen([1, 1, 1, 1])
+dot.edge('Preparacao', 'Preparacao', label=label,  labelloc='t',fontsize="10") 
+#Começou o exame
 label = gen([1, 1, 0, 0])
-dot.edge('Start', 'Inicio', label=label) #começou o exame
+dot.edge('Preparacao', 'Inicio', label=label,  labelloc='t',fontsize="10") 
 
+
+
+
+#Iniciou a barra
 label = gen([1, 0, 0, 0])
-dot.edge('Inicio', 'Concentrica', label=label) #iniciou a barra
+dot.edge('Inicio', 'Concentrica', label=label,  labelloc='t',fontsize="10")
 
+
+
+#Movimento Concentrico
+label = gen([1, 0, 0, 0])
+dot.edge('Concentrica','Concentrica', label=label,  labelloc='t',fontsize="10") 
 label = gen([1, 0, 1, 0])
-dot.edge('Concentrica', 'Meta', label=label) #objetivo parcialmente atingido 
+dot.edge('Concentrica', 'Meta', label=label,  labelloc='t',fontsize="10") 
 
+
+
+#Objetivo parcialmente atingido 
+label = gen([1, 0, 1, 0])
+dot.edge('Meta', 'Meta', label=label,  labelloc='t',fontsize="10") 
+#Retornando para a posição inicial 
 label = gen([1, 0, 0, 0])
-dot.edge('Meta', 'Excentrica', label=label) #retornando para a posição inicial 
-
+dot.edge('Meta', 'Excentrica', label=label,  labelloc='t',fontsize="10") 
+label = gen([1, 0, 0, 0])
+dot.edge('Excentrica', 'Excentrica', label=label,  labelloc='t',fontsize="10") 
 label = gen([1, 1, 0, 0])
-dot.edge('Excentrica', 'Inicio', label=label) #retornando para a posição inicial 
+dot.edge('Excentrica', 'Inicio', label=label,  labelloc='t',fontsize="10")
 
 
 #Erro
-label = gen([1, "?", "?", 1])
-dot.edge('Inicio', 'Erro', label=label) #retornando para a posição inicial 
-dot.edge('Concentrica', 'Erro', label=label) #retornando para a posição inicial 
-dot.edge('Meta', 'Erro', label=label) #retornando para a posição inicial 
-dot.edge('Excentrica', 'Erro', label=label) #retornando para a posição inicial 
+label = AlessB(gen([1, "?", "?", 1]) , gen(["?", 1, 1, "?"]))
+dot.edge('Inicio', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
+dot.edge('Concentrica', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
+dot.edge('Meta', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
+dot.edge('Excentrica', 'Erro', label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial 
+
 
 #Erro -> Inicio
 label = gen([1, 0, 0, 1])
-dot.edge('Erro','Inicio',label=label) #retornando para a posição inicial      
+dot.edge('Erro','Inicio',label=label,  labelloc='t',fontsize="10") #retornando para a posição inicial      
 
 #anyway -> fim
-label = gen([0, "?", "?", "?"])
-dot.edge('Inicio', 'Fim', label=label) #retornando para a posição inicial 
-dot.edge('Concentrica', 'Fim', label=label) #retornando para a posição inicial 
-dot.edge('Meta', 'Fim', label=label) #retornando para a posição inicial 
-dot.edge('Excentrica', 'Fim', label=label) #retornando para a posição inicial 
+label = AlessB(gen([0, "?", "?", "?"]) , gen(["?", 1, 1, "?"]))
+dot.edge('Inicio', 'Fim', label=label,  labelloc='t',fontsize="10") #Encerra a avalicação
+dot.edge('Concentrica', 'Fim', label=label,  labelloc='t',fontsize="10") #Encerra a avalicação
+dot.edge('Meta', 'Fim', label=label,  labelloc='t',fontsize="10") #Encerra a avalicação
+dot.edge('Excentrica', 'Fim', label=label,  labelloc='t',fontsize="10") #Encerra a avalicação
+dot.edge('Erro','Fim',label=label,  labelloc='t',fontsize="10") #Encerra a avalicação     
+
 
 # Renderiza o diagrama em um arquivo de imagem
 dot.render('midia/afd_barra', format='png')
