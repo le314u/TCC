@@ -3,7 +3,7 @@ import traceback
 import cv2
 import numpy as np
 import mediapipe as mp
-from controller.featureExtraction.geometria import angle_point,segment,ponto_medio,rotate_segment
+from controller.featureExtraction.geometria import angle_point,segment,ponto_medio,rotate_segment,distance_line_line
 from controller.processImg.debug import save_img, display_img, join_imgs,resize, matchGeral
 from controller.processImg.filter import limiarizacao, pixelizacao, imagem_cinza, suavizacao, rotacao
 from controller.processImg.mask import Mask
@@ -43,7 +43,7 @@ class PosePoints():
 
     @staticmethod
     def extractPose(image):
-        '''Retorna a Pose de acordo com tensor Flow'''
+        '''Retorna a Pose de acordo com midia Pipe'''
         return PosePoints.pose_midia_pipe.process(image)
 
     def __init__(self,frame) -> None:
@@ -62,6 +62,9 @@ class PosePoints():
             access("LEFT_HIP"),
             access("LEFT_KNEE"),
             access("LEFT_WRIST"),
+            access("LEFT_PINKY"),
+            access("LEFT_INDEX"),
+            access("LEFT_THUMB"),
             access("RIGHT_ANKLE"),
             access("RIGHT_ELBOW"),
             access("RIGHT_SHOULDER"),
@@ -69,7 +72,11 @@ class PosePoints():
             access("RIGHT_HIP"),
             access("RIGHT_KNEE"),
             access("RIGHT_WRIST"),
+            access("RIGHT_PINKY"),
+            access("RIGHT_INDEX"),
+            access("RIGHT_THUMB")
         )
+
 
     def getPose(self)->PoseModel:
         return self.pose
@@ -82,9 +89,11 @@ def detectBar(frame) -> LineModel:
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) 
     #Detecção de borda
     edges = cv2.Canny(gray,50,150,apertureSize = 3) 
-    lines = cv2.HoughLines(edges,1,np.pi/180, 100)
+    lines = cv2.HoughLines(edges,1,np.pi/180, 150)
 
-    tolerance = 8
+
+    #Verifica a Orientação da reta
+    tolerance = 10
     horizontal_lines = []
     for line in lines:
         rho, theta = line[0]
@@ -98,44 +107,58 @@ def detectBar(frame) -> LineModel:
 
     #Verifica a região de interesse
     section_line = []
-    limit_sup = round(0.03 * altura) #round(0.07 * altura)
-    limit_inf = round(0.18 * altura) #round(0.14 * altura)
+    
+    limit_sup = round(0.0 * altura) #round(0.07 * altura)
+    limit_inf = round(0.3 * altura) #round(0.14 * altura)
+
     for line in horizontal_lines:
         rho,theta = line[0]
         points = segment(rho,theta,largura) 
-        x1,y1 = points[0]
-        x2,y2 = points[1]
+        y1,y2 = (points[0][1],points[1][1])
         if all(y < limit_inf for y in [y1, y2]) and all(y > limit_sup for y in [y1, y2]):
             section_line.append(line)
     
-    #Verifica a maior linha
+    thickness = 1
+   
+    #Pega as duas linhas mais votadas
+    #Esparasse que essas sejam as linhas delimitadores sup e inf
+    def process_line(line):
+        p1, p2 = segment(line[0][0], line[0][1], largura)
+        return LineModel(*p1, *p2)
+
+    first_line = process_line(section_line[0])
+    second_line = process_line(section_line[1])
+
+   
+    
+    thickness = distance_line_line(first_line, second_line)
+    
+    # #Verifica a linha mais alta
     real_line = section_line[0][0]
     for line in section_line:
         rho,theta = line[0]
         points = segment(rho,theta,largura) 
         x1,y1 = points[0]
         x2,y2 = points[1]
-        val1 = y2
+        val1 = y1
 
         rho,theta = real_line
         points = segment(rho,theta,largura) 
         x1,y1 = points[0]
         x2,y2 = points[1]
-        val2 = y2
+        val2 = y1
 
-        
-        if(val2 > val1 ):
+        if( val1 < val2  ):
             real_line = line[0]
-            
-    #     # Exibindo a imagem
     
-    real_line = real_line
+    
     #Preparando o retorno
     rho,theta = real_line
     points = segment(rho,theta,largura) 
     x1,y1 = points[0]
     x2,y2 = points[1]
-    return LineModel(x1,y1,x2,y2)
+    offSet = int(thickness/2)
+    return LineModel(x1,y1+offSet, x2,y2+offSet, thickness)
 
 def verify_maoBarra(cel:CelulaModel):
     #Constante

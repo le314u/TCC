@@ -23,6 +23,9 @@ from model.featureExtraction.poseModel import PoseModel, Segmento
 from model.video.celulaModel import CelulaModel
 from util.decorators import memory_usage, timed
 
+from controller.render.renderBar import renderBar
+
+
 MASK = Mask()
 THREAD = {"thread_controller":True}
 AFD = create_AFD()
@@ -68,12 +71,13 @@ def process_cel(cel:CelulaModel):
     verify_barra(cel)
     fix_barra(cel) #Garante uma barra mais suave sem mudançar bruscas
     verify_inclination(cel) #
-    verify_eph(cel)
-    verify_angle_member(cel)
-    verify_mao_barra(cel)
-    verify_meta_extensao(cel)
-    verify_char_AFD(cel)
+    verify_eph(cel)    
+    verify_angle_member(cel)    
+    verify_mao_barra(cel)    
+    verify_meta_extensao(cel)    
+    verify_char_AFD(cel)    
     verify_AFD(cel)
+    
 
 def stepBystep(controller:VideoController, flags:List[Flag], thread_controller):
     global THREAD 
@@ -135,7 +139,6 @@ def stepBystep(controller:VideoController, flags:List[Flag], thread_controller):
     except Exception as e:
         print(f"\n{e}")
 
-        
 
 def indice_not_process(buffer:Buffer):
     '''Retorna os indices que nao foi possivel fazer a extração da imagem'''
@@ -296,6 +299,7 @@ def verify_inclination(cel:CelulaModel):
     #Rotaciona a Barra
     p1,p2 = rotate_segment(pt1_origin,pt2_origin,-angulo)
     newBarra:LineModel = LineModel(*p1,*p2)
+
     cel.setLine(newBarra)
 
 def verify_eph(cel:CelulaModel):
@@ -303,7 +307,8 @@ def verify_eph(cel:CelulaModel):
     try:
         frame = cel.getFrame()
         posePoints:PosePoints = PosePoints(frame)
-        pose:PoseModel = posePoints.getPose()   
+        pose:PoseModel = posePoints.getPose()  
+        pose.position_hand()
         cel.setPose(pose)
     except:
         cel.setPose(None)
@@ -417,7 +422,6 @@ def verify_AFD(cel:CelulaModel):
         cel.getData().set("state",AFD.getState())
     except:
         pass
-
 
 def fix_barra(cel:CelulaModel):
     '''Inferencia da posição da barra de acordo com os valores acumulados e a ideia de votação majoritaria'''

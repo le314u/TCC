@@ -4,13 +4,15 @@ import numpy as np
 from typing import List,Tuple
 from model.featureExtraction.lineModel import LineModel
 
-def intercept(line1, line2) -> bool:
+def intercept(line1:LineModel, line2:LineModel) -> bool:
     '''Retorna se as duas linhas se cruzam em algum momento'''
+    x,y = (0,1)
+    pt1, pt2 = line1.getPoints()
+    pt3, pt4 = line2.getPoints()
+
     # Convertendo as linhas para o formato aceito pela função intersectLines
-    pt1, pt2 = line1
-    pt3, pt4 = line2
-    line1 = np.array([pt1[0], pt1[1], pt2[0], pt2[1]], dtype=np.float32)
-    line2 = np.array([pt3[0], pt3[1], pt4[0], pt4[1]], dtype=np.float32)
+    line1 = np.array([pt1[x], pt1[y], pt2[x], pt2[y]], dtype=np.float32)
+    line2 = np.array([pt3[x], pt3[y], pt4[x], pt4[y]], dtype=np.float32)
 
     # Encontrando o ponto de interseção das duas linhas
     point = cv2.intersectLines(line1, line2, tolerance=0.1)
@@ -36,7 +38,6 @@ def inclinacao_reta(pt1,pt2):
     angulo_graus = math.degrees(angulo_radianos)
     return angulo_graus
 
-
 def angle_line(line1:LineModel, line2:LineModel) -> float:
     '''Retorna o ângulo entre dois segmentos de reta 0 a 180'''
     # Extrair as coordenadas dos pontos dos segmentos de reta
@@ -61,7 +62,6 @@ def angle_line(line1:LineModel, line2:LineModel) -> float:
     angle_degrees = math.degrees(angle_rad)
     return abs(angle_degrees)
 
-
 def distance_point_line(ponto:Tuple[int,int], segmento:LineModel):
     x, y = ponto
     points = segmento.getPoints()
@@ -79,24 +79,26 @@ def distance_points(ponto1:Tuple[int,int], ponto2:Tuple[int,int]):
     distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
     return distancia
 
-
 def segment(rho, theta, comprimento=2000):
     '''Representação de um segmento de reta'''
     cos = np.cos(theta) 
     sen = np.sin(theta) 
     x = cos*rho
     y = sen*rho
-    x1 = int(x + comprimento *(-sen)) 
-    x2 = int(x - comprimento *(-sen)) 
+    x1 = int(x + comprimento *(-sen))
+    x2 = int(x - comprimento *(-sen))
     y1 = int(y + comprimento *(cos)) 
     y2 = int(y - comprimento *(cos))  
     return( (x1,y1), (x2,y2) )
 
-
 def rotate_segment(ponto1:Tuple[int,int], ponto2:Tuple[int,int], angle)->Tuple[int,int]:
     #Referencia
-    reference_point = (0,0)
     x,y = 0,1
+    #reference_point = (0,0)
+    reference_point = ( round((-ponto1[x]+ponto2[x])/4),
+                         round((ponto1[y]+ponto2[y])/2) )
+    
+    
 
     # Calcula as coordenadas relativas aos pontos de referência
     p1_relative = ponto1[0] - reference_point[0], ponto1[1] - reference_point[1]
@@ -121,3 +123,15 @@ def ponto_medio(x1, y1, x2, y2):
     ponto_medio_x = (x1 + x2) / 2
     ponto_medio_y = (y1 + y2) / 2
     return (ponto_medio_x, ponto_medio_y)
+
+def distance_line_line(line1:LineModel, line2:LineModel):
+    p1,p2 = line1.getPoints()
+    p3,p4 = line2.getPoints()
+
+    # Calcula todas as distâncias entre os pontos de um segmento e o outro
+    distances = [
+        distance_points(p1, p3), distance_points(p1, p4),
+        distance_points(p2, p3), distance_points(p2, p4)
+    ]
+    # Retorna a menor distância calculada
+    return min(distances)

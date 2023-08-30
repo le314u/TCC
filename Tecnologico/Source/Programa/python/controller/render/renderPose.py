@@ -6,12 +6,14 @@ def renderPose(image, pose:PoseModel):
     '''Desenha os segmentos detectados'''
 
     try:
-        #Desenha os traços
-        aux_image = _draw_segment(image, pose, (000,000,255), Segmento.CORPO)
-        aux_image = _draw_segment(aux_image, pose, (255,000,000), Segmento.BRACO_DIR)
-        aux_image = _draw_segment(aux_image, pose, (255,000,000), Segmento.BRACO_ESQ)
-        aux_image = _draw_segment(aux_image, pose, (000,255,000), Segmento.PERNA_DIR)
-        aux_image = _draw_segment(aux_image, pose, (000,255,000), Segmento.PERNA_ESQ)
+        #Desenha os traços no padrão de cor BGR
+        aux_image = _draw_segment(image, pose, (000,255,000), Segmento.CORPO)
+        aux_image = _draw_segment(aux_image, pose, (255,000,255), Segmento.BRACO_DIR)
+        aux_image = _draw_segment(aux_image, pose, (000,255,255), Segmento.BRACO_ESQ)
+        aux_image = _draw_segment(aux_image, pose, (255,000,255), Segmento.PERNA_DIR)
+        aux_image = _draw_segment(aux_image, pose, (000,255,255), Segmento.PERNA_ESQ)
+        aux_image = _draw_segment(aux_image, pose, (000,000,255), Segmento.MAO_D)
+        aux_image = _draw_segment(aux_image, pose, (000,000,255), Segmento.MAO_E)
         return aux_image
     except:
         return image

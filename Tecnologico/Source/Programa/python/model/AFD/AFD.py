@@ -104,6 +104,10 @@ def Cel2Char(cel_meta:CelulaModel)->Char:
     return char
 
 def possibleChar(vets=None,vet=None,i=None):
+    possibleChar_Rec(vets,vet,i)
+    remove_duplicate_sublists(vets)
+
+def possibleChar_Rec(vets=None,vet=None,i=None):
     if i == None :
         i = len(vet)-1
     if i == 0:
@@ -114,14 +118,30 @@ def possibleChar(vets=None,vet=None,i=None):
             #
             vet[i] = True        
             vet1 = list(vet)
-            possibleChar(vets=vets, vet=vet1, i=i-1)
+            possibleChar_Rec(vets=vets, vet=vet1, i=i-1)
             #
             vet[i] = False
             vet2 = list(vet)
-            possibleChar(vets=vets, vet=vet2, i=i-1)
+            possibleChar_Rec(vets=vets, vet=vet2, i=i-1)
         else:
-            possibleChar(vets=vets, vet=vet, i=i-1)
+            possibleChar_Rec(vets=vets, vet=vet, i=i-1)
     return vets
+
+def remove_duplicate_sublists(lst):
+    unique_lst = []
+    for sublist in lst:
+        if sublist not in unique_lst:
+            unique_lst.append(sublist)
+    #Sobreescreve a lista
+    lst.clear()  # Clear the original list
+    lst.extend(unique_lst)  # Add the unique sublists back to the original list
+
+def remove_possibleChar(vets=None, char=None):
+    try:
+        vets.remove(char)
+    except ValueError:
+        pass  # char não encontrado, nenhum erro é lançado
+
 
 
 def create_AFD():
@@ -135,79 +155,87 @@ def create_AFD():
             "[False, False, True, True]",
             "[False, True, False, False]",
             "[False, True, False, True]",
-            "[False, True, True, False]",
-            "[False, True, True, True]",
             "[True, False, False, False]",
             "[True, False, False, True]",
             "[True, False, True, False]",
             "[True, False, True, True]",
             "[True, True, False, False]",
             "[True, True, False, True]",
-            "[True, True, True, False]",
-            "[True, True, True, True]",
+            # Impossivel extender o cotovelo e ultrapassar a barra
+            #"[True, True, True, False]",
+            #"[True, True, True, True]",
+            #"[False, True, True, False]", 
+            #"[False, True, True, True]",
         ]
         # Definir os estados do AFD
-        estados = ['preparando','inicio', 'extensao,' 'meta','concentrica','excentrica','erro', 'fim']
+        estados = ['preparacao','inicio', 'extensao,' 'meta','concentrica','excentrica','erro', 'fim']
         # Definir o estado inicial do AFD
-        estado_inicial = 'preparando'
+        estado_inicial = 'preparacao'
         # Definir os estados finais do AFD
         estados_finais = ['fim']
         # Definir as transições de estado do AFD
         transicoes = {}
         #Função que facilita Multi transiçoes de state->end_point com uma lista de chars
         transition = lambda state, chars, end_point, fx: [transicoes.update({f"{state},{str(char)}": (end_point, fx)}) for char in chars]
-        # def transition(state,chars,end_point,fx):
-        #     for char in chars:
-        #         s = f"{state},{str(char)}"
-        #         transicoes[s]=(end_point,fx)
 
+        # preparacao -> preparacao
+        preparacao2preparacao = []
+        possibleChar(vets=preparacao2preparacao,vet=[False, False, None, None])
+        possibleChar(vets=preparacao2preparacao,vet=[True, False, None, None])
+        possibleChar(vets=preparacao2preparacao,vet=[False, True, None, None])
+        possibleChar(vets=preparacao2preparacao,vet=[True, True, None, True])
+        possibleChar(vets=preparacao2preparacao,vet=[True, True, True, None])
+        transition(state="preparacao",end_point="preparacao",fx=lambda x:None,chars=preparacao2preparacao )
 
-        # preparando -> inicio
-        char = [True, True, False, False]
-        transition(state="preparando",end_point="inicio",fx=lambda x:None,chars=[char] )
+        # preparacao -> inicio
+        preparacao2inicio = [True, True, False, False]
+        transition(state="preparacao",end_point="inicio",fx=lambda x:None,chars=[preparacao2inicio] )
 
         # inicio -> inicio
-        vets = []
-        possibleChar(vets=vets,vet=[False, False, None, None])
-        possibleChar(vets=vets,vet=[True, False, None, None])
-        possibleChar(vets=vets,vet=[False, True, None, None])
-        transition(state="inicio",end_point="inicio",fx=lambda x:None,chars=vets )
+        inicio2inicio = [True, True, False, False]
+        transition(state="inicio",end_point="inicio",fx=lambda x:None,chars=[inicio2inicio] )
 
         # inicio -> concentrica
-        char = [True, False, False, False]
-        transition(state="inicio",end_point="concentrica",fx=lambda x:None,chars=[char] )
+        inicio2concentrica = [True, False, False, False]
+        transition(state="inicio",end_point="concentrica",fx=lambda x:None,chars=[inicio2concentrica] )
 
         # concentrica -> meta
         def fx(cel:CelulaModel):
            qtd = cel.getData().getQtdMovimentos()
            cel.getData().setQtdMovimentos(int(qtd)+1)
            DataModel.agregate["aux"] = DataModel.agregate["aux"] +1
-        char = [True,False,True,False]
-        transition(state="concentrica",end_point="meta",fx=fx,chars=[char] )
+        
+        concentrica2meta = [True,False,True,False]
+        transition(state="concentrica",end_point="meta",fx=fx,chars=[concentrica2meta] )
 
         # meta -> excentrica
-        char = [True,False,False,False]
-        transition(state="meta",end_point="excentrica",fx=lambda x:None,chars=[char] )
+        meta2excentrica = [True,False,False,False]
+        transition(state="meta",end_point="excentrica",fx=lambda x:None,chars=[meta2excentrica] )
 
         # Ação Invalida  -> erro
-        vets = []
-        possibleChar(vets=vets,vet=[True,None,None,True])
-        transition(state="inicio",end_point="erro",fx=lambda x:None,chars=vets )
-        transition(state="concentrica",end_point="erro",fx=lambda x:None,chars=vets )
-        transition(state="meta",end_point="erro",fx=lambda x:None,chars=vets )
-        transition(state="excentrica",end_point="erro",fx=lambda x:None,chars=vets )
+        erro = []
+        possibleChar(vets=erro,vet=[True,None,None,True])
+        remove_possibleChar(vets=erro,char=[True,True,True,True])
+        transition(state="inicio",end_point="erro",fx=lambda x:None,chars=erro )
+        transition(state="concentrica",end_point="erro",fx=lambda x:None,chars=erro )
+        transition(state="meta",end_point="erro",fx=lambda x:None,chars=erro )
+        transition(state="excentrica",end_point="erro",fx=lambda x:None,chars=erro )
+        transition(state="erro",end_point="erro",fx=lambda x:None,chars=erro )
 
         # erro -> inicio
-        char = [True,True,False,False]
-        transition(state="erro",end_point="inicio",fx=lambda x:None,chars=[char] )
+        erro2inicio = [True,True,False,False]
+        transition(state="erro",end_point="inicio",fx=lambda x:None,chars=[erro2inicio] )
 
         # anyway -> fim
-        vets = []
-        possibleChar(vets=vets,vet=[False,None,None,None])
-        transition(state="inicio",end_point="fim",fx=lambda x:None,chars=vets )
-        transition(state="concentrica",end_point="fim",fx=lambda x:None,chars=vets )
-        transition(state="meta",end_point="fim",fx=lambda x:None,chars=vets )
-        transition(state="excentrica",end_point="fim",fx=lambda x:None,chars=vets )
+        fim = []
+        possibleChar(vets=fim,vet=[False,None,None,None])
+        remove_possibleChar(vets=fim,char=[False,True,True,True])
+        remove_possibleChar(vets=fim,char=[False,True,True,False])
+
+        transition(state="inicio",end_point="fim",fx=lambda x:None,chars=fim )
+        transition(state="concentrica",end_point="fim",fx=lambda x:None,chars=fim )
+        transition(state="meta",end_point="fim",fx=lambda x:None,chars=fim )
+        transition(state="excentrica",end_point="fim",fx=lambda x:None,chars=fim )
 
         return Machine(alfabeto,estados,estado_inicial,estados_finais,transicoes)
     except:
