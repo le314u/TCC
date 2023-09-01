@@ -158,6 +158,8 @@ def detectBar(frame) -> LineModel:
     x1,y1 = points[0]
     x2,y2 = points[1]
     offSet = int(thickness/2)
+
+
     return LineModel(x1,y1+offSet, x2,y2+offSet, thickness)
 
 def verify_maoBarra(cel:CelulaModel):
