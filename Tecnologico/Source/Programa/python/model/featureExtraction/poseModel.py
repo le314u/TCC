@@ -167,24 +167,24 @@ class PoseModel():
         x,y = (0,1)
         LEFT_HAND = "INCONSISTENTE"
         RIGHT_HAND = "INCONSISTENTE"
-
-        if( self.get_left_pinky()[x] < self.get_left_index()[x] ):
+        if( self.get_left_pinky()[x] < self.get_left_thumb()[x] ):
             LEFT_HAND = "PRONADO"
         
-        if( self.get_left_pinky()[x] > self.get_left_index()[x] ):
+        if( self.get_left_pinky()[x] > self.get_left_thumb()[x] ):
             LEFT_HAND = "SUPINADO"
         
-        if( self.get_left_pinky()[x] == self.get_left_index()[x] ):
+        if( self.get_left_pinky()[x] == self.get_left_thumb()[x] ):
             LEFT_HAND = "INCONSISTENTE"
 
 
-        if( self.get_right_index()[x] < self.get_right_pinky()[x] ):
-            LEFT_HAND = "PRONADO"
+        if( self.get_right_thumb()[x] < self.get_right_pinky()[x] ):
+            RIGHT_HAND = "PRONADO"
         
-        if( self.get_right_index()[x] > self.get_right_pinky()[x] ):
-            LEFT_HAND = "SUPINADO"
+        if( self.get_right_thumb()[x] > self.get_right_pinky()[x] ):
+            RIGHT_HAND = "SUPINADO"
         
-        if( self.get_right_index()[x] == self.get_right_pinky()[x] ):
-            LEFT_HAND = "INCONSISTENTE"
+        if( self.get_right_thumb()[x] == self.get_right_pinky()[x] ):
+            RIGHT_HAND = "INCONSISTENTE"
+        
         print(LEFT_HAND)
         print(RIGHT_HAND)

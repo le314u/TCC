@@ -26,10 +26,9 @@ mp_pose = mp.solutions.pose
 # MIN_TRACKING_CONFIDENCE  ->  Valor de confiança mínimo ( [0.0, 1.0]) do modelo de rastreamento de pontos de referência para os pontos de referência de pose a serem considerados rastreados com sucesso, caso contrário, a detecção de pessoa será chamada automaticamente na próxima imagem de entrada. Configurá-lo com um valor mais alto pode aumentar a robustez da solução, às custas de uma latência mais alta. Ignorado se static_image_mode for true, em que a detecção de pessoas simplesmente é executada em todas as imagens. Padrão para 0.5.
 pose_midia_pipe = mp_pose.Pose(
 		static_image_mode=False,
-		enable_segmentation=False,
 		model_complexity=2,
 		min_detection_confidence=0.3,
-		min_tracking_confidence=0.9
+		min_tracking_confidence=0.75
 	)
 
 
@@ -159,13 +158,12 @@ def detectBar(frame) -> LineModel:
     x2,y2 = points[1]
     offSet = int(thickness/2)
 
-
-    return LineModel(x1,y1+offSet, x2,y2+offSet, thickness)
+    return LineModel(x1,y1+offSet, x2,y2+offSet, thickness=int(thickness))
 
 def verify_maoBarra(cel:CelulaModel):
     #Constante
-    size = 30    # Tamanho do kernel de Blur e Pixelização
-    limiar = 100    # Definir um limiar para identificar a descontinuidade
+    # size = 30    # Tamanho do kernel de Blur e Pixelização
+    limiar = 50    # Definir um limiar para identificar a descontinuidade
 
     #Data
     frame = cel.getFrame()
@@ -178,10 +176,12 @@ def verify_maoBarra(cel:CelulaModel):
     center_end = (round(center_point[0]), round(center_point[1]+largura))
 
     #Mascaras
+    size = barra.getThickness()
     mask_frame = MASK.getMask()
-    mask_barra = MASK.createLineMask(frame,barra.getStart(),barra.getEnd(), size*4)
+    mask_barra = MASK.createLineMask(frame,barra.getStart(),barra.getEnd(), thickness=size)
     mask_center = MASK.createLineMask(frame,center_start,center_end, size*1.5)
     mask_center = cv2.bitwise_not(mask_center)
+
 
     newFrame = MASK.putMask(frame, mask_frame)
    
@@ -192,7 +192,7 @@ def verify_maoBarra(cel:CelulaModel):
     gray = imagem_cinza(skin)
     limited = limiarizacao(gray,limiar)
     
-    # Aplcia o desfoque
+    # Aplica o desfoque
     blur = suavizacao(limited, size/2 )
     limited2 = limiarizacao(blur,limiar)
 
@@ -225,10 +225,34 @@ def verify_maoBarra(cel:CelulaModel):
     # Se houve descontinuidade do preto logo algo estava na barra 
     # So valida se encontrar 2 contornos ou mais ou seja as 2 mãos
     try:
-        if(cel.getData().get("id") == 32):
-            display_img(matchGeral(limited3,mask_barra))
-            imgs = join_imgs(limited,limited2,limited3)
-            display_img(imgs)
+        if(cel.getData().get("id") == 32):#126
+            pass
+            #save_img(frame,"midia/dist/original")
+            #save_img(skin,"midia/dist/skin")
+            #save_img(gray,"midia/dist/gray")
+            #save_img(limited,"midia/dist/limited")
+            #save_img(blur,"midia/dist/blur")
+            #save_img(limited2,"midia/dist/limited2")
+            #save_img(pixel,"midia/dist/pixel")
+            #save_img(limited3,"midia/dist/limited3")
+            #save_img(only_hands,"midia/dist/only_hands")
+
+           
+
+            # imagem_colorida = cv2.applyColorMap(only_hands, cv2.COLORMAP_JET)  # Você pode escolher outro colormap se preferir
+            # cv2.drawContours(imagem_colorida, contornos, -1, (0, 0, 255), 2)
+            # save_img(imagem_colorida,"midia/dist/contorno")
+
+
+            # cv2.drawContours(frame, contornos, -1, (0, 0, 255), 2)
+            # save_img(frame,"midia/dist/contornos")
+
+
+            # display_img( only_bar_region )
+            # display_img( matchGeral(limited, mask_barra),"MAtched" )
+            # imgs = join_imgs(limited, limited2, limited3)
+            # display_img(imgs)
+            
     except Exception as e:
         traceback_msg = traceback.format_exc()
         print(f"Erro: {e}")
@@ -278,32 +302,37 @@ def verify_extensaoCotovelo(cel: CelulaModel):
 
 def verify_ultrapassarBarra(cel: CelulaModel):
     #Verifica se encontrou algo acima da barra (cabeça)
-    #Constante
-    size = 30    # Tamanho do kernel de Blur e Pixelização
-    limiar = 100    # Definir um limiar para identificar a descontinuidade
-    limiar_angulo = 5    # Definir um limiar para identificar a descontinuidade
-    limiar_barra = 290
+    
+    #Alias
+    x,y = (0,1)
 
     #Data
     frame = cel.getFrame()
     barra = cel.getLine()
     pose = cel.getPose()
+
+    #Constante
+    size = cel.getLine().getThickness()
+    limiar = 50    # Definir um limiar para identificar a descontinuidade
+    limiar_angulo = 5    # Definir um limiar para identificar a flexão total de cotovelo
+    limiar_barra = round(size*1.5)   # Distancia maxima entre a barra e o ombro
+
     barra_start = barra.getStart()
-    ombro_start = pose.get_left_elbow()
-    ombro_end = pose.get_right_elbow()
+    ombro_start = pose.get_left_shoulder()
+    ombro_end = pose.get_right_shoulder()
     anguloBracoEsq = cel.getData().getAnguloBracoEsq()
     anguloBracoDir = cel.getData().getAnguloBracoDir()
 
-    extract_height = lambda ponto: ponto[1]
-    extract_width = lambda ponto: ponto[0]
+    extract_height = lambda ponto: ponto[y]
+    extract_width = lambda ponto: ponto[x]
 
     offset_esq = abs(extract_height(barra_start) - extract_height(ombro_start))
     offset_dir = abs(extract_height(barra_start) - extract_height(ombro_end))
-   
+    
     #Cria a mascara para a cabeça acima da barra
     center_point = ponto_medio(*ombro_start,*ombro_end)   
-    size_block = round( (ombro_end[0]-ombro_start[0])/3 )
-    mask_head = MASK.createBlockMask(frame, (center_point[0]-size_block,0), (center_point[0]+size_block,barra_start[1]-(size*2)))
+    size_block = abs(round( (ombro_end[0]-ombro_start[0])/3))
+    mask_head = MASK.createBlockMask(frame, ( round(center_point[0]-size_block/2),0), (round(center_point[0]+size_block/2),round(barra_start[1]-(size/2))))
 
     #Destaca a pele
     skin = MASK.highLight_skin(frame)
@@ -311,29 +340,30 @@ def verify_ultrapassarBarra(cel: CelulaModel):
     # Converter a imagem apenas para P&B
     gray = imagem_cinza(skin)
     limited = limiarizacao(gray,limiar)
+
+    #Pixeliza a imagem
+    pixel = pixelizacao(limited, round(size_block/2))
+    limited2 = limiarizacao(pixel,limiar)    
+    pixel2 = pixelizacao(limited2, round(size_block))
+    limited3 = limiarizacao(pixel2,limiar)    
+
     
     #Aplica as Mascaras da area de interesse
-    only_interesse = cv2.bitwise_and(mask_head, limited)
+    only_interesse = cv2.bitwise_and(mask_head, limited3)
+    only_interesse = pixelizacao(only_interesse, round(size_block))
 
-    # Aplicar o operador de Sobel
-    gradient_x = cv2.Sobel(only_interesse, cv2.CV_64F, 1, 0, ksize=3)
-    gradient_y = cv2.Sobel(only_interesse, cv2.CV_64F, 0, 1, ksize=3)
+    # Verifique se há pixels brancos na imagem
+    pixels_brancos = cv2.countNonZero(only_interesse)
 
-    # Calcular o módulo do gradiente
-    gradient = np.sqrt(gradient_x ** 2 + gradient_y ** 2)
-    
-    # Verificar a descontinuidade em cada pixel
-    descontinuidade = gradient > limiar
-    
-    # Verificar se:
-    #   houve ou não descontinuidade na imagem acima da barra no rumo do peito
-    #   Se o peito está proximo da barra
-    #   Se o angulo do braço é proximo de 180
  
     peito_na_barra = (offset_esq < limiar_barra) or (offset_dir < limiar_barra)
     braco_dobrado = (anguloBracoEsq > (180-limiar_angulo)) or (anguloBracoDir > (180-limiar_angulo))
-    has_head = True in descontinuidade
+    has_head = pixels_brancos > 0
 
+    cel.getData().set("offSet_Peito_Barra",(offset_esq, offset_dir))
+    cel.getData().set("peito_na_barra",(peito_na_barra))
+    cel.getData().set("braco_dobrado",(braco_dobrado))
+    cel.getData().set("has_head",(has_head))
     
     return (peito_na_barra and braco_dobrado and has_head)
 

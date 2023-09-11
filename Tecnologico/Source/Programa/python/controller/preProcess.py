@@ -53,6 +53,7 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
             if(THREAD['thread_controller']):
                 cel:CelulaModel = controller.buffer.get_cell(id)
                 try:
+                    print("\n"+str(id))
                     process_cel(cel)
                 except:
                     print(f"erro no frame {id}")
@@ -68,6 +69,7 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
         stepBystep(controller, flags, thread_controller)
 
 def process_cel(cel:CelulaModel):
+    
     verify_barra(cel)
     fix_barra(cel) #Garante uma barra mais suave sem mudançar bruscas
     verify_inclination(cel) #
@@ -299,7 +301,7 @@ def verify_inclination(cel:CelulaModel):
     #Rotaciona a Barra
     p1,p2 = rotate_segment(pt1_origin,pt2_origin,-angulo)
     newBarra:LineModel = LineModel(*p1,*p2)
-
+    newBarra.setThickness( barra.getThickness() )
     cel.setLine(newBarra)
 
 def verify_eph(cel:CelulaModel):
@@ -436,6 +438,7 @@ def fix_barra(cel:CelulaModel):
     #barra atual
     data = cel.getAggregate("acumulate_barra")
     current_bar = cel.getLine()
+    thickness=current_bar.getThickness()
 
     if data is None:
         new_data = {
@@ -457,5 +460,6 @@ def fix_barra(cel:CelulaModel):
     cel.setAggregate("acumulate_barra",new_data)
     total = new_data["n"]
 
-    new_bar = LineModel(new_data["x1_ac"]/total,new_data["y1_ac"]/total,new_data["x2_ac"]/total,new_data["y2_ac"]/total)
+    
+    new_bar = LineModel(new_data["x1_ac"]/total,new_data["y1_ac"]/total,new_data["x2_ac"]/total,new_data["y2_ac"]/total, thickness)
     cel.setLine(new_bar)

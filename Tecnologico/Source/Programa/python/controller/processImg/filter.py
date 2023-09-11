@@ -2,24 +2,28 @@ import cv2
 import math
 import numpy as np
 
+from controller.processImg.debug import save_img, display_img, join_imgs,resize, matchGeral
+
 
 def pixelizacao(frame,size):
     size_block = round(size)
     # Carregar a imagem
-    imagem = frame
+    imagem = frame.copy()
     # Obter as dimensões da imagem
     altura, largura = imagem.shape[:2]
     # Definir o tamanho dos blocos
     # Redimensionar a imagem para a pixelização
     imagem_pixelada = cv2.resize(imagem, (largura // size_block, altura // size_block), interpolation=cv2.INTER_LINEAR)
-    imagem_pixelada = cv2.resize(imagem_pixelada, (largura, altura), interpolation=cv2.INTER_NEAREST)
-    return imagem_pixelada
+    imagem_tratada = cv2.resize(imagem_pixelada, (largura, altura), interpolation=cv2.INTER_NEAREST)
+    return imagem_tratada
 
 def limiarizacao(frame, valor, to_white=True):
+    # Carregar a imagem
+    imagem = frame.copy()
     #Acima do valor para para Branco
     type = cv2.THRESH_BINARY if to_white else cv2.THRESH_BINARY_INV
     # Aplicar a limiarização
-    _, imagem_tratada = cv2.threshold(frame, valor, 255, type)
+    _, imagem_tratada = cv2.threshold(imagem, valor, 255, type)
     return imagem_tratada
 
 def imagem_cinza(frame):

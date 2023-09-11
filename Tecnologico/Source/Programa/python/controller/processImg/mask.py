@@ -60,6 +60,7 @@ class Mask():
         lower_skin = np.array([0, 25, 0], dtype=np.uint8)
         upper_skin = np.array([20, 255, 255], dtype=np.uint8)
 
+
         # Aplicar uma máscara para obter apenas a parte da cor da imagem
         mascara = cv2.inRange(imagem_hsv, lower_skin, upper_skin)
         canal_x = cv2.bitwise_and(frame, frame, mask=mascara)
