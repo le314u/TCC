@@ -76,11 +76,10 @@ def process_cel(cel:CelulaModel):
     verify_eph(cel)    
     verify_angle_member(cel)    
     verify_mao_barra(cel)    
-    verify_meta_extensao(cel)    
-    verify_char_AFD(cel)    
+    #verify_meta_extensao(cel)    
+    verify_char_AFD(cel)  #Transpilação  
     verify_AFD(cel)
     
-
 def stepBystep(controller:VideoController, flags:List[Flag], thread_controller):
     global THREAD 
     THREAD = thread_controller
@@ -140,7 +139,6 @@ def stepBystep(controller:VideoController, flags:List[Flag], thread_controller):
 
     except Exception as e:
         print(f"\n{e}")
-
 
 def indice_not_process(buffer:Buffer):
     '''Retorna os indices que nao foi possivel fazer a extração da imagem'''
@@ -369,8 +367,8 @@ def verify_meta_extensao(cel: CelulaModel):
         menor_ombro_dir = CelulaModel.getAggregate("menor_ombro_dir")
 
         #Data da celula
-        ombro_esq = cel.getPose().get_left_elbow()
-        ombro_dir = cel.getPose().get_right_elbow()
+        ombro_esq = cel.getPose().get_left_shoulder()
+        ombro_dir = cel.getPose().get_right_shoulder()
 
         #Inicializando a classe
         if(menor_ombro_esq is None):

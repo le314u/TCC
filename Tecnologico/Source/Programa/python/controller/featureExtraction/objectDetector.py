@@ -280,24 +280,29 @@ def verify_extensaoCotovelo(cel: CelulaModel):
     menor_ombro_dir = CelulaModel.getAggregate("menor_ombro_dir")
 
     #Pega o valor atual do peito na celula
-    ombro_esq = cel.getPose().get_left_elbow()
-    ombro_dir = cel.getPose().get_right_elbow()
+    ombro_esq = cel.getPose().get_left_shoulder()
+    ombro_dir = cel.getPose().get_right_shoulder()
 
+    #Inicializando a classe 
+    if(menor_ombro_esq is None):
+        CelulaModel.setAggregate("menor_ombro_esq",ombro_esq)
+        menor_ombro_esq = ombro_esq
+    if(menor_ombro_dir is None):
+        CelulaModel.setAggregate("menor_ombro_dir",ombro_dir)
+        menor_ombro_dir = ombro_dir
+    
     anguloBracoEsq = cel.getData().getAnguloBracoEsq()
     anguloBracoDir = cel.getData().getAnguloBracoDir()
 
     offset_braco = abs(anguloBracoEsq - anguloBracoDir)
     limiar_aceitavel = limiar_angulo+offset_braco
+
     check_1 = anguloBracoEsq < limiar_aceitavel and anguloBracoDir < limiar_aceitavel
-
-    check_2 = False
-    if (abs(ombro_esq[y] - menor_ombro_esq[y]) < limite) or (abs(ombro_dir[y] - menor_ombro_dir[y]) < limite):
-        check_2=True
-    else:
-        check_2 = False
-
+    check_2 = (abs(ombro_esq[y] - menor_ombro_esq[y]) < limite) or (abs(ombro_dir[y] - menor_ombro_dir[y]) < limite)
     check = check_1 and check_2
     cel.getData().set("extensao_cotovelo",check)
+    print(check_1)
+    print(check_2)
     return check
 
 def verify_ultrapassarBarra(cel: CelulaModel):

@@ -142,8 +142,6 @@ def remove_possibleChar(vets=None, char=None):
     except ValueError:
         pass  # char não encontrado, nenhum erro é lançado
 
-
-
 def create_AFD():
     '''Processa o Frame'''
     try:  
