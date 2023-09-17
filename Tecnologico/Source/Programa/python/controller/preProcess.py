@@ -53,7 +53,6 @@ def preProcess(controller:VideoController, flags:List[Flag], thread_controller):
             if(THREAD['thread_controller']):
                 cel:CelulaModel = controller.buffer.get_cell(id)
                 try:
-                    print("\n"+str(id))
                     process_cel(cel)
                 except:
                     print(f"erro no frame {id}")
@@ -76,7 +75,7 @@ def process_cel(cel:CelulaModel):
     verify_eph(cel)    
     verify_angle_member(cel)    
     verify_mao_barra(cel)    
-    #verify_meta_extensao(cel)    
+    verify_extensao_cotovelo(cel)    
     verify_char_AFD(cel)  #Transpilação  
     verify_AFD(cel)
     
@@ -351,7 +350,7 @@ def verify_mao_barra(cel:CelulaModel):
     except:
         cel.getData().set("mao_barra",False)
 
-def verify_meta_extensao(cel: CelulaModel):
+def verify_meta_extensao(cel: CelulaModel):# ALL PROCESS USE THIS
     '''Verifica o menor ponto que o peito atinge quando esta quando a mao na barra'''
     try:
         #So analisa caso a mão esteja na barra

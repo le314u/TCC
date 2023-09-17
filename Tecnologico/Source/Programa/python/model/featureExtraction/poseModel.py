@@ -186,5 +186,4 @@ class PoseModel():
         if( self.get_right_thumb()[x] == self.get_right_pinky()[x] ):
             RIGHT_HAND = "INCONSISTENTE"
         
-        print(LEFT_HAND)
-        print(RIGHT_HAND)
+        #print(LEFT_HAND, RIGHT_HAND)
