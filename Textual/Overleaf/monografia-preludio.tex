@@ -14,6 +14,12 @@
 		
 %------------ Pacotes adicionais
 \usepackage{blindtext}			% para geração de dummy text
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{acronym}
+\usepackage{amsmath}
+\usepackage{listings}
+
+
 
 %------------ Pacotes de citações
 \usepackage[brazilian,hyperpageref]{backref}	% Paginas com as citações na bibl
@@ -22,6 +28,7 @@
 
 %------------ Comandos úteis
 \newcommand{\aspas}[1]{``#1''}
+\newcommand{\sizeImg}{1}
 
 % ----------- CONFIGURAÇÕES DE PACOTES
 
@@ -85,7 +92,7 @@
 	\sffamily
 	\vspace*{\fill}					% Posição vertical
 	\begin{center}					% Minipage Centralizado
-	\fbox{\begin{minipage}[c][8cm]{13.5cm}		% Largura
+	\fbox{\begin{minipage}[c][10cm]{14.5cm}		% Largura
 	\small
 	
 	\hspace{1cm} \imprimirautor\\
@@ -96,7 +103,7 @@
 	
 	\imprimirtitulo  / \imprimirautor. -- \imprimirlocal, \imprimirdata.
 	
-	\pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
+	\pageref{LastPage} p. : il.\\
 	
 	\imprimirorientadorRotulo~\imprimirorientador\\
 	
@@ -105,9 +112,9 @@
 	de Educação, Ciência e Tecnologia de Minas Gerais, Ciência da Computação, 
 	Formiga, \imprimirdata.\\
 	
-	1. Palavra-chave1.
-	2. Palavra-chave2.
-	3. Palavra-chave3.
+	1. Visão computacional.
+	2. Barra fixa.
+	3. TAF.
 	I. \imprimirorientador.
 	II. Instituto Federal de Educação, Ciência e Tecnologia de Minas Gerais.
 	III. Ciência da Computação.

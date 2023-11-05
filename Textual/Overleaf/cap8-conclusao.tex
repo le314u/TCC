@@ -1,0 +1,16 @@
+\chapter{Conclusão}
+
+Neste trabalho, foi desenvolvido e apresentado um protótipo de um sistema de monitoramento do movimento de barra fixa baseado em testes de
+aptidão física com base em visão computacional, que visa fornecer ao indivíduo um feedback ativo sobre o movimento a fim de auxiliar na formação da consciência corporal quanto a corretude do movimento.
+
+
+\section[Pontos fracos e possíveis melhorias]{Pontos fracos e possíveis melhorias}\label{sec:Pontos fracos e possiveis melhorias}
+
+O protótipo apresentado demonstra uma precisão satisfatória na avaliação do movimento de barra fixa, de acordo com a maioria dos parâmetros estabelecidos nos editais citados em \ref{sec:Barra Fixa}. No entanto, uma exceção notável diz respeito à análise da pegada da mão na posição pronada. A tentativa de verificar se a componente $x$ da posição do mindinho da mão direita é menor do que a do indicador da mesma mão, e se a componente $x$ da posição do mindinho da mão esquerda é maior do que a do indicador da mesma mão, revelou-se ineficiente, isso ocorreu devido a uma imprecisão da ferramenta Midia Pipe na detecção dos pontos de referência 17, 18 , 19 e 20 referênciados em \ref{fig:Pontos de referencia usados na aplicacao}, fazendo com que em um determinado momento do vídeo, houvesse uma inversão nas referências, o que levou a uma interpretação errônea da pegada.
+
+O tempo médio de processamento de um frame foi de 0,8513778391 segundos, com um desvio padrão de 0,02309697607 segundos. No entanto, para o processamento em tempo real de um vídeo com uma taxa de 24 frames por segundo, o tempo limite de processamento é de 0,0416 segundos por frame.
+
+
+
+\section[Trabalhos futuros]{Trabalhos futuros}
+Alem da melhoria dos pontos citados em \ref{sec:Pontos fracos e possiveis melhorias} é desejavel para trabalhos futuros um aprimoramento do relatório de modo que contabilize a quantidade de tempo gasto em cada tipo de contração muscular separado por cada iteração do movimento, assim como o tempo medio gasto em cada execução completa. Elaborar estrategias para avançar com o grau de maturidade da ferramenta.

@@ -2,54 +2,18 @@
 \chapter{Introdução}
 % ----------------------------------------------------------
 
-É atípico encontrar ferramentas analíticas tecnológicas que auxiliem na melhoria ou acusem a execução correta do movimento de barra fixa. Mesmo que seja possível encontrar ferramentas computacionais que fazem uso  do processamento de imagens para auxiliarem no aprimoramento de movimentos em diversas atividades físicas \cite{vcBicicleta} \cite{vcFutebol} \cite{futebolTatica}. Todavia, por questão de investimento/retorno financeiro ou outra justificativa, ainda existem poucas ferramentas computacionais analíticas com o proposito de aprimorar exercícios requisitados, durante o Teste de Aptidão Física (TAF).
-
-O TAF é uma das etapas comuns em concursos públicos para provimento de cargos em carreiras relacionadas a área de segurança pública, sua finalidade é atestar a capacidade do indivíduo em desempenhar funções específicas do cargo por meio de parâmetros pré estabelecidos em edital. Os exercicios avaliados comumemnte são: barra fixa; salto de impulsão horizontal; corrida de 12km ou 2.400m; natação; flexão abdominal. Entretanto, esta é uma etapa muito negligenciada e acaba sendo responsável por um alto índice de reprovação \cite{reprovaTAF}.
-
-De acordo com o Governo da Paraíba o exercício de barra fixa foi o maior responsavel por reprovação durante o TAF dos concursos  da Polícia Militar da Paraiba (PMPB) e Corpo de Bombeiros Militar da Paraíba (PMPB) no ano de 2018 \cite{barraTAF}.O movimento de barra fixa ou flexão de braços na barra fixa é um exercício que avalia a força e a resistência muscular dinâmica dos músculos do tronco e dos membros superiores. É um teste amplamente empregado em campo, devido à facilidade de aplicação, baixo custo e alta reprodutibilidade\cite{barraFixa}. 
-
-Portanto, este trabalho visa a criação de uma ferramenta que auxilie na melhoria do movimento de barra fixa, focado na realização do TAF de concursos publicos da area militar, avaliando a correta execução do movimento de acordo com parametros pre estabelecidos em editais por meio da visão computacional e redes neurais.
-
-% ----------------------------------------------------------
-\section{Justificativa}
-% ----------------------------------------------------------
 
 
-O concurso público é um instrumento voltado para a efetivação dos princípios da impessoalidade e da isonomia no acesso aos cargos públicos \cite{} (art. 37, da Constituição da República Federativa do Brasil), porem a isonomia de acesso não garante uma igualdade de condiçoes levando em consideração que o salario minimo em 2022 é de R\$ 1.212,00 (um mil duzentos e doze reais) \cite{salarioMin} o custo de contratação de um personal trainer é em media R\$60,00 (sessenta reais) hora/aula \cite{valorPersonal} ou seja cerca de 4,95\% do salário mínimo por aula, tal ferramenta pode se tornar uma alternativa barata para a democratização do acesso a um treino minimamente eficiente, podendo aumentar a  igualdade de condiçoes relacionadas ao treinamento de barra fixa.
+O \ac{TAF} é uma das etapas comuns em concursos públicos para provimento de cargos em carreiras relacionadas a área de segurança pública, sua finalidade é atestar a capacidade do indivíduo em desempenhar funções específicas do cargo, por meio de parâmetros preestabelecidos em edital. Os exercícios avaliados comumente são: barra fixa; salto de impulsão horizontal; corrida de 12km ou 2.400m; natação; flexão abdominal. Entretanto, esta é uma etapa muito negligenciada e acaba sendo responsável por um alto índice de reprovação \cite{reprovaTAF}.
 
 
-O uso da visão computacional associado ao movimento de barra fixa usado nos TAF's pode criar uma condição de analise objetiva sobre a execução correta do movimento de Barra fixa, reduzindo ao maximo os criterios de subjetividade pois mesmo o TAF tendo criterios pre estabelecidos em edital, no dia do exame as tomada de decisões por parte dos avaliadores poderão estar relacionadas ao cansaço humano devido uma fadiga de decisão\cite{fadiga}.
+Embora seja possível encontrar ferramentas computacionais que utilizam o processamento de imagens para auxiliar no aprimoramento de movimentos em diversas atividades físicas, como mostrado no trabalho de Franke (\citeyear{vcBicicleta}), Pádua (\citeyear{vcFutebol}) e Paulichen (\citeyear{futebolTatica}), é incomum encontrar ferramentas analíticas tecnológicas que auxiliem na melhoria ou indiquem a execução correta do movimento de barra fixa. No entanto, ainda existem poucas ferramentas computacionais analíticas que visam aprimorar exercícios exigidos durante o \ac{TAF}, possivelmente devido a questões de investimento/retorno financeiro ou outras justificativas.
 
 
-A conciencia comporal é construida por meio da percepção durante o execício a fim de poder aprimorar o movimento e o domínio do corpo \cite{consciencia}, portanto a percepção do posicionamento do corpo em relação ao espaço e as partes ou segmentos do corpo entre si são essenciais para o processo de formação da conciencia comporal. Portanto essa ferramenta tem como foco extrair informações biomecanicas apartir de uma série de imagens e dar um retorno ao individuo sobre a amplitude correta do movimento, tempo de contração, momento que o musculo entra em insuficiencia ativa ou insuficiência passiva fazendo assim uma ferramenta auxiliar no processo de formação da conciencia corporal.
+A flexão de braços na barra fixa, também conhecida como movimento de barra fixa, é uma atividade física que tem como objetivo avaliar a resistência e a força dos músculos do tronco e dos membros superiores. Esse exercício é amplamente utilizado em diversos contextos, principalmente por sua facilidade de aplicação, baixo custo e alta reprodutibilidade \cite{barraFixa}. De acordo com o Governo da Paraíba, a realização do exercício de barra fixa foi identificada como o principal motivo de reprovação durante o \ac{TAF} nos concursos de 2018 para a Polícia Militar da Paraíba (PMPB) e o Corpo de Bombeiros Militar da Paraíba (PMPB) \cite{barraTAF}.
 
 
-Portanto essa ferramenta tem como foco extrair informações apartir de uma série de imagens da execução do moviemnt ode barra fixa e dar um retorno ao individuo sobre a validação do movimento, amplitude do movimento, tempo de contração, momento que o musculo entra em insuficiencia ativa ou insuficiência passiva fazendo assim uma ferramenta util para o treinamento de barra fixa associada ao TAF alem de auxiliar no processo de formação da conciencia corporal 
+Portanto, este trabalho visa a criação de uma ferramenta que auxilie na melhoria do movimento de barra fixa, focado na realização do \ac{TAF} de concursos públicos da área militar, avaliando a correta execução do movimento de acordo com parâmetros preestabelecidos em editais, por meio da visão computacional e redes neurais.
 
 
 
-
-% ----------------------------------------------------------
-\section{Objetivos}
-% ----------------------------------------------------------
-
-\subsection{Objetivo Geral}	
-
-Projetar e desenvolver uma ferramenta de visão computacional para análise do movimento de barra fixa associada ao TAF.
-
-\subsection{Objetivos Específicos}	
-
-\begin{itemize}
-
-    \item Projetar uma ferramenta de visão computacional (em nível de prova de conceito) que analise o movimento de barra fixa.
-
-    \item Projetar uma ferramente, com o uso da visão computacional, que auxilie na formação da conciência do corporal do individuo por meio de feedback ativo durante o movimento.
-
-    \item Aplicar uma metodologia já existente para análise de insuficiência ativa ou passiva no músculo bíceps braquial durante o movimento de barra fixa por meio de uma aplicação da visão computacional.
-
-    \item Usar a visão computacional para verificar a corretude do movimento de barra fixa tendo como parametros alguns editais de concursos publicos da esfera militar.
-    
-    \item Desenvolver uma ferramenta, com o uso da visão computacional, para indicar uma insuficiência ativa ou passiva no músculo bíceps braquial durante o movimento de barra fixa.
-
-
-\end{itemize}

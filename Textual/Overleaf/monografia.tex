@@ -72,26 +72,23 @@
 % Informações de dados para CAPA e FOLHA DE ROSTO
 % ----------------------------------------------------
 
-\titulo{Título do TCC}
+\titulo{Desenvolvimento de um sistema de monitoramento do movimento de barra fixa baseado em testes de aptidão física com base em visão computacional}
 \autor{Lucas Mateus Fernandes}
 \local{Formiga - MG}
 \data{2023}
-\orientador{Fernando Paim Lima}
-% \coorientador{Felipe Augusto Lima Reis}
+\orientador{Prof. Mes. Fernando Paim Lima}
+%\coorientador{se tiver}
 \instituicao{%
   Instituto Federal de Educação, Ciência e Tecnologia de Minas Gerais \par
   Campus Formiga \par
   Ciência da Computação
   }
 \tipotrabalho{Monografia}
-
 % O preambulo deve conter o tipo do trabalho, o objetivo, o nome da instituição e a área de concentração 
-%\preambulo{Monografia do trabalho de conclusão de curso apresentado ao Instituto Federal Minas Gerais - Campus Formiga, como requisito parcial para a obtenção do título de Bacharel em Ciência da Computação.}
+\preambulo{Monografia do trabalho de conclusão de curso apresentado ao Instituto 
+    Federal Minas Gerais - Campus Formiga, como requisito parcial para a obtenção 
+    do título de Bacharel em Ciência da Computação.}
 
-
-\preambulo{Proposta de projeto do Trabalho de Conclusão de Curso do Curso de Bacharelado em Ciência da Computação, IFMG – Campus Formiga.}
-
-    
 % ----------------------------------------------------
 % INÍCIO DO DOCUMENTO
 % ----------------------------------------------------
@@ -125,6 +122,7 @@
 
 %------------ Errata (se houver)
 % Modifique o comando \imprimirerrata no preludio e use esse comando
+
 %\imprimirerrata
 
 %------------ Folha de aprovação
@@ -132,29 +130,30 @@
 % Você pode utilizar a página modelo até a aprovação do trabalho. 
 % Após isso, gere uma página com a imagem da folha assinada pela banca,
 % comente o comando \imprimirfolhadeaprovacao e use o \includepdf 
-\imprimirfolhadeaprovacao{06 de junho de 2018}
 % \includepdf{folhadeaprovacao_final.pdf}
+%\imprimirfolhadeaprovacao{14 de novembro de 2023}
 
 %------------ Dedicatória
 \begin{dedicatoria}
    \vspace*{\fill} \centering \noindent 
-   \textit{ Este trabalho é dedicado a tudo e todos, exceto os cachorros de rua.} 
+   \textit{ Este projeto é uma homenagem a duas entidades: aquelas que o leram e as que um dia poderão apreciá-lo.} 
    \vspace*{\fill}
 \end{dedicatoria}
 
 %------------ Agradecimentos
 \begin{agradecimentos}
-  Gostaria de agradecer meus pais por tudo que fizeram e
-  aos meus professores pela paciência que tiveram.
-\end{agradecimentos}
+  
+	Gostaria de expressar minha profunda gratidão aos meus professores pela paciência inestimável que demonstraram ao longo do meu percurso acadêmico. Sua dedicação em compartilhar conhecimento e orientação, mesmo diante das minhas dúvidas constantes, foi fundamental para o meu crescimento e aprendizado. Agradeço por investirem seu tempo e esforço em me auxiliar a compreender os desafios que encontrei, tornando minha jornada educacional mais rica e gratificante.\\
+	A todos os meus colegas pela paciência e compreensão que demonstraram quando, em uma sexta-feira à noite, me envolvi em questionamentos sobre o conceito do terceiro quartil. E é graças à nossa colaboração que pude aprofundar meu entendimento. O apoio e a camaradagem que compartilhamos durante nossas discussões foram essenciais para nossa jornada acadêmica conjunta.\\
+	Aos meus queridos pais por tudo que fizeram ao longo da minha vida. Seu amor incondicional, apoio constante e sacrifícios incansáveis moldaram a pessoa que me tornei hoje. Desde o início estiveram ao meu lado, guiando-me com sabedoria, proporcionando conforto nos momentos difíceis e celebrando minhas conquistas com alegria. Cada oportunidade que tive e cada passo que dei foram iluminados pelo exemplo inspirador que vocês sempre foram.
 
+\end{agradecimentos}
 
 %------------ Epígrafe
 \begin{epigrafe}
    \vspace*{\fill}
    \begin{flushright}
-	\textit{\aspas{Nunca atribua à malícia/maldade o que pode ser adequadamente explicado pela estupidez.}
-	(Navalha de Hanlon) }
+	\textit{\aspas{Dattebayo} - (Naruto Uzumaki)}
    \end{flushright}
 \end{epigrafe}
 
@@ -163,21 +162,23 @@
 
 % resumo em português
 \begin{resumo}
- A escrita da monografia é um problema clássico no Trabalho de Conclusão de Curso (TCC).
- Aqui é o lugar onde o autor explica brevemente o conteúdo do seu trabalho. Para usar este
- template é necessário instalar alguns pacotes do LaTeX, particularmente o abntex2. O pacote
- blindtex não é realmente necessário, serve apenas para gerar lero-lero neste exemplo.
+	A flexão de braços na barra fixa, conhecida como movimento de barra fixa, é uma atividade física comum nos testes de aptidão física de concursos públicos para cargos em carreiras relacionadas à segurança pública. No entanto, um desafio na avaliação do Teste de Aptidão Física (TAF) é a possibilidade de fadiga de decisão por parte dos avaliadores no dia do exame.
+	Este trabalho visa desenvolver uma ferramenta de visão computacional em nível de prova de conceito para analisar a corretude do movimento de barra fixa, considerando parâmetros presentes nos editais de concursos públicos na esfera militar. Além disso, pretende oferecer um feedback ativo sobre o movimento de barra fixa, permitindo o aprimoramento da consciência corporal do indivíduo.
+	Na elaboração deste trabalho, foi adotada uma abordagem que combina elementos do processo usual de elaboração de trabalhos acadêmicos com a estruturação das etapas de um sistema de visão computacional.
+	Como resultado, foi desenvolvida uma ferramenta em prova de conceito capaz de identificar o movimento correto na barra fixa, com exceção da pegada pronada. Apesar do planejamento para ter um tempo de processamento próximo ao tempo real de execução, a ferramenta acabou demandando quase 20,432 vezes mais tempo do que o previsto.
  
- \textbf{Palavras-chave}: Monografia, LaTeX, TCC.
+ \textbf{Palavras-chave}: visão computacional, Barra fixa, TAF.
 \end{resumo}
 
 % resumo em inglês
 \begin{resumo}[Abstract]
  \begin{otherlanguage*}{english}
-  The writing of the monograph is a classic problem in the Course Conclusion Work.
-  Here is where the author briefly explains the content of his work.
- 
- \textbf{Keywords}: Monograph, LaTeX.
+	The pull-up exercise, known as a pull-up movement, is a common physical activity in the physical fitness tests for public service exams in careers related to public safety. However, a challenge in the evaluation of the Physical Aptitude Test (PAT) is the potential for decision fatigue on the part of the examiners on the day of the test.\\
+	This work aims to develop a computer vision tool at a proof-of-concept level to analyze the correctness of the pull-up movement, considering parameters present in public service exam notices in the military sphere. Additionally, it intends to provide active feedback on the pull-up movement, allowing for the improvement of the individual's body awareness.\\
+	In the elaboration of this work, an approach was adopted that combines elements of the usual academic work development process with the structuring of the stages of a computer vision system.\\	
+	As a result, a proof-of-concept tool capable of identifying the correct pull-up movement was developed, with the exception of the pronated grip. Despite the plan to have a processing time close to real-time execution, the tool ended up requiring nearly 20,432 times more time than expected."
+
+ \textbf{Keywords}: Pull-up, computer vision.
  \end{otherlanguage*}
 \end{resumo}
 
@@ -192,18 +193,10 @@
 %------------ Lista de tabelas
 
 %------------ Lista de abreviaturas e siglas
-
-% ---
-% inserir lista de abreviaturas e siglas
-% ---
-\begin{siglas}
-	\item[ABNT] Associação Brasileira de Normas Técnicas
-	\item[abnTeX] ABsurdas Normas para TeX
-  \end{siglas}
-  % ---
-  
+\include{lista-siglas}
 
 %------------ Lista de símbolos
+\include{lista-simbolos}
 
 %------------ Sumario
 \pdfbookmark[0]{\contentsname}{toc}
@@ -214,11 +207,15 @@
 % ELEMENTOS TEXTUAIS
 % ----------------------------------------------------------
 \textual
+
 \include{cap1-introducao}
-\include{cap2-revisao}
-\include{cap3-desenvolvimento}
-\include{cap4-conclusao}
-\include{cap5-trabalhos-futuros}
+\include{cap2-justificativa}
+\include{cap3-objetivos}
+\include{cap4-revisao}
+\include{cap5-metodologia}
+\include{cap6-desenvolvimento}
+\include{cap7-resultados}
+\include{cap8-conclusao}
 
 \phantompart
 
@@ -229,6 +226,9 @@
 
 % Referências bibliográficas
 \bibliography{monografia}
+
+%Isso significa que as referências correspondentes às chaves listadas (SistemaDados2008, LARAVEL2008, etc.) serão incluídas na bibliografia do seu documento, mesmo que não sejam citadas explicitamente ao longo do texto.
+%\nocite{SistemaDados2008, LARAVEL2008, HTMLeCSS2008, AplicacaodePHP2007,  PHPPOO2015, PHPConhece2017, PHPMYSQL2011, JAVASCRIPTGuia2002 }
 
 % Consulte o manual da classe abntex2 para orientações 
 % sobre os seguintes tópicos opcionais:
