@@ -39,8 +39,9 @@ O teste de flexão em barra fixa ou teste dinâmico de barra fixa sofre algumas 
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.45]{figuras/TAF/barraFixa.jpg}
-	\caption{Movimento de barra fixa}
+    \caption{Movimento de barra fixa}
+	\includegraphics[scale=0.7]{figuras/TAF/barraFixa.jpg}
+    \legend{Fonte:\cite{barraFixa_IMG}.}
 	\label{fig:Movimento de barra fixa}
 \end{figure}
 
@@ -63,8 +64,9 @@ Cada plano tem um eixo perpendicular utilizado para caracterizar os movimentos r
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.55]{figuras/TAF/planos.png}
-	\caption{Planos anatômicos}
+    \caption{Planos anatômicos}
+	\includegraphics[scale=0.15]{figuras/TAF/planos.png}
+    \legend{Fonte:\cite{planosAnatomicos_IMG}.}
 	\label{fig:Planos anatomicos}
 \end{figure}
 
@@ -163,8 +165,9 @@ Embora Imagens Monocromáticas representem tons variados de uma única cor, elas
 
 \begin{figure}[!htb]
 	\centering
+    \caption{Composição de um imagem RGB}
 	\includegraphics[scale=0.25]{figuras/Imagem_colorida/colored.png}
-	\caption{Composição de um imagem RGB}
+    \legend{Fonte: Elaborado pelo autor (2023).}
 	\label{fig:Composicao de um imagem RGB}
 \end{figure}
 
@@ -172,8 +175,9 @@ Em uma imagem digital, a descrição da intensidade da luz pode ocorrer de manei
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=1]{figuras/processamento_imagem/pixel.png}
 	\caption{Representação do Pixel de uma imagem com 3 canais}
+	\includegraphics[scale=1]{figuras/processamento_imagem/pixel.png}
+    \legend{Fonte:\cite{imagemIBM}.}
 	\label{fig:Representacao do Pixel de uma imagem com 3 canais}
 \end{figure}
 
@@ -188,9 +192,10 @@ O processamento de imagens abrange um conjunto de etapas interligadas, cada uma 
 
 \begin{figure}[!htb]
 	\centering
+    \caption{Fluxograma das etapas do processamento de imagens digitais}
 	\includegraphics[scale=0.4]{figuras/processamento_imagem/ProcessamentoImagem.png}
-	\caption{Fluxo grama das etapas do processamento de imagens digitais}
-	\label{fig:Fluxo grama das etapas do processamento de imagens digitais}
+    \legend{Fonte: \cite{imagemMonocromatica}.}
+	\label{fig:Fluxograma das etapas do processamento de imagens digitais}
 \end{figure}
 
 
@@ -203,8 +208,9 @@ Identificação de Pose ou \ac{EPH} é um problema geral em Visão Computacional
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.25]{figuras/eph/keypoint.jpg}
-	\caption{Captura de pontos de referência para estimativa de pose humana}
+    \caption{Captura de pontos de referência para estimativa de pose humana}
+	\includegraphics[scale=0.2]{figuras/eph/keypoint.jpg}
+    \legend{Fonte: \cite{tensorFlow_IMG}.}
 	\label{fig:Captura de pontos de referencia para estimativa de pose humana}
 \end{figure}
 
@@ -222,28 +228,31 @@ Uma reta pode ser descrita como: $$y = mx + b$$ As características desta reta s
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=3]{figuras/math/rhotheta.png}
-	\caption{Representação da reta pelos parametros $\rho$ e $\theta$}
-	\label{fig:Representacao da reta pelos parametros}
+    \caption{Representação da reta pelos parametros $\rho$ e $\theta$}
+	\includegraphics[scale=2]{figuras/math/rhotheta.png}
+    \legend{Fonte: \cite{parametrizacao}.}
+    \label{fig:Representacao da reta pelos parametros}
 \end{figure}
 
-O plano de Hough é umaca bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}.
+O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}.
 
-\newpage
+
 \begin{figure}[!htb]
 	\centering
+    \caption{Representação de um ponto no espaço parametrizavel $\rho$ e $\theta$}
 	\includegraphics[scale=0.5]{figuras/math/pontoEspacoParametrizavel.png}
-	\caption{Representação de um ponto no espaço parametrizavel $\rho$ e $\theta$}
+    \legend{Fonte: \cite{parametrizacao}.}
 	\label{fig:Representacao de um ponto no espaco parametrizavel}
 \end{figure}
 
 Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a dois senóides no plano de Hough, a intersecção dos dois senóides representa a reta $pq$ que
 passa pelos dois pontos no plano da imagem, analogamente 4 retas no plano da imagem correspondem a 4 senóides no plano de Hough que se acumulam em 4 pontos, portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas, consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}.
-\newpage
+
 \begin{figure}[!htb]
 	\centering
+    \caption{Representação da reta por meio do ponto de intersecção}
 	\includegraphics[scale=0.5]{figuras/math/senoidesIterseccao.png}
-	\caption{Representação da reta por meio do ponto de intersecção}
+    \legend{Fonte: \cite{parametrizacao}.}
 	\label{fig:Representacao da reta por meio do ponto de interseccao}
 \end{figure}
 
@@ -317,19 +326,20 @@ Essa inclinação é perpendicular às arestas e arredondado para um dos quatro 
 
 \begin{figure}[!htb]
 	\centering
+    \caption{Imagem em preto e branco com filtro de gaus}
 	\includegraphics[scale=0.25]{figuras/filter/sobel/f_normal.jpeg}
-	\caption{Imagem em preto e branco com filtro de gaus}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:Imagem em preto e branco com filtro de gaus}
 \end{figure}
 
 \begin{figure}[!htb]
 	\centering
+    \caption{Intensidade da mudança de gradiente usando operador de Sobel}
 	\includegraphics[scale=0.25]{figuras/filter/sobel/f_sobel.jpeg}
-	\caption{Intensidade da mudança de gradiente}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:Intensidade da mudanca de gradiente}
 \end{figure}
 
-\newpage
 
 
 \subsubsection[Supressão não máxima]{Supressão não máxima}
@@ -341,11 +351,11 @@ Essa inclinação é perpendicular às arestas e arredondado para um dos quatro 
 
 \begin{figure}[!ht]
 	\centering
+    \caption{Supressao não maxima}
 	\includegraphics[scale=0.65]{figuras/filter/supressao_nao_maxima/supressao3.png}
-	\caption{Supressao não maxima}
+    \legend{Fonte: \cite{canny-edge-detection-python}.}
 	\label{fig:Supressao nao maxima}
 \end{figure}
-\newpage
 
 
 De maneira mais ilustrativa, o procedimento do algoritmo pode ser descrito da seguinte forma: o pixel que está destacado em vermelho é aquele que está sendo processado. A linha em laranja representa a orientação do gradiente ou seja é uma linha perpendicular à borda, os pixels de interesse presentes na vizinhança são aqueles que estão destacados em azul, uma vez que estão na mesma orientação do gradiente. Se o valor do pixel realçado em vermelho for maior do que o valor dos pixels vizinhos destacados em azul, então esse pixel será mantido. Caso contrário, ele será suprimido, assegurando que somente os pontos mais significativos sejam preservados na representação das bordas\cite{canny-edge-detection-python}.
@@ -405,16 +415,17 @@ Quando uma imagem é ampliada ou exibida em uma resolução maior do que sua res
 
 \begin{figure}[htbp]
     \centering
+    \caption{Imagem pixelizada com blocos de 32x32}
         \begin{minipage}{0.4\textwidth}
             \includegraphics[width=\textwidth]{figuras/pixelizacao/foto.jpeg}
         \end{minipage}
         \begin{minipage}{0.4\textwidth}
             \includegraphics[width=\textwidth]{figuras/pixelizacao/32.png}
         \end{minipage}
-    \caption{Imagem pixelizada com blocos de 32x32}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:Imagem pixelizada}
 \end{figure}
-\newpage
+
 
 
 
@@ -461,8 +472,9 @@ reconhecedor, um cursor, que indica o próximo elemento da fita a ser processado
 
 \begin{figure}[!htb]
 	\centering
+    \caption{Organização de um reconhecedor genérico}
 	\includegraphics[scale=2]{figuras/AFD/reconhecedor.png}
-	\caption{Organização de um reconhecedor genérico}
+    \legend{Fonte: \cite{AFD_reconhecedor}.}
 	\label{fig:Organizacao de um reconhecedor generico}
 \end{figure}
 
@@ -503,8 +515,9 @@ Portanto um \ac{AF} chamado $M_1$ que aceita qualquer numero binário impar pode
 
 \begin{figure}[!htb]
 	\centering
+    \caption{Diagrama de estados de $M_1$}
 	\includegraphics[scale=1]{figuras/AFD/m1.png}
-	\caption{Diagrama de estados de $M_1$}
+    \legend{Fonte: \cite{AFD_M1}.}
 	\label{fig:Diagrama de estados}
 \end{figure}
 

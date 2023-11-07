@@ -66,7 +66,7 @@ A atenção contínua da equipe de desenvolvimento do MediaPipe dedicada à manu
 
 Por atuar com uma aplicação de \ac{IA} e \ac{ML} que trabalha com modelos ja treinados, o processamento dos dados de entrada ocorre completamente no dispositivo o que foi um ponto relevante, garantindo a persistência e funcionalidade contínua da ferramenta desenvolvida, independentemente da ação do tempo em relação a disponibilidade de servidores externos.
 
-Um outro ponto relevante para a escolha dessa ferramenta foi o fato de que ela se destaca pela capacidade de fornecer resultados precisos e real na detecção de poses o que possibilita a emissão de um feedback ativo por parte da ferramenta desenvolvida.
+Um outro ponto relevante para a escolha dessa ferramenta foi o fato de que ela se destaca pela capacidade de fornecer resultados precisos e real na detecção de poses o que possibilita a emissão de um feedback por parte da ferramenta desenvolvida.
 
 
 
@@ -98,7 +98,7 @@ O \ac{AFD} construído opera em relação a um alfabeto específico. Esse alfabe
     \item[B] Ocorrência da extensão dos cotovelos.
     \item[C] Ocorrência da ultrapassagem do queixo sobre a barra.
     \item[D] Existência de movimento nos quadris.
-\end{itemize} \label{lst:caracter}
+\end{itemize} 
 
 Cada Elemento da 4-upla pode receber um valor binário, sendo 0 para representar a ausencia  ou 1 para representar a existência de tal característica em um determinado \textit{frame}, portanto o alfabeto do \ac{AFD} pode ser representado da seguitne forma:
 
@@ -136,13 +136,14 @@ Portanto o conjunto de estados finais do \ac{AFD} pode ser representado da segui
 
 As funções de transiçoes estão representadas no diagrama de estados a seguir:
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.45]{figuras/AFD/afd_barra.png}
 	\caption{Diagrama de Estados do AFD desenvolvido}
+	\includegraphics[scale=0.4]{figuras/AFD/afd_barra.png}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:transicaoAFD}
 \end{figure}
-\newpage
+
 
 \section[Extração de informação frame a frame]{Extração de informação frame a frame}\label{sec:Extracao de informacao frame a frame}
 
@@ -150,18 +151,18 @@ Dentro do processamento de imagem, a segmentação é a etapa onde é dividido a
 
 O objetivo da ferramenta é operar em um ambiente controlado. Entretanto, devido às características específicas da infraestrutura do local de teste, tornou-se essencial incorporar uma máscara para uma manipulação adequada de cada quadro. Com esse propósito, uma máscara previamente elaborada a partir do primeiro quadro do vídeo foi aplicada, utilizando a função bitwise\_and, disponibilizada na biblioteca \ac{openCV}. A operação bitwise\_and consiste em um processo de AND bit a bit entre os valores dos pixels do quadro e os valores correspondentes da máscara. O resultado é uma nova imagem em que os pixels que não fazem parte das regiões brancas da máscara são convertidos para preto, enquanto os pixels que pertencem a essas regiões permanecem intactos. A finalidade dessa máscara é realçar a região de interesse dentro do quadro, permitindo um foco preciso durante a etapa de segmentação da imagem.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
     \centering
+    \caption{Ambiente de gravação e Mascara Preto e Branca criada apartir do mesmo}
         \begin{minipage}{0.4\textwidth}
             \includegraphics[width=\textwidth]{figuras/filter/mask/ambiente.png}
         \end{minipage}
         \begin{minipage}{0.4\textwidth}
             \includegraphics[width=\textwidth]{figuras/filter/mask/mask.png}
         \end{minipage}
-    \caption{Ambiente de gravação e Mascara Preto e Branca criada apartir do mesmo}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:maskAmbiente}
 \end{figure}
-\newpage
 
 \subsection[Detecção da barra]{Detecção da barra}\label{sec:Deteccao da barra}
 
@@ -169,15 +170,16 @@ Para a detecção da barra fixa, foi empregado o filtro de Canny \ref{sec:Detect
 
 Após a etapa de pré-processamento da imagem, foi empregada a Transformada de Hough \ref{sec:Transformada de Hough}, também disponibilizada na biblioteca \ac{openCV}. Essa aplicação foi configurada com os seguintes parâmetros: a resolução da distância no acumulador, em pixels, foi definida como 1; a resolução angular no acumulador, em radianos, foi estabelecida em $\pi$/180, equivalente a 1 grau; e o limiar do acumulador foi fixado em 150. Essas configurações asseguram a avaliação de cada pixel para sua inclusão ou não como parte de uma reta, além de garantir uma inclinação mínima de 1º de uma reta a outra e que sejam consideradas retas apenas aquelas que tiverem 150 votos ou mais contabilizados no acumulador.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
     \centering
+        \caption{Aplicação do filtro de Canny.}
         \begin{minipage}{0.45\textwidth}
             \includegraphics[width=\textwidth]{figuras/filter/canny/mask.png}
         \end{minipage}
         \begin{minipage}{0.45\textwidth}
             \includegraphics[width=\textwidth]{figuras/filter/canny/canny.png}
         \end{minipage}
-    \caption{Aplicação do filtro de Canny.}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:maskCanny}
 \end{figure}
 
@@ -195,13 +197,13 @@ A cada quadro, o procedimento de detecção da barra é repetido. Para lidar com
 O processo pode ser visualizado no diagrama a seguir:
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Diagrama do processo de detecção da barra}
 	\includegraphics[scale=0.6]{figuras/diagrama/detectar barra.png}
-	\caption{Diagrama do processo de detecção da barra}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{diagrama:Detectar barra}
 \end{figure}
-\newpage
 
 
 \subsection[Inclinação da barra]{Inclinação da barra}\label{sec:Inclinacao da barra}
@@ -209,10 +211,11 @@ O processo pode ser visualizado no diagrama a seguir:
 Durante o exame da barra física, é necessário que a barra esteja alinhada de forma paralela ao solo. Contudo, devido a um possível posicionamento inadequado da câmera, o vídeo pode demonstrar uma inclinação na barra. Para corrigir isso, o ângulo de inclinação da barra é calculado e, posteriormente, o frame é rotacionado de acordo com essa inclinação. Essa ação tem como objetivo assegurar que, na imagem, a barra se torne paralela à base da imagem, alinhando-a de forma apropriada em relação ao plano horizontal.
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.12]{figuras/processo/detectarBarra/barra_rotacionada.png}
 	\caption{Imagem rotacionada em relação a barra}
+	\includegraphics[scale=0.12]{figuras/processo/detectarBarra/barra_rotacionada.png}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:Barra rotacionada}
 \end{figure}
 
@@ -252,23 +255,25 @@ A biblioteca midia MediaPipe fornece 33 pontos de referência como mostrado na F
     \item[30] - calcanhar direito
 \end{itemize}
 
+\newpage
 Podendo ser representado na figura a seguir:
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.24]{figuras/eph/pose_landmarks_custom.png}
 	\caption{Pontos de referência usados na aplicação}
+	\includegraphics[scale=0.2]{figuras/eph/pose_landmarks_custom.png}
+    \legend{Fonte: Elaborado pelo autor (2023) baseado na Figura \ref{fig:Pontos de referencia}}
 	\label{fig:Pontos de referencia usados na aplicacao}
 \end{figure}
-\newpage
 
 \subsection[Mão na barra]{Mão na barra}\label{sec:Mao na barra}
 
 
 Para realizar a detecção das mãos na barra, foi seguida uma sequência de etapas bem definidas. Inicialmente, foi aplicada uma máscara que identificou os pixels na imagem que estavam dentro do intervalo de cor (0, 25, 0) a (20, 255, 255), enquanto os outros pixels foram definidos como pretos, destacando assim a cor da pele do executor.
 
-\renewcommand{\sizeImg}{0.4}
-\begin{figure}[!htbp]
+\renewcommand{\sizeImg}{0.3}
+\begin{figure}[H]
+    \caption{Filtragem pela cor de pele}
     \centering
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/original.png}
@@ -276,108 +281,113 @@ Para realizar a detecção das mãos na barra, foi seguida uma sequência de eta
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/skin.png}
         \end{minipage}
-    \caption{Filtragem pela cor de pele}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:skin}
 \end{figure}
-\newpage
 
 Posteriormente, a imagem que estava em \ac{RGB} foi unificada em um unico canal por meio da função $cvtColor$ presenta na biblioteca \ac{openCV}, tendo como parametro a constante $COLOR\_BGR2GRAY$ da propria biblioteca, convertendo os três canais (Blue, Gren e Red) para uma escala de cinza.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
+    \caption{Conversão em escala de cinza}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/skin.png}
         \end{minipage}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/gray.png}
         \end{minipage}
-    \caption{Conversão em escala de cinza}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:gray}
 \end{figure}
-\newpage
 
 A partir desse ponto, a imagem passa a conter diferentes níveis de brilho, representados em uma escala de cinza. Foi aplicado um filtro de limiarização da biblioteca \ac{openCV} utilizando a função $threshold$ tendo como parametro a constante $THRESH\_BINARY$ e o valor de limiar 50. Nesse processo, todos os pixels com valores iguais ou superiores a 50 foram convertidos para o valor 255, enquanto os pixels com valores menores foram convertidos para o valor 0. Isso resultou em uma imagem binarizada que tem o propósito de representar a presença ou ausência do executor.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
+    \caption{Binarização da Imagem}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/gray.png}
         \end{minipage}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/limited.png}
         \end{minipage}
-    \caption{Binarização da Imagem}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:gray_limited}
 \end{figure}
-\newpage
+
 
 Com a imagem binarizada, foi aplicado um filtro de suavização usando um kernel quadrado de lado igual à metade do tamanho da barra $(tamanho da barra/2, tamanho da barra/2)$. O objetivo dessa etapa é reduzir o ruído na imagem. No entanto, como o filtro de suavização é uma operação de convolução, foi necessário aplicar a limiarização novamente para obter uma nova imagem binarizada.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
+    \caption{Redução de ruidos com a suavização e binarização}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/blur.png}
         \end{minipage}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/limited2.png}
         \end{minipage}
-    \caption{Redução de ruidos com a suavização e binarização}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:blur}
 \end{figure}
-\newpage
+
 
 Neste ponto, a imagem que passou por uma segunda binarização para melhorar a precisão e eliminar ruídos de descontinuidade, foi aplicado um filtro de pixelização com um kernel quadrado de lado igual ao tamanho da barra $(tamanho da barra, tamanho da barra)$. Esse filtro foi utilizado para destacar claramente a forma do corpo do executor, representando a presença do corpo por blocos de tamanho fixo. Após a pixelização, a limiarização foi aplicada novamente, resultando em uma nova imagem binarizada.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
+    \caption{Imagem Pixelizada e binarizada}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/pixel.png}
         \end{minipage}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/limited3.png}
         \end{minipage}
-    \caption{Imagem Pixelizada e binarizada}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:pixeled}
 \end{figure}
-\newpage
+
 
 A área de interesse é representado por uma linha no rumo da barra mesclada com uma mascara que dividida a barra em dois polos, esquerdo e direito, a divisão desses polos foi feita por meio da indentificação do ponto médio entre os ombros esquerdo e direito em relação ao eixo $x$, com base nesse ponto, foi traçada uma linha vertical paralela a barra de modo que a imagem fosse dividida em dois polos forçando uma descontinuidade da região de interresse.
 
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
+    \caption{Mascara da região de interesse}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/mask3.png}
         \end{minipage}
-    \caption{Mascara da região de interesse}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:mask}
 \end{figure}
-\newpage
+
 
 
 
 Por fim com a imagem filtrada e binarizada foi destacada a região de interesse e idendificado os contornos presente nessa região, cada contorno representa algo obstruindo a barra em específico uma parte do corpo ou algo que tenha o mesmo intervalo de cor pre estabelecido. Portanto com a idendificação de 1 ou mais contornos em cada lado da imagem possivelmente são as mãos tocando a barra.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
+    \caption{Do lado esquerdo a imagem segmentada e do lado direto sua representação}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/only_hands.png}
         \end{minipage}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/contornos.png}
         \end{minipage}
-    \caption{Do lado esquerdo a imagem segmentada e do lado direto sua representação}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:binHand}
 \end{figure}
-\newpage
+
 
 
 
 O processo pode ser visualizado no diagrama a seguir:
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Diagrama do processo de detecção de mão na barra}
 	\includegraphics[scale=0.7]{figuras/diagrama/mao_barra.png}
-	\caption{Diagrama do processo de detecção de mão na barra}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{dia:mao_barra}
 \end{figure}
 
@@ -388,10 +398,11 @@ A verificação da extensão do cotovelo foi realizada estritamente quando o exe
 
 $check\_1$ foi estabelecido com base na comparação dos ângulos formados entre o antebraço e o braço. Nessa avaliação, o antebraço era representado pelo segmento de reta definido pelos pontos do punho e cotovelo, enquanto o braço era representado pelo segmento de reta definido pelos pontos do ombro e cotovelo. Para que a condição $check\_1$ fosse considerada verdadeira, era necessário que tanto o ângulo formado pelo antebraço e braço esquerdo quanto o ângulo formado pelo antebraço e braço direito fossem menores que o limite previamente estabelecido em 13º (valor do limiar).\label{angulo_braco}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Segmento de reta representante dos membros superiores}
 	\includegraphics[scale=0.2]{figuras/braco_esticado/82_braco_antebraco.png}
-	\caption{Segmento de reta representante dos membros superiores}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:braco_antebraco}
 \end{figure}
 
@@ -406,10 +417,11 @@ Quando essa condição era atendida em um dos lados, a verificação era conside
 Ao exigir que ambas as mãos estivessem tocando a barra, o alinhamento do peito tendia a ocorrer de forma paralela à barra. Isso implicava que, ao considerar um lado como verdadeiro, o outro também é automaticamente considerado verdadeiro. salvo em casos onde um cotovelo esta extendido e outro esta flexionado, porem  nestes exemplos são cobertors pelo $check\_1$ onde é verificado a angulação dos dois cotovelos, tanto esquerdo quanto direito.
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Diagrama do fluxo da informação para verificar extensão do cotovelo}
 	\includegraphics[scale=0.7]{figuras/diagrama/extensão.png}
-	\caption{Diagrama do fluxo da informação para verificar extensão do cotovelo}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{dia:extensao}
 \end{figure}
 
@@ -422,13 +434,14 @@ Ao exigir que ambas as mãos estivessem tocando a barra, o alinhamento do peito 
 Para verificar se ocorreu a ultrapassagem do queixo à barra, foi avaliando três condições essenciais: a posição do peito em relação à barra, a flexão do cotovelo e a detecção de uma presença na área de interesse, presumivelmente correspondente à cabeça do executor. As condiçeos são feitas na ordem apresentada e para evitar o processamento desnecessário as condiçoes são analisadas apenas se a mão estiver encostando na barra e a cada codição Falsa o processamento é interropido.
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Diagrama Ultrapassagem do queixo a barra }
 	\includegraphics[scale=0.75]{figuras/diagrama/ultrapassagem_barra.png}
-	\caption{Diagrama Ultrapassagem do queixo a barra }
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{dia:ultrapassagem}
 \end{figure}
-\newpage
+
 
 A verificação da proximidade do peito em relação à barra é determinada pela medida da distância da cordenada entre os ombros esquerdo ou direito até a barra, com foco na coordenada $y$. Considera-se que o peito está em contato com a barra quando a distância entre o peito e a barra é inferior a 150\% do comprimento da própria barra.
 
@@ -440,7 +453,8 @@ O processamento para verificar a flexão de cotovelo segue uma abordagem semelha
 Por fim, o processo de detecção de presença na área de interesse segue uma abordagem semelhante àquela utilizada na detecção da mão na barra. Inicialmente, a imagem passa por um processo de realce da cor da pele. Em seguida, é convertida para escala de cinza e, posteriormente, submetida à limiarização, resultando em uma imagem binarizada na qual o executor se destaca em relação ao plano de fundo.
 
 \renewcommand{\sizeImg}{0.2}
-\begin{figure}[!htbp]
+\begin{figure}[H]
+    \caption{Preprocessamento até a binarização da imagem}
     \centering
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/ultrapassar_barra/134_original.png}
@@ -449,7 +463,7 @@ Por fim, o processo de detecção de presença na área de interesse segue uma a
             \includegraphics[width=\textwidth]{figuras/ultrapassar_barra/134_skin.png}
         \end{minipage}
 \end{figure}
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/ultrapassar_barra/134_gray.png}
@@ -457,40 +471,42 @@ Por fim, o processo de detecção de presença na área de interesse segue uma a
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/ultrapassar_barra/134_limited.png}
         \end{minipage}
-    \caption{Preprocessamento até a binarização da imagem}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:bin_ultrapassar_barra}
 \end{figure}
 \renewcommand{\sizeImg}{0.4}
-\newpage
+
 
  A partir deste ponto, o processo se destaca, pois é aplicada uma máscara para realçar a região de interesse. As dimensões da mascara é baseado na diferença da cordenada $x$ do ombro esquerdo e o ombro direito, com o valor arredondado para baixo, nomeado aqui como $size\_block$. A máscara é definida como um retangulo com a base correspondentes a  $1,5*(size\_block)$ e altura igual a  $(size\_block)/2$, posicionado a uma distância de  $1,5*(size\_block)$ da barra, com seu centro alinhado à coordenada $x$ do ponto médio entre o ombro esquerdo e o ombro direito.
  
-\begin{figure}[!htbp]
+\begin{figure}[H]
     \centering
+    \caption{Representação da mascara para região de interesse }
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/ultrapassar_barra/134_mask_head.png}
         \end{minipage}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/ultrapassar_barra/133_image_with_legend.png}
         \end{minipage}
-    \caption{Representação da mascara para região de interesse }
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:Mascara_ultrapassar_barra}
 \end{figure}
-\newpage
+
 
 Por fim a detecção de presença na área de interesse é considerada positiva se houver presença de pixels brancos na imagem resultante.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Captura da região de interesse}
 	\includegraphics[scale=0.13]{figuras/ultrapassar_barra/134_only_interesse.png}
-	\caption{Captura da região de interesse}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:ultrapassar_barra}
 \end{figure}
-\newpage
 
 
 
-\subsection[Movimentação do quadril]{Movimentação do quadril}\label{sec:quadril}
+
+\subsection[Movimentação do quadril]{Movimentação do quadril}\label{sec:Movimentacao do quadril}
 
  O movimento do quadril foi examinado de maneira semelhante à flexão e extensão do cotovelo, no entanto, os pontos de referência utilizados foram o quadril, o joelho e o tornozelo. A coxa foi considerada como o segmento de linha que se estende do quadril ao joelho, enquanto a perna foi definida como o segmento de linha que se estende do joelho até o tornozelo. Para avaliar a movimentação dos membros inferiores, foi analisado se o ângulo entre os membros ou direito ou esquerdo excedia 15 graus.
 
@@ -504,62 +520,68 @@ Por fim a detecção de presença na área de interesse é considerada positiva 
 
 O projeto foi estruturado de forma que os componentes do codigo coseguissem ser divididos em  5 grandes blocos, sendo eles controller, model, view, util e midia. 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Estrutura do diretorio baseado em 5 grande blocos }
 	\includegraphics[scale=0.5]{figuras/diretorios/Blocos.png}
-	\caption{Estrutura do diretorio baseado em 5 grande blocos }
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:blocos}
 \end{figure}
 
 No contexto do meu projeto, a estrutura de diretórios é organizada da seguinte forma o diretório "model" contém arquivos que desempenham o papel fundamental na representação dos dados e a lógica de negócios da ferramenta.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{figuras/diretorios/model.png}
     \caption{Estrutura do diretório ``/model''}
+    \includegraphics[scale=0.5]{figuras/diretorios/model.png}
+    \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:model}
 \end{figure}
-\newpage
+
 
 
 A pasta "view" é responsável por apresentar esses dados de maneira atraente e interativa aos usuários, assegurando que a interface do usuário reflita com precisão o estado atual do Modelo.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{figuras/diretorios/view.png}
 	\caption{Estrutura do diretorio ``/view''}
+	\includegraphics[scale=0.5]{figuras/diretorios/view.png}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:view}
 \end{figure}
 
 
 O diretório "midia" abriga arquivos relacionados a imagens, áudio, vídeo e a fontes do sistema. 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{figuras/diretorios/midia.png}
 	\caption{Estrutura do diretorio ``/midia''}
+	\includegraphics[scale=0.5]{figuras/diretorios/midia.png}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:midia}
 \end{figure}
 
 Por fim, o diretório "util" contém arquivos genéricos que não se encaixam especificamente em nenhum desses diretórios e podem ser utilizados em diferentes partes do programa conforme necessário.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Estrutura do diretorio ``/util''}
 	\includegraphics[scale=0.5]{figuras/diretorios/util.png}
-	\caption{Estrutura do diretorio ``/util''}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:util}
 \end{figure}
-\newpage
+
 
 
 O "controller" atua como um mediador entre arquivos da view e do model, interpretando as ações do usuário na interface e coordenando as operações necessárias do model para atender às solicitações, mantendo, assim, uma separação eficaz entre a lógica de apresentação e a lógica de negócios.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
+    \caption{Estrutura do diretorio ``/controller''}
 	\includegraphics[scale=0.6]{figuras/diretorios/controller.png}
-	\caption{Estrutura do diretorio ``/controller''}
+    \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:controller}
 \end{figure}
-\newpage
+
 
 
 \section[Codigo fonte]{Codigo fonte}
