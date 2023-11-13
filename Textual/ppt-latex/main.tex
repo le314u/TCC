@@ -1,0 +1,58 @@
+\documentclass[11pt]{beamer}
+
+%%%%%%%% tema e cor %%%%%%%%
+\mode<presentation> {
+    \usetheme{Boadilla}
+    \usecolortheme{whale}
+    \definecolor{UBCblue}{HTML}{32A041} % UBC Blue (primary)
+    \usecolortheme[named=UBCblue]{structure}
+}
+
+\input{config.tex}
+
+%%%%%%%% titulo e subtitulo %%%%%%%%
+\title[Trabalho de Conclusão de Curso]{Ferramenta de visão computacional para monitoramento do movimento de barra fixa voltado para testes de aptidão física } 
+
+%%%%%%%% nome dos autores %%%%%%%%
+\author[Fernandes, L. M.]{
+Lucas Mateus Fernandes} 
+
+\begin{document}
+\input{files/pre-slides.tex}
+
+%%%%%%%% slides %%%%%%%%
+\section{Introdução} 
+\input{files/introducao.tex}
+
+\section{Fundamentação Teórica}
+\input{files/fundamentacao.tex}
+
+\section{Materiais e Métodos}
+\input{files/materiais.tex}
+
+\section{Projeto e Desenvolvimento}
+\input{files/projeto.tex}
+
+\section{Resultados}
+\input{files/resultados.tex}
+
+\section{Considerações Finais}
+\input{files/conclusao.tex}
+
+%%%%%%%% agradecimentos %%%%%%%%
+%------------------------------------------------
+
+%------------------------------------------------
+%------------------------------------------------
+%%%%%%%% referencias %%%%%%%%
+\nocite{*}
+\begin{frame}[allowframebreaks]{Referências}
+\bibliographystyle{unsrt}
+\bibliography{ref.bib}
+\end{frame}
+
+%%%%%%%% repete primeiro slide %%%%%%%%
+\begin{frame}
+\titlepage 
+\end{frame}
+\end{document}
