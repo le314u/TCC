@@ -7,13 +7,15 @@ Neste capítulo são mostrados os fundamentos necessários para entender os conc
 \section[Treinamento de barra fixa para o TAF]{Treinamento de barra fixa para o TAF}\label{sec:Treinamento de barra fixa para o TAF}
 
 \subsection[Teste de Aptidão Física]{Teste de Aptidão Física}\label{sec:Teste de Aptidão Física}
-O \ac{TAF}  é uma etapa comum em concursos públicos para provimento de cargos em carreiras relacionadas a área de segurança pública. Seu objetivo é atestar a capacidade do indivíduo em desempenhar funções específicas do cargo por meio da avaliação de determinados exercícios. A avaliação é embasada em exercícios e parâmetros preestabelecidos em edital como por exemplo: quantidade de repetições de um determinado movimento para o exercício de barra fixa ou flexão abdominal, tempo gasto para translocação em uma determinada distancia nas corridas de 12km, 2.400m ou natação, ou até mesmo a distância percorrida durante o salto de impulsão horizontal\cite{TAF_adv}.
+
+O \ac{TAF}  é uma etapa comum em concursos públicos para provimento de cargos em carreiras relacionadas a área de segurança pública, seu objetivo é atestar a capacidade do indivíduo em desempenhar funções específicas do cargo por meio da avaliação de determinados exercícios. A avaliação é embasada em exercícios e parâmetros preestabelecidos em edital como por exemplo: quantidade de repetições de um determinado movimento para o exercício de barra fixa ou flexão abdominal, tempo gasto para translocação em uma determinada distancia nas corridas de 12km, 2.400m ou natação, ou até mesmo a distância percorrida durante o salto de impulsão horizontal\cite{TAF_adv}.
 
 
 \subsection[Barra Fixa]{Barra Fixa}\label{sec:Barra Fixa}
-Tem sido comum nos últimos cinco anos, principalmente em concursos da área militar, a realização de testes de aptidão física que incluem a avaliação da habilidade em barra fixa, tais como: Concurso público para admissão ao curso de formação de soldados bombeiros militar do quadro de praças (qp-bm) e do quadro de praças especialistas – (qpe-bm) do corpo de bombeiros militar de minas gerais para o ano de 2020.\cite{eCBMG2018}; Concurso público para admissão ao curso de formação de soldados do quadro de praças especialistas da polícia militar de minas gerais.\cite{ePMMG2021}; Concurso público para o provimento de vagas nos cargos de delegado de polícia federal, agente de polícia federal, escrivão de polícia federal e papiloscopista policial federal.\cite{ePF2021}; Concurso público para provimento de cargos da carreira de agente de segurança penitenciário/policial penal do quadro de pessoal da secretaria de estado de justiça e segurança\cite{ePP2021}.
 
-O teste de flexão em barra fixa ou teste dinâmico de barra fixa sofre algumas divergencias de acordo com o edital, porem os princípios do movimento são semelhantes:
+O teste de flexão em barra fixa, ou teste dnâmico de barra fixa, apresenta variações de acordo com os seguintes editais: Concurso público para admissão ao curso de formação de soldados Bombeiros Militar do quadro de praças (QP-BM) e do quadro de praças especialistas (QPE-BM) do Corpo de Bombeiros Militar de Minas Gerais para o ano de 2020 \cite{eCBMG2018}; Concurso público para admissão ao curso de formação de soldados do quadro de praças especialistas da Polícia Militar de Minas Gerais \cite{ePMMG2021}; Concurso público para o provimento de vagas nos cargos de delegado de Polícia Federal, agente de Polícia Federal, escrivão de Polícia Federal e papiloscopista Policial Federal \cite{ePF2021}; Concurso público para o provimento de cargos da carreira de agente de segurança penitenciário/policial penal do quadro de pessoal da Secretaria de Estado de Justiça e Segurança \cite{ePP2021}.
+
+No entanto, os princípios do movimento permanecem semelhantes:
 
 \begin{itemize}
 
@@ -202,9 +204,9 @@ O processamento de imagens abrange um conjunto de etapas interligadas, cada uma 
 
 
 \subsection[Estimativa de pose humana]{Estimativa de pose humana}\label{sec:Estimativa de pose humana}
-Identificação de Pose ou \ac{EPH} é um problema geral em Visão Computacional, que tem o objetivo de detectar a posição e a orientação de uma pessoa em imagens ou vídeos prevendo a localização de alguns pontos-chave ,conhecido tambem como landmarks, tais como  cabeça, ombros, cotovelos, mãos, quadril, joelhos e pés.\cite{edh}
+Identificação de Pose ou \ac{EPH} é um problema geral em Visão Computacional, que tem o objetivo de detectar a posição e a orientação de uma pessoa em imagens ou vídeos prevendo a localização de alguns pontos-chaves ,conhecidos tambem como \textit{landmarks}, tais como  cabeça, ombros, cotovelos, mãos, quadril, joelhos e pés.\cite{edh}
 
-\ac{EPH} pode ser bidimensional ou tridimensional, sendo o primeiro responsabel por estimar as cordenadas X Y e o segundo as cordenadas X Y Z de um espaço virtual que geralmente é inferido a partir de uma imagem bidimensional. A \ac{EPH} pode tambem ser classificada de acordo com a quantidade de pessoas a serem estimadas podendo ser uma unica pessoa ou de várias pessoas o que interfere nas resoluções possiveis pois a estimativa de postura de várias pessoas é ligeiramente mais difícil do que o caso de uma única pessoa.\cite{edhDeep}
+\ac{EPH} pode ser bidimensional ou tridimensional, sendo o primeiro responsavel por estimar as cordenadas X Y e o segundo as cordenadas X Y Z de um espaço virtual que geralmente é inferido a partir de uma imagem bidimensional. A \ac{EPH} pode tambem ser classificada de acordo com a quantidade de pessoas a serem estimadas podendo ser uma unica pessoa ou de várias pessoas o que interfere nas resoluções possiveis pois a estimativa de postura de várias pessoas é ligeiramente mais difícil do que o caso de uma única pessoa.\cite{edhDeep}
 
 \begin{figure}[!htb]
 	\centering
@@ -234,7 +236,7 @@ Uma reta pode ser descrita como: $$y = mx + b$$ As características desta reta s
     \label{fig:Representacao da reta pelos parametros}
 \end{figure}
 
-O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}.
+O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}.
 
 
 \begin{figure}[!htb]
@@ -408,7 +410,7 @@ A Subtração de Plano de Fundo é capaz de identificar objetos destacando discr
 
 \subsection[Pixelização]{Pixelização}
 
-Quando uma imagem é ampliada ou exibida em uma resolução maior do que sua resolução original, os pixels individuais se tornam visíveis, resultando em uma aparência granulada ou "pixelizada" pois os detalhes da imagem original não podem ser representados com precisão em uma resolução mais baixa. Portanto o filtro de pixelização se resume em reduzir o número de valores de pixel distintos em uma imagem substituindo um bloco quadrado de valores de pixel por seu valor médio\cite{pixelizacao}
+Quando uma imagem é ampliada ou exibida em uma resolução maior do que sua resolução original, os pixels individuais se tornam visíveis, resultando em uma aparência granulada ou \aspas{pixelizada} pois os detalhes da imagem original não podem ser representados com precisão em uma resolução mais baixa. Portanto o filtro de pixelização se resume em reduzir o número de valores de pixel distintos em uma imagem substituindo um bloco quadrado de valores de pixel por seu valor médio\cite{pixelizacao}
 
 
 

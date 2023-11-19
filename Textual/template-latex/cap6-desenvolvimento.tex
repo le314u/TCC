@@ -10,7 +10,7 @@ Foi feita uma revisão bibliografica com objetivo de encontrar ferramentas ou tr
    \item Q3: Quais métricas ou parâmetros são frequentemente extraídos das imagens
  \end{itemize}
 
-No decorrer desta revisão, foram identificados diversos estudos relevantes na área, com destaque especial para o trabalho intitulado "Análise postural digital para ciclistas" \cite{vcBicicleta}. Um dos objetivos desse estudo foi o desenvolvimento de um sistema digital denominado BFit4All. Esse sistema tem como objetivo identificar e propor ajustes na bicicleta com base nas análises posturais de ciclistas durante a atividade de pedalar por meio de fotografias. É importante ressaltar que a abordagem adotada nesse trabalho para a segmentação da imagem digital faz uso de marcadores fixados ao corpo do ciclista para destacar os pontos de referência e assim calcular as angulações entre eles. Embora essa metodologia revele-se eficaz em diversos aspectos, é válido destacar que esta implementação requer uma intervenção prévia à captura do vídeo.
+No decorrer desta revisão, foram identificados diversos estudos relevantes na área, com destaque especial para o trabalho intitulado \aspas{Análise postural digital para ciclistas} \cite{vcBicicleta}. Um dos objetivos desse estudo foi o desenvolvimento de um sistema digital denominado BFit4All. Esse sistema tem como objetivo identificar e propor ajustes na bicicleta com base nas análises posturais de ciclistas durante a atividade de pedalar por meio de fotografias. É importante ressaltar que a abordagem adotada nesse trabalho para a segmentação da imagem digital faz uso de marcadores fixados ao corpo do ciclista para destacar os pontos de referência e assim calcular as angulações entre eles. Embora essa metodologia revele-se eficaz em diversos aspectos, é válido destacar que esta implementação requer uma intervenção prévia à captura do vídeo.
 
 Também foram identificados outros trabalhos relevantes, como os de Pádua (\citeyear{vcFutebol}) e Paulichen (\citeyear{futebolTatica}). Esses estudos abordam o desenvolvimento de sistemas de visão computacional que utilizam algoritmos de rastreamento de objetos, tais sistemas extraem informações detalhadas sobre o posicionamento, trajetória, velocidades e distâncias percorridas pelos jogadores de futsal. As informações resultantes desse processo proporcionam indicadores de natureza tática e fisiológica, que se mostram valiosos para a equipe técnica. Uma abordagem interessante que foi adotada no trabalho de Paulichen para o rastreamento de uma area de interesse foi a aplicação do filtro de Kalman, uma técnica de estimativa e previsão que combina informações medidas e modelos matemáticos para melhorar a precisão de uma estimativa reduzindo o ruído e as incertezas nas medições.
 
@@ -21,18 +21,11 @@ Em relação ferramentas computacionais para análise e aprimoramento do treinam
 
 \section[Escolha da linguagem de programação para desenvolvimento da ferramenta]{Escolha da linguagem de programação para desenvolvimento da ferramenta}\label{sec:Escolha da linguagem de programacao para desenvolvimento da ferramenta}
 
-A escolha da linguagem de programação para a implementação deste projeto foi baseada nos requisitos do sistema proposto. Dentre as opções consideradas, optou-se pelo uso da linguagem Python em sua versão 3.8.10 devido a uma série de fatores que se alinham de forma ideal com os objetivos deste trabalho sendo eles:
+A escolha da linguagem de programação para a implementação deste projeto foi baseada nos requisitos do sistema proposto. Dentre as opções consideradas, JavaScript e Python, optou-se pelo uso da linguagem Python em sua versão 3.8.10 devido a uma série de fatores que se alinham de forma ideal com os objetivos deste trabalho sendo eles:
 
 A facilidade de manutenção do código ao longo do ciclo de vida do sistema pois uma linguagem de programação com uma sintaxe clara e legível é particularmente vantajosa para a produção de um código facilmente compreensível facilitando significativamente as atividades de manutenção contínua e de depuração, um aspecto que se torna crucial na busca pela robustez e estabilidade do sistema ao longo do tempo \cite{clean_code}.
 
-Agregou a escolha o fato da linguagem escolhida ter uma ampla biblioteca padrão e um vasto ecossistema de pacotes de terceiros que permitem a realização de tarefas comuns com facilidade, desde manipulação de strings até manipulação de imagens
-
-O suporte ao paradigma de orientação a objetos foi um fator determinante na escolha pois permite uma melhor organização e estrutura do código de maneira  eficiente, o que é particularmente útil em relação a criação da interface gráfica da ferramenta.
-
-A compatíbilidade com várias plataformas, incluindo Windows, macOS e  distribuições Linux, auxiliou no fato de poder escrever o código uma vez e executá-lo em diferentes sistemas operacionais sem muitas modificações agregando 
- versatilidade a ferramenta proposta.
-
-Por ultimo o fato de ter uma comunidade ativa agregou na facilidade de encontrar suporte online com documentações e tutoriais.
+Agregou à escolha o fato da linguagem escolhida ter uma ampla biblioteca padrão e um vasto ecossistema de pacotes de terceiros que permitem a manipulação de imagens.
 
 Dessa forma, a escolha do Python reflete diretamente na minimização dos desafios associados à evolução e manutenção do código-fonte, contribuindo para um desenvolvimento mais fluido e eficaz do projeto focado na produtividade.
 
@@ -58,11 +51,9 @@ Por fim e um dos mais importantes aspectos levados em consideração foi a efic�
 
 \subsection{MediaPipe}
 
-Dentro do contexto do processamento de imagem, optou-se por empregar a biblioteca MediaPipe para a detecção de poses. A decisão de incorporá-la foi fortemente motivada pela sua perfeita integração com a linguagem Python, destacando-se assim como uma alternativa coesa. Além desse fator, a seleção da biblioteca foi influenciada por suas características distintivas, que a diferenciam de outras opções similares.
+Dentro do contexto do processamento de imagem, optou-se por empregar a biblioteca MediaPipe para a detecção de poses. A decisão de incorporá-la foi fortemente motivada pela sua perfeita integração com a linguagem Python, destacando-se assim como uma alternativa coesa.
 
 Vale ressaltar que a biblioteca MediaPipe é voltada para a simplificação da implementação de técnicas de \ac{IA} e \ac{ML} em diversos cenários, com um enfoque específico na análise de mídia. Seu diferencial reside na disponibilidade de modelos pré-treinados e customizáveis, permitindo uma integração eficaz e adaptável ao projeto em questão \cite{mediapipe_guide}.
-
-A atenção contínua da equipe de desenvolvimento do MediaPipe dedicada à manutenção e ao aprimoramento da biblioteca, foi um  fato relevante para o projeto pois houve uma atualização na biblioteca durante o desenvolvimento da ferramenta, isso assegurou que a biblioteca estivesse atualizada com as últimas tendências e avanços na área de visão computacional e processamento de imagem.
 
 Por atuar com uma aplicação de \ac{IA} e \ac{ML} que trabalha com modelos ja treinados, o processamento dos dados de entrada ocorre completamente no dispositivo o que foi um ponto relevante, garantindo a persistência e funcionalidade contínua da ferramenta desenvolvida, independentemente da ação do tempo em relação a disponibilidade de servidores externos.
 
@@ -72,7 +63,7 @@ Um outro ponto relevante para a escolha dessa ferramenta foi o fato de que ela s
 
 
 
-\section[Estrategia para detecção do movimento correto de barra fixa]{Estrategia para detecção do movimento correto de barra fixa}\label{sec:Estrategia para deteccao do movimento correto de barra fixa}
+\section[Estratégia para detecção do movimento correto de barra fixa]{Estratégia para detecção do movimento correto de barra fixa}\label{sec:Estrategia para deteccao do movimento correto de barra fixa}
 
 
 Esta seção delineia a estratégia utilizada para detectar o movimento correto da barra fixa na ferramenta desenvolvida. O movimento de barra fixa se desdobra em um padrão que segue etapas distintas, as quais podem ser divididas em três fases bem definidas. 
@@ -118,19 +109,19 @@ O \ac{AFD} desenvolvido consiste em um conjunto de sete estados:
 \{ &\text{Preparação, Início, Concêntrica, Meta, Excêntrica, Erro, Fim} \}
 \end{aligned}
 \]
-O estado "Preparação" é o estado inícial do \ac{AFD} representado qualquer momento que antecede o começo do teste de barra fixa como um todo. Um exemplo disso são os momentos que o executor se aproxima da barra fixa e se prepara para assumir a posição inicial.
+O estado \aspas{Preparação} é o estado inícial do \ac{AFD} representado qualquer momento que antecede o começo do teste de barra fixa como um todo. Um exemplo disso são os momentos que o executor se aproxima da barra fixa e se prepara para assumir a posição inicial.
 
-O estado "Início" simboliza o começo do movimento da barra fixa. Nesse ponto, o executor deve estar pendurado na barra com a pegada pronada, cotovelos estendidos e sem contato dos pés com o solo.
+O estado \aspas{Início} simboliza o começo do movimento da barra fixa. Nesse ponto, o executor deve estar pendurado na barra com a pegada pronada, cotovelos estendidos e sem contato dos pés com o solo.
 
-O estado "Concêntrica" simboliza a transição da posição inicial até a realização da meta que é a ultrapassagem do queixo sobre a barra, esse estado tem o nome de concêntrica pois para o alcance da meta é necessário que o executor recrute as fibras musculares dos membros superiores  realizando  uma contração concêntrica afim de alcançar a meta.
+O estado \aspas{Concêntrica} simboliza a transição da posição inicial até a realização da meta que é a ultrapassagem do queixo sobre a barra, esse estado tem o nome de concêntrica pois para o alcance da meta é necessário que o executor recrute as fibras musculares dos membros superiores  realizando  uma contração concêntrica afim de alcançar a meta.
 
-O estado "Metra" simboliza a realização da meta ou seja houve a ultrapassagem do queixo sobre a barra.
+O estado \aspas{Meta} simboliza a realização da meta ou seja houve a ultrapassagem do queixo sobre a barra.
 
-O estado "Excentrica" simboliza a transição de volta a posição inicial ou seja pendurado na barra com a pegada pronada, cotovelos estendidos e sem contato dos pés com o solo. Esse estado tem o nome de excêntrica pois para voltar a posição inicial é necessário que o executer realize  uma contração excentrica. até o momento em que os cotovelos fiquem totalmente esticados
+O estado \aspas{Excentrica} simboliza a transição de volta a posição inicial ou seja pendurado na barra com a pegada pronada, cotovelos estendidos e sem contato dos pés com o solo. Esse estado tem o nome de excêntrica pois para voltar a posição inicial é necessário que o executer realize  uma contração excentrica. até o momento em que os cotovelos fiquem totalmente esticados
 
-O estado "Erro" representa todas as instâncias em que o teste está em andamento, mas devido a uma falha do executor, parâmetros são identificados que exigem um retorno à posição inicial para que o movimento seja considerado correto. Por exemplo, isso pode ocorrer quando o executor realiza um movimento de balanço com o quadril para facilitar a execução do movimento. Em outras palavras, se o executor alcança a meta de ultrapassar o queixo acima da barra, mas utilizou o impulso das pernas para isso, o movimento não será considerado válido. Portanto, é necessário retornar à posição inicial e reiniciar o movimento.
+O estado \aspas{Erro} representa todas as instâncias em que o teste está em andamento, mas devido a uma falha do executor, parâmetros são identificados que exigem um retorno à posição inicial para que o movimento seja considerado correto. Por exemplo, isso pode ocorrer quando o executor realiza um movimento de balanço com o quadril para facilitar a execução do movimento. Em outras palavras, se o executor alcança a meta de ultrapassar o queixo acima da barra, mas utilizou o impulso das pernas para isso, o movimento não será considerado válido. Portanto, é necessário retornar à posição inicial e reiniciar o movimento.
 
-Por ultimo o estado "Fim" representa o momento em que o teste é encerrado e os movimentos não são mais contabilizados.
+Por ultimo o estado \aspas{Fim} representa o momento em que o teste é encerrado e os movimentos não são mais contabilizados.
 
 Portanto o conjunto de estados finais do \ac{AFD} pode ser representado da seguinte forma: $F=\{Fim\}$
 
@@ -477,7 +468,7 @@ Por fim, o processo de detecção de presença na área de interesse segue uma a
 \renewcommand{\sizeImg}{0.4}
 
 
- A partir deste ponto, o processo se destaca, pois é aplicada uma máscara para realçar a região de interesse. As dimensões da mascara é baseado na diferença da cordenada $x$ do ombro esquerdo e o ombro direito, com o valor arredondado para baixo, nomeado aqui como $size\_block$. A máscara é definida como um retangulo com a base correspondentes a  $1,5*(size\_block)$ e altura igual a  $(size\_block)/2$, posicionado a uma distância de  $1,5*(size\_block)$ da barra, com seu centro alinhado à coordenada $x$ do ponto médio entre o ombro esquerdo e o ombro direito.
+ A partir deste ponto, o processo se destaca, pois é aplicada uma máscara para realçar a região de interesse. As dimensões da mascara é baseado em 1 terço da diferença da cordenada $x$ do ombro esquerdo e o ombro direito, com o valor arredondado para baixo, nomeado aqui como $size\_block$. A máscara é definida como um retangulo com a base correspondentes a  $1,5*(size\_block)$ e altura igual a  $(size\_block)/2$, posicionado a uma distância de  $1,5*(size\_block)$ da barra, com seu centro alinhado à coordenada $x$ do ponto médio entre o ombro esquerdo e o ombro direito.
  
 \begin{figure}[H]
     \centering
@@ -514,6 +505,11 @@ Por fim a detecção de presença na área de interesse é considerada positiva 
 
 
 
+ \section[Codigo fonte]{Codigo fonte}
+
+ O código-fonte podem ser encontrado em um repositório específico hospedado no GitHub. Para acessar e explorar o conjunto completo de arquivos, você pode visitar o seguinte sitio eletronico: \url{https://github.com/le314u/TCC/tree/main/Tecnologico/Source/Programa/python}. Neste repositório, os arquivos estão organizados de forma a facilitar a navegação e a análise individual de cada componente do programa. Este repositório oferece uma visão abrangente do presente trabalho e é uma valiosa fonte de informações para qualquer pessoa interessada em entender melhor a implementação da ferramenta e queira ter este trabalho como base para trabalhos futuros.
+ 
+ 
 
 \subsection[Hierarquia de diretorio]{Hierarquia de diretorio}
 
@@ -528,11 +524,11 @@ O projeto foi estruturado de forma que os componentes do codigo coseguissem ser 
 	\label{fig:blocos}
 \end{figure}
 
-No contexto do meu projeto, a estrutura de diretórios é organizada da seguinte forma o diretório "model" contém arquivos que desempenham o papel fundamental na representação dos dados e a lógica de negócios da ferramenta.
+No contexto do meu projeto, a estrutura de diretórios é organizada da seguinte forma o diretório \aspas{model} contém arquivos que desempenham o papel fundamental na representação dos dados e a lógica de negócios da ferramenta.
 
 \begin{figure}[H]
     \centering
-    \caption{Estrutura do diretório ``/model''}
+    \caption{Estrutura do diretório \aspas{/model}}
     \includegraphics[scale=0.5]{figuras/diretorios/model.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:model}
@@ -540,31 +536,31 @@ No contexto do meu projeto, a estrutura de diretórios é organizada da seguinte
 
 
 
-A pasta "view" é responsável por apresentar esses dados de maneira atraente e interativa aos usuários, assegurando que a interface do usuário reflita com precisão o estado atual do Modelo.
+A pasta \aspas{view} é responsável por apresentar esses dados de maneira atraente e interativa aos usuários, assegurando que a interface do usuário reflita com precisão o estado atual do Modelo.
 
 \begin{figure}[H]
 	\centering
-	\caption{Estrutura do diretorio ``/view''}
+	\caption{Estrutura do diretorio \aspas{/view}}
 	\includegraphics[scale=0.5]{figuras/diretorios/view.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:view}
 \end{figure}
 
 
-O diretório "midia" abriga arquivos relacionados a imagens, áudio, vídeo e a fontes do sistema. 
+O diretório \aspas{midia} abriga arquivos relacionados a imagens, áudio, vídeo e a fontes do sistema. 
 \begin{figure}[H]
 	\centering
-	\caption{Estrutura do diretorio ``/midia''}
+	\caption{Estrutura do diretorio \aspas{/midia}}
 	\includegraphics[scale=0.5]{figuras/diretorios/midia.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:midia}
 \end{figure}
 
-Por fim, o diretório "util" contém arquivos genéricos que não se encaixam especificamente em nenhum desses diretórios e podem ser utilizados em diferentes partes do programa conforme necessário.
+Por fim, o diretório \aspas{util} contém arquivos genéricos que não se encaixam especificamente em nenhum desses diretórios e podem ser utilizados em diferentes partes do programa conforme necessário.
 
 \begin{figure}[H]
 	\centering
-    \caption{Estrutura do diretorio ``/util''}
+    \caption{Estrutura do diretorio \aspas{/util}}
 	\includegraphics[scale=0.5]{figuras/diretorios/util.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:util}
@@ -572,11 +568,11 @@ Por fim, o diretório "util" contém arquivos genéricos que não se encaixam es
 
 
 
-O "controller" atua como um mediador entre arquivos da view e do model, interpretando as ações do usuário na interface e coordenando as operações necessárias do model para atender às solicitações, mantendo, assim, uma separação eficaz entre a lógica de apresentação e a lógica de negócios.
+O \aspas{controller} atua como um mediador entre arquivos da view e do model, interpretando as ações do usuário na interface e coordenando as operações necessárias do model para atender às solicitações, mantendo, assim, uma separação eficaz entre a lógica de apresentação e a lógica de negócios.
 
 \begin{figure}[H]
 	\centering
-    \caption{Estrutura do diretorio ``/controller''}
+    \caption{Estrutura do diretorio \aspas{/controller}}
 	\includegraphics[scale=0.6]{figuras/diretorios/controller.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:controller}

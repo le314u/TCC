@@ -73,11 +73,11 @@
 % ----------------------------------------------------
 
 %Desenvolvimento de uma ferramenta de visão computacional para o monitoramento do movimento de barra fixa baseado em testes de aptidão física
-\titulo{Ferramenta de visão computacional para monitoramento do movimento de barra fixa voltado para testes de aptidão física}
+\titulo{Ferramenta de visão computacional para a análise do movimento de barra fixa voltada para testes de aptidão física}
 \autor{Lucas Mateus Fernandes}
 \local{Formiga - MG}
 \data{2023}
-\orientador{Prof. Mes. Fernando Paim Lima}
+\orientador{Prof. Me. Fernando Paim Lima}
 %\coorientador{se tiver}
 \instituicao{%
   Instituto Federal de Educação, Ciência e Tecnologia de Minas Gerais \par
@@ -144,8 +144,8 @@
 %------------ Agradecimentos
 \begin{agradecimentos}
   
-	Gostaria de expressar minha profunda gratidão aos meus professores pela paciência inestimável que demonstraram ao longo do meu percurso acadêmico. Sua dedicação em compartilhar conhecimento e orientação, mesmo diante das minhas dúvidas constantes, foi fundamental para o meu crescimento e aprendizado. Agradeço por investirem seu tempo e esforço em me auxiliar a compreender os desafios que encontrei, tornando minha jornada educacional mais rica e gratificante.\\
-	A todos os meus colegas pela paciência e compreensão que demonstraram quando, em uma sexta-feira à noite, me envolvi em questionamentos sobre o conceito do terceiro quartil. E é graças à nossa colaboração que pude aprofundar meu entendimento. O apoio e a camaradagem que compartilhamos durante nossas discussões foram essenciais para nossa jornada acadêmica conjunta.\\
+	Gostaria de expressar minha profunda gratidão aos meus professores pela paciência inestimável que demonstraram ao longo do meu percurso acadêmico. Sua dedicação em compartilhar conhecimento e orientação, mesmo diante das minhas dúvidas constantes, foi fundamental para o meu crescimento e aprendizado. Agradeço por investirem seu tempo e esforço em me auxiliar a compreender os desafios que encontrei, tornando minha jornada educacional mais rica e gratificante.\par
+	A todos os meus colegas pela paciência e compreensão que demonstraram quando, em uma sexta-feira à noite, me envolvi em questionamentos sobre o conceito do terceiro quartil. E é graças à nossa colaboração que pude aprofundar meu entendimento. O apoio e a camaradagem que compartilhamos durante nossas discussões foram essenciais para nossa jornada acadêmica conjunta.\par
 	Aos meus queridos pais por tudo que fizeram ao longo da minha vida. Seu amor incondicional, apoio constante e sacrifícios incansáveis moldaram a pessoa que me tornei hoje. Desde o início estiveram ao meu lado, guiando-me com sabedoria, proporcionando conforto nos momentos difíceis e celebrando minhas conquistas com alegria. Cada oportunidade que tive e cada passo que dei foram iluminados pelo exemplo inspirador que vocês sempre foram.
 
 \end{agradecimentos}
@@ -163,10 +163,10 @@
 
 % resumo em português
 \begin{resumo}
-	A flexão de braços na barra fixa, conhecida como movimento de barra fixa, é uma atividade física comum nos testes de aptidão física de concursos públicos para cargos em carreiras relacionadas à segurança pública. No entanto, um desafio na avaliação do Teste de Aptidão Física (TAF) é a possibilidade de fadiga de decisão por parte dos avaliadores no dia do exame.
+	A flexão de braços na barra fixa, conhecida como movimento de barra fixa, é uma atividade física comum nos testes de aptidão física de concursos públicos para cargos em carreiras relacionadas à segurança pública. No entanto, um desafio na avaliação do Teste de Aptidão Física (\acs{TAF}) é a possibilidade de fadiga de decisão por parte dos avaliadores no dia do exame.
 	Este trabalho visa desenvolver uma ferramenta de visão computacional em nível de prova de conceito para analisar a corretude do movimento de barra fixa, considerando parâmetros presentes nos editais de concursos públicos na esfera militar. Além disso, pretende oferecer um feedback sobre o movimento de barra fixa, permitindo o aprimoramento da consciência corporal do indivíduo.
-	Na elaboração deste trabalho, foi adotada uma abordagem que combina elementos do processo usual de elaboração de trabalhos acadêmicos com a estruturação das etapas de um sistema de visão computacional.
-	Como resultado, foi desenvolvida uma ferramenta em prova de conceito capaz de identificar o movimento correto na barra fixa, com exceção da pegada pronada. Apesar do planejamento para ter um tempo de processamento próximo ao tempo real de execução, a ferramenta acabou demandando quase 5,96 vezes mais tempo do que o previsto.
+	Na elaboração deste trabalho, foi adotada uma abordagem que combina o processo usual de elaboração de um trabalho acadêmico com a estruturação das etapas de um sistema de visão computacional, pré processamento, segmentação, representação e descrição, reconhecimento e interpretação.
+	Como resultado, foi desenvolvida uma ferramenta com a capacidade de identificar o movimento correto na barra fixa, com base nos editais dos últimos cinco anos de instituições como a \ac{PMMG}, o \ac{CBMMG}, a \ac{PRF} e o \ac{DEPEN-MG}. A maioria dos critérios estabelecidos nos editais referentes ao movimento correto na barra fixa foram atendidos, com exceção da pegada pronada e da extensão da cervical. Apesar do planejamento para alcançar um tempo de processamento próximo ao tempo real de execução, a ferramenta acabou demandando aproximadamente 5,96 vezes mais tempo do que o previsto, impossibilitando sua utilização em tempo real.
  
  \textbf{Palavras-chave}: visão computacional, Barra fixa, TAF.
 \end{resumo}
@@ -174,10 +174,7 @@
 % resumo em inglês
 \begin{resumo}[Abstract]
  \begin{otherlanguage*}{english}
-	The pull-up exercise, known as a pull-up movement, is a common physical activity in the physical fitness tests for public service exams in careers related to public safety. However, a challenge in the evaluation of the Physical Aptitude Test (PAT) is the potential for decision fatigue on the part of the examiners on the day of the test.\\
-	This work aims to develop a computer vision tool at a proof-of-concept level to analyze the correctness of the pull-up movement, considering parameters present in public service exam notices in the military sphere. Additionally, it intends to provide active feedback on the pull-up movement, allowing for the improvement of the individual's body awareness.\\
-	In the elaboration of this work, an approach was adopted that combines elements of the usual academic work development process with the structuring of the stages of a computer vision system.\\	
-	As a result, a proof-of-concept tool capable of identifying the correct pull-up movement was developed, with the exception of the pronated grip. Despite the plan to have a processing time close to real-time execution, the tool ended up requiring nearly 5,96 times more time than expected."
+	The pull-up exercise is a prevalent physical activity in the physical fitness tests of public service exams for careers in law enforcement. However, a challenge in the evaluation of the Physical Aptitude Test is the potential for decision fatigue among assessors on the exam day.	This study aims to develop a computer vision tool at the proof-of-concept level to analyze the correctness of pull-up movements, considering parameters outlined in military public service exam guidelines. Additionally, it aims to provide feedback on the pull-up form, facilitating the improvement of individuals' body awareness. In the development of this tool, an approach was adopted that combines the standard academic work creation process with the structuring of phases from a computer vision system: pre-processing, segmentation, representation and description, recognition, and interpretation. As a result, a tool was created with the ability to identify the correct pull-up motion, based on the guidelines from the last five years of institutions such as \ac{PMMG}, \ac{CBMMG}, \ac{PRF}, and \ac{DEPEN-MG}. Most criteria outlined in the guidelines regarding the correct pull-up movement were met, with the exception of the pronated grip and cervical extension. Despite the initial plan to achieve real-time processing, the tool ended up requiring approximately 5.96 times more time than anticipated, hindering its use in real-time applications.
 
  \textbf{Keywords}: Pull-up, computer vision.
  \end{otherlanguage*}
