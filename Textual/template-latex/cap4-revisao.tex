@@ -236,7 +236,7 @@ Uma reta pode ser descrita como: $$y = mx + b$$ As características desta reta s
     \label{fig:Representacao da reta pelos parametros}
 \end{figure}
 
-O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}.
+O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel} é demonstrado um ponto no plano e logo em seguinda sua representação no espaço parametrizavel $\rho$ e $\theta$.
 
 
 \begin{figure}[!htb]
@@ -248,7 +248,7 @@ O plano de Hough é um plano bidimensional onde os eixos representam os parâmet
 \end{figure}
 
 Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a dois senóides no plano de Hough, a intersecção dos dois senóides representa a reta $pq$ que
-passa pelos dois pontos no plano da imagem, analogamente 4 retas no plano da imagem correspondem a 4 senóides no plano de Hough que se acumulam em 4 pontos, portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas, consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}.
+passa pelos dois pontos no plano da imagem, analogamente 4 retas no plano da imagem correspondem a 4 senóides no plano de Hough que se acumulam em 4 pontos, portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas, consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}. Na figura \ref{fig:Representacao da reta por meio do ponto de interseccao} é demonstrado 8 pontos no plano pertencentes a 2 retas e logo em seguinda sua representação no espaço parametrizavel $\rho$ e $\theta$ que se da por meio da intersecção das curvas, sendo assim o local da interseção das 4 curvas representam uma reta com parametros $\rho$ e $\theta$ específicos.
 
 \begin{figure}[!htb]
 	\centering
@@ -272,7 +272,7 @@ A redução de ruido ocorre com a aplicação de um filtro Gaussiano, uma técni
 
 A convolução é uma operação matemática que combina duas funções para criar uma terceira. No contexto de processamento de imagens, a imagem original atua como uma das funções e o filtro (ou kernel) atua como a segunda função. O filtro é uma matriz de números que define como a vizinhança de cada pixel na imagem será ponderada e combinada para gerar o novo valor desse pixel na imagem resultante. O processo de convolução envolve a superposição do filtro sobre cada região da imagem e a multiplicação elemento a elemento dos valores do filtro com os valores correspondentes da imagem. Os resultados dessas multiplicações são somados para produzir o novo valor do pixel na imagem de saída\cite{convolucao}.
 
-Kernel 5x5 utilizado no filtro de Gaussiano \cite{kernel_gaus}:
+Kernel 5x5 utilizado no filtro gaussiano \cite{kernel_gaus}:
 
 \[
     \begin{bmatrix}
@@ -328,7 +328,7 @@ Essa inclinação é perpendicular às arestas e arredondado para um dos quatro 
 
 \begin{figure}[!htb]
 	\centering
-    \caption{Imagem em preto e branco com filtro de gaus}
+    \caption{Imagem em preto e branco com filtro gaussiano}
 	\includegraphics[scale=0.25]{figuras/filter/sobel/f_normal.jpeg}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:Imagem em preto e branco com filtro de gaus}
@@ -360,7 +360,7 @@ Essa inclinação é perpendicular às arestas e arredondado para um dos quatro 
 \end{figure}
 
 
-De maneira mais ilustrativa, o procedimento do algoritmo pode ser descrito da seguinte forma: o pixel que está destacado em vermelho é aquele que está sendo processado. A linha em laranja representa a orientação do gradiente ou seja é uma linha perpendicular à borda, os pixels de interesse presentes na vizinhança são aqueles que estão destacados em azul, uma vez que estão na mesma orientação do gradiente. Se o valor do pixel realçado em vermelho for maior do que o valor dos pixels vizinhos destacados em azul, então esse pixel será mantido. Caso contrário, ele será suprimido, assegurando que somente os pontos mais significativos sejam preservados na representação das bordas\cite{canny-edge-detection-python}.
+O procedimento do algoritmo é ilustrado na figura \ref{fig:Supressao nao maxima} onde: o pixel que está destacado em vermelho é aquele que está sendo processado. A linha em laranja representa a orientação do gradiente ou seja é uma linha perpendicular à borda, os pixels de interesse presentes na vizinhança são aqueles que estão destacados em azul, uma vez que estão na mesma orientação do gradiente. Se o valor do pixel realçado em vermelho for maior do que o valor dos pixels vizinhos destacados em azul, então esse pixel será mantido. Caso contrário, ele será suprimido, assegurando que somente os pontos mais significativos sejam preservados na representação das bordas\cite{canny-edge-detection-python}.
 
 
 
@@ -440,7 +440,7 @@ Quando uma imagem é ampliada ou exibida em uma resolução maior do que sua res
 
 \subsection[Limiarização]{Limiarização}
 
-A limiarização, também conhecida como \textit{thresholding}, é uma técnica de processamento de imagem usada para classificar os pixels em uma imagem com base em um valor específico, denominado limiar. Isso resulta na categorização dos pixels em dois grupos distintos, geralemten sendo aqueles que têm valores acima do limiar e aqueles que têm valores abaixo ou iguais a ele. Esse método é amplamente utilizado em processamento de imagem para destacar ou segmentar objetos de interesse em relação ao restante da imagem \cite{limiarizacao}.
+A limiarização, também conhecida como \textit{thresholding}, é uma técnica de processamento de imagem usada para classificar os pixels em uma imagem com base em um valor específico, denominado limiar. Isso resulta na categorização dos pixels em dois grupos distintos, geralmente sendo aqueles que têm valores acima do limiar e aqueles que têm valores abaixo ou iguais a ele. Esse método é amplamente utilizado em processamento de imagem para destacar ou segmentar objetos de interesse em relação ao restante da imagem \cite{limiarizacao}.
 
 A limiarização pode ser empregada de duas maneiras distintas: ela pode transformar uma imagem em escala de cinza em uma imagem binarizada, tornando os pixels acima do limiar em branco e os pixels abaixo do limiar em preto. Alternativamente, ela pode ser utilizada para enfatizar uma faixa específica de frequência, convertendo apenas os pixels abaixo do limiar em preto ou apenas os pixels acima do limiar em branco\cite{opencv_thresholding}.
 
@@ -450,9 +450,6 @@ A limiarização pode ser empregada de duas maneiras distintas: ela pode transfo
 Aprendizado de Máquina tambem conhecido como \ac{ML} é um ramo da \ac{IA} focado na análise de dados, que por meio de métodos estatísticos de aprendizado e otimização  permite computadores analisarem conjuntos de dados e identificar padrões e tendências históricas para prever modelos futuros.\cite{ml}
 
 Comumente o algoritmo de aprendizado de máquina supervisionado consiste em três componentes: decisão, erro e otimização. 
-
-Existem três componentes no algoritmo típico de aprendizado de máquina supervisionado: decisão, erro e otimização.
-
 
 O primeiro componente, decisão, é responsável por tomar decisões com base nas entradas fornecidas, que podem ser rotuladas ou não rotuladas. Esse componente é geralmente implementado como uma função matemática que mapeia as entradas para uma saída, seja uma classificação ou uma predição. Ele é responsável por transformar as entradas em informações úteis para o modelo, permitindo que o algoritmo aprenda a partir delas e tome decisões com base em novas entradas no futuro.
 
