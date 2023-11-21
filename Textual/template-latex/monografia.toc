@@ -31,8 +31,8 @@
 \contentsline {subsection}{\numberline {2.2.4}Transformada de Hough}{25}{subsection.2.2.4}%
 \contentsline {subsection}{\numberline {2.2.5}Detector de bordas de Canny}{27}{subsection.2.2.5}%
 \contentsline {subsubsection}{\numberline {2.2.5.1}Redução de ruido}{28}{subsubsection.2.2.5.1}%
-\contentsline {subsubsection}{\numberline {2.2.5.2}Calculo do Gradiente}{28}{subsubsection.2.2.5.2}%
-\contentsline {subsubsection}{\numberline {2.2.5.3}Supressão não máxima}{30}{subsubsection.2.2.5.3}%
+\contentsline {subsubsection}{\numberline {2.2.5.2}Cálculo do Gradiente}{28}{subsubsection.2.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.2.5.3}Supressão não máxima}{29}{subsubsection.2.2.5.3}%
 \contentsline {subsubsection}{\numberline {2.2.5.4}Limite duplo}{30}{subsubsection.2.2.5.4}%
 \contentsline {subsubsection}{\numberline {2.2.5.5}Limite de histerese}{31}{subsubsection.2.2.5.5}%
 \contentsline {subsection}{\numberline {2.2.6}Algoritmo de rastreamento ou Tracking}{32}{subsection.2.2.6}%
@@ -51,27 +51,24 @@
 \contentsline {section}{\numberline {4.3}Escolha da biblioteca para realização do processamento de imagem}{45}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}Open Source Computer Vision Library}{45}{subsection.4.3.1}%
 \contentsline {subsection}{\numberline {4.3.2}MediaPipe}{45}{subsection.4.3.2}%
-\contentsline {section}{\numberline {4.4}Estrategia para detecção do movimento correto de barra fixa}{46}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Extração de informação frame a frame}{51}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Detecção da barra}{51}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Inclinação da barra}{54}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}Reconhecimento de pose humana}{55}{subsection.4.5.3}%
-\contentsline {subsection}{\numberline {4.5.4}Mão na barra}{57}{subsection.4.5.4}%
-\contentsline {subsection}{\numberline {4.5.5}Braço esticado}{62}{subsection.4.5.5}%
-\contentsline {subsection}{\numberline {4.5.6}Ultrapassagem do queixo a barra}{65}{subsection.4.5.6}%
-\contentsline {subsection}{\numberline {4.5.7}Movimentação do quadril}{68}{subsection.4.5.7}%
-\contentsline {subsection}{\numberline {4.5.8}Hierarquia de diretorio}{68}{subsection.4.5.8}%
-\contentsline {section}{\numberline {4.6}Codigo fonte}{71}{section.4.6}%
+\contentsline {section}{\numberline {4.4}Estratégia para detecção do movimento correto de barra fixa}{46}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Extração de informação frame a frame}{50}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Detecção da barra}{50}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Inclinação da barra}{53}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Reconhecimento de pose humana}{54}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Mão na barra}{56}{subsection.4.5.4}%
+\contentsline {subsection}{\numberline {4.5.5}Braço esticado}{61}{subsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.5.6}Ultrapassagem do queixo a barra}{64}{subsection.4.5.6}%
+\contentsline {subsection}{\numberline {4.5.7}Movimentação do quadril}{67}{subsection.4.5.7}%
+\contentsline {section}{\numberline {4.6}Codigo fonte}{67}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Hierarquia de diretorio}{68}{subsection.4.6.1}%
+\contentsline {section}{\numberline {4.7}Codigo fonte}{70}{section.4.7}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {5}\MakeTextUppercase {Resultados}}{73}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Parte Gráfica}{73}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Tempo de execução}{75}{section.5.2}%
+\contentsline {chapter}{\chapternumberline {5}\MakeTextUppercase {Resultados}}{72}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Ferramenta}{72}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Parte Gráfica}{72}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Tempo de execução}{75}{section.5.3}%
 \setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
 \contentsline {chapter}{\chapternumberline {6}\MakeTextUppercase {Conclusão}}{87}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Pontos fracos e possíveis melhorias}{87}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Trabalhos futuros}{87}{section.6.2}%
-\vspace {\cftbeforechapterskip }
-\vspace {\cftbeforechapterskip }
-\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{\MakeTextUppercase {Refer\^encias}}{88}{section*.25}%
-\vspace {\cftbeforechapterskip }

@@ -1,12 +1,10 @@
 \chapter{Resultados}
 
-Neste capítulo é apresenta a ferramenta obtida assim como detalhes sobre o tempo de execução.
-
-
+Neste capítulo, é apresentada a ferramenta obtida, assim como detalhes sobre o tempo de execução.
 
 \section[Ferramenta]{Ferramenta}
 
-A ferramenta desenvolvida atua a partir de uma gravação no plano coronal da execução do movimento de barra fixa processando a imagem de modo a detectar a barra e os pontos de referêcia do corpo humano e logo em seguida ocorre a segmentação da imagem e calculos algébricos retornando o estado atual do movimento de barra fixa e dados sobre o movimento como forma de feedback sobre o movimento. Todo este processo segue o fluxograma abaixo.
+A ferramenta desenvolvida atua a partir de uma gravação no plano coronal da execução do movimento de barra fixa, processando a imagem de modo a detectar a barra e os pontos de referência do corpo humano. Logo em seguida, ocorre a segmentação da imagem e cálculos algébricos, retornando o estado atual do movimento de barra fixa e dados sobre o movimento como forma de feedback. Todo esse processo segue o fluxograma abaixo.
 
 \begin{figure}[!htb]
 	\centering
@@ -19,8 +17,7 @@ A ferramenta desenvolvida atua a partir de uma gravação no plano coronal da ex
 
 \section[Parte Gráfica]{Parte Gráfica}
 
-A parte gráfica da ferramenta é baseada em duas telas, a tela de exibição que se assemelha a um player e é responsavel exclusivamente para exibir o video e as informações referêntes ao feedback e o painel de controle que é destacado do player porem sua unica função é controllar o que será exibido no player.
-
+A parte gráfica da ferramenta é baseada em duas telas: a tela de exibição, que se assemelha a um player e é responsável exclusivamente por exibir o vídeo e as informações referentes ao feedback, e o painel de controle, que é destacado do player. No entanto, sua única função é controlar o que será exibido no player.
 
 \begin{figure}[H]
 	\centering
@@ -30,8 +27,7 @@ A parte gráfica da ferramenta é baseada em duas telas, a tela de exibição qu
 \end{figure}
 
 
-A tela responsavel por ser um painel de controle do player possui nove campos de entrada sendo  2 caixas de texto  \aspas{Speed} e \aspas{Frame} e cinco botões \aspas{PLAY}, \aspas{SaveF}, \aspas{SaveV}, \aspas{Barra}, \aspas{Dados} e \aspas{EPH} e uma barra deslizante. 
-
+A tela responsável por ser um painel de controle do player possui nove campos de entrada, sendo 2 caixas de texto \aspas{Speed} e \aspas{Frame}, e cinco botões: \aspas{PLAY}, \aspas{SaveF}, \aspas{SaveV}, \aspas{Barra}, \aspas{Dados}, \aspas{EPH}, e uma barra deslizante.
 
 \begin{figure}[H]
 	\centering
@@ -41,23 +37,24 @@ A tela responsavel por ser um painel de controle do player possui nove campos de
 \end{figure}
 
 
-\begin{enumerate}
-    \item A caixa de texto \aspas{Speed} recebe um número decimal como entrada, representando um escalar pelo qual a velocidade de reprodução será alterada.
-    
-    \item A caixa de texto \aspas{Frame} recebe um número inteiro como entrada, movendo o vídeo para o \textit{frame} semelhante à barra deslizante que altera o \textit{frame} em exibição.
-    
-    \item O botão \aspas{PLAY} é responsável por reproduzir e pausar o vídeo.
-    
-    \item O botão \aspas{SaveF} salva o \textit{frame} visualizado no diretório \aspas{./midia/dist} do projeto.
-    
-    \item O botão \aspas{SaveV} realiza a mesma ação do \aspas{SaveF}, mas para um vídeo em vez de uma imagem.
-    
-    \item O botão \aspas{Barra} destaca a posição da barra no vídeo.
-    
-    \item O botão \aspas{EPH} destaca a pose do executor traçando segmentos de reta sobre os membros e o tronco.
+\begin{itemize}
+	\item A caixa de texto \aspas{Speed} recebe um número decimal como entrada, representando um escalar pelo qual a velocidade de reprodução será alterada.
+
+	\item A caixa de texto \aspas{Frame} recebe um número inteiro como entrada, movendo o vídeo para o \textit{frame} semelhante à barra deslizante que altera o \textit{frame} em exibição.
+	
+	\item O botão \aspas{PLAY} é responsável por reproduzir e pausar o vídeo.
+	
+	\item O botão \aspas{SaveF} salva o \textit{frame} visualizado no diretório \aspas{./midia/dist} do projeto.
+	
+	\item O botão \aspas{SaveV} realiza a mesma ação do \aspas{SaveF}, mas para um vídeo em vez de uma imagem.
+	
+	\item O botão \aspas{Barra} destaca a posição da barra no vídeo.
+	
+	\item O botão \aspas{EPH} destaca a pose do executor traçando segmentos de reta sobre os membros e o tronco.
     
     \item O botão \aspas{Dados} exibe informações no canto superior esquerdo, como o ID do \textit{frame}, o estado do \ac{AFD}, a quantidade de barras realizadas, o ângulo entre o braço e antebraço, o ângulo formado pela perna e coxa, o ângulo pelo qual o vídeo foi rotacionado para a barra ficar paralela ao solo, condições como se a mão está tocando a barra, se o cotovelo está estendido ou flexionado, se as pernas estão dobradas, se a cabeça ultrapassou a barra, a distância do peito até a barra, se o peito tocou a barra e o caractere do \ac{AFD} que representa o \textit{frame} atual.
-\end{enumerate}
+	
+\end{itemize}
 
 
 
@@ -72,148 +69,140 @@ A tela responsavel por ser um painel de controle do player possui nove campos de
 
 \section[Tempo de execução]{Tempo de execução}
 
-O tempo de execução desempenha um papel crucial pois representa o intervalo de tempo necessário para que um programa ou algoritmo conclua uma tarefa específica e é um fator fundamental na avaliação e otimização de sistemas computacionais utilizado como métrica para comparar a eficiência de diferentes abordagens e soluções, buscando identificar a estratégia mais eficaz para realizar uma tarefa determinada. Portanto para os testes foi avaliado um vídeo de 211 frames a uma taxa de 24 frames por segundos realizando um execução correta do movimento de barra fixa, para a amostragem foram realizadas 10 iterações da execução do programa.
+O tempo de execução desempenha um papel crucial, pois representa o intervalo de tempo necessário para que um programa ou algoritmo conclua uma tarefa específica. É um fator fundamental na avaliação e otimização de sistemas computacionais, utilizado como métrica para comparar a eficiência de diferentes abordagens e soluções, buscando identificar a estratégia mais eficaz para realizar uma tarefa determinada. Portanto, para os testes, foi avaliado um vídeo de 211 frames a uma taxa de 24 frames por segundo, realizando uma execução correta do movimento de barra fixa. Para a amostragem, foram realizadas 10 iterações da execução do programa.
 
 
 \newpage
-Para um melhor entendimento dos resultados o processamento de um frame foi denominado de \aspas{process\_cell} e é subdividido em funções sendo elas:
-
+Para um melhor entendimento dos resultados, o processamento de um frame foi denominado de \aspas{process\_cell} e é subdividido em funções, sendo elas:
 
 \begin{itemize}
-	\item Função barra responsável pela Detecção da barra, conforme demonstrado na seção \ref{sec:Deteccao da barra}.
-
-	\item Função verify\_inclination responsável pela rotação da imagem de acordo com a inclinação da barra, conforme demonstrado na seção \ref{sec:Inclinacao da barra}.
-
-	\item Função verify\_eph responsável pela identificação dos pontos chaves do corpo humano, conforme demonstrado na seção \ref{sec:Reconhecimento de pose humana}.
-
-	\item Função verify\_angle\_member responsável pela identificação dos angulos entre os segmentos, conforme demonstrado na seção \ref{angulo_braco} e \ref{sec:Movimentacao do quadril}. 
-
-	\item Função verify\_char\_AFD responsavel pela extração das informações presente no caracter do \ac{AFD} conforme explicado em \ref{sec:Estrategia para deteccao do movimento correto de barra fixa} Sendo um compilado de 4 funções 
-	
+	\item Função \aspas{barra} responsável pela Detecção da barra, conforme demonstrado na seção \ref{sec:Deteccao da barra}.
+	\item Função \aspas{verify\_inclination} responsável pela rotação da imagem de acordo com a inclinação da barra, conforme demonstrado na seção \ref{sec:Inclinacao da barra}.
+	\item Função \aspas{verify\_eph} responsável pela identificação dos pontos chaves do corpo humano, conforme demonstrado na seção \ref{sec:Reconhecimento de pose humana}.
+	\item Função \aspas{verify\_angle\_member} responsável pela identificação dos ângulos entre os segmentos, conforme demonstrado na seção \ref{angulo_braco} e \ref{sec:Movimentacao do quadril}. 
+	\item Função \aspas{verify\_char\_AFD} responsável pela extração das informações presentes no caractere do \ac{AFD}, conforme explicado em \ref{sec:Estrategia para deteccao do movimento correto de barra fixa}. Sendo um compilado de 4 funções.
+		
 	\begin{itemize}
 		
-		\item Função verify\_maoBarra responsavel pela verificação do contato da mão com a barra demonstrado na seção \ref{sec:Mao na barra}
-		\item Função verify\_extensaoCotovelo responsavel pela verificação da extenção do braço demonstrado na seção \ref{sec:Braco esticado}
-		\item Função verify\_ultrapassarBarra responsavel pela verificação da ultrapassagem do queixo a barra demonstrado na seção \ref{sec:meta} 
-		\item Função verify\_movimentoQuadrilPerna responsavel pela verificação da flexão dos membros inferiores demonstrado na seção \ref{sec:Movimentacao do quadril}
+		\item Função \aspas{verify\_maoBarra} responsável pela verificação do contato da mão com a barra, demonstrado na seção \ref{sec:Mao na barra}.
+		\item Função \aspas{verify\_extensaoCotovelo} responsável pela verificação da extensão do braço, demonstrado na seção \ref{sec:Braco esticado}.
+		\item Função \aspas{verify\_ultrapassarBarra} responsável pela verificação da ultrapassagem do queixo à barra, demonstrado na seção \ref{sec:meta}.
+		\item Função \aspas{verify\_movimentoQuadrilPerna} responsável pela verificação da flexão dos membros inferiores, demonstrado na seção \ref{sec:Movimentacao do quadril}.
 
 	\end{itemize}
 
-	\item Função verify\_AFD responsavel pela computação do \ac{AFD} demonstrado na seção \ref{fig:transicaoAFD}.
+	\item Função \aspas{verify\_AFD} responsável pela computação do \ac{AFD}, demonstrado na seção \ref{fig:transicaoAFD}.
 
 \end{itemize}
 
-Os gráficos presentes nas figuras \ref{graf:G1} \ref{graf:G2} \ref{graf:G3} \ref{graf:G4} \ref{graf:G5} \ref{graf:G6} \ref{graf:G7} \ref{graf:G8} \ref{graf:G9} \ref{graf:G10} \ref{graf:G11} mostram no eixo vertical o tempo gasto em segundos para o processamento da função, associado aos identificadores dos frames representado no eixo horizontal, com  base em dados proveniente de 10 iterações.
+% Os gráficos presentes nas figuras \ref{graf:G1} \ref{graf:G2} \ref{graf:G3} \ref{graf:G4} \ref{graf:G5} \ref{graf:G6} \ref{graf:G7} \ref{graf:G8} \ref{graf:G9} \ref{graf:G10} \ref{graf:G11} mostram no eixo vertical o tempo gasto em segundos para o processamento da função, associado aos identificadores dos frames representado no eixo horizontal, com  base em dados proveniente de 10 iterações.
 
 
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{barra} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.5]{figuras/grafico/barra.png}
-	\label{graf:G1}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{barra} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.5]{figuras/grafico/barra.png}
+% 	\label{graf:G1}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_inclination} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.5]{figuras/grafico/inclination.png}
-	\label{graf:G2}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
-
-
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_eph} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.5]{figuras/grafico/eph.png}
-	\label{graf:G3}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_inclination} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.5]{figuras/grafico/inclination.png}
+% 	\label{graf:G2}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_angle\_member} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.6]{figuras/grafico/angulo.png}
-	\label{graf:G4}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_eph} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.5]{figuras/grafico/eph.png}
+% 	\label{graf:G3}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_char\_AFD} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.55]{figuras/grafico/char_AFD.png}
-	\label{graf:G5}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_angle\_member} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.6]{figuras/grafico/angulo.png}
+% 	\label{graf:G4}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
+
+
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_char\_AFD} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.55]{figuras/grafico/char_AFD.png}
+% 	\label{graf:G5}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_maoBarra} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.45]{figuras/grafico/maoBarra.png}
-	\label{graf:G6}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_maoBarra} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.45]{figuras/grafico/maoBarra.png}
+% 	\label{graf:G6}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_extensaoCotovelo} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.45]{figuras/grafico/extensaoCotovelo.png}
-	\label{graf:G7}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_extensaoCotovelo} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.45]{figuras/grafico/extensaoCotovelo.png}
+% 	\label{graf:G7}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_ultrapassarBarra} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.55]{figuras/grafico/ultrapassarBarra.png}
-	\label{graf:G8}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_ultrapassarBarra} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.55]{figuras/grafico/ultrapassarBarra.png}
+% 	\label{graf:G8}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_movimentoQuadrilPerna} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.55]{figuras/grafico/movimentoQuadril.png}
-	\label{graf:G9}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_movimentoQuadrilPerna} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.55]{figuras/grafico/movimentoQuadril.png}
+% 	\label{graf:G9}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{verify\_AFD} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.55]{figuras/grafico/verify_AFD.png}
-	\label{graf:G10}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{verify\_AFD} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.55]{figuras/grafico/verify_AFD.png}
+% 	\label{graf:G10}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
-\begin{figure}[H]
-	\centering
-	\caption{Tempo de execução da função \aspas{process\_cell} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
-	\includegraphics[scale=0.8]{figuras/grafico/process_cell.png}
-	\label{graf:G11}
-	\legend{Fonte: Elaborado pelo autor (2023)}
-\end{figure}
-
-
+% \begin{figure}[H]
+% 	\centering
+% 	\caption{Tempo de execução da função \aspas{process\_cell} em 10 iterações mostrando a média, mínimo e máximo do tempo gasto por quadro em segundos}
+% 	\includegraphics[scale=0.8]{figuras/grafico/process_cell.png}
+% 	\label{graf:G11}
+% 	\legend{Fonte: Elaborado pelo autor (2023)}
+% \end{figure}
 
 
 
 
 
-
-O gráfico da figura \ref{graf:G12} mostra o desempenho relativo de cada função que compõe \aspas{verify\_char\_AFD} em relação a propria função \aspas{verify\_char\_AFD}
+O gráfico da figura \ref{graf:G12} mostra o desempenho relativo de cada função que compõe a \aspas{verify\_char\_AFD} em relação à própria função \aspas{verify\_char\_AFD}.
 
 \begin{figure}[H]
 	\centering
@@ -226,7 +215,7 @@ O gráfico da figura \ref{graf:G12} mostra o desempenho relativo de cada funçã
 
 
 
-O gráfico da figura \ref{graf:G13} apresenta, com base em 10 iterações, a média do tempo gasto em segundos por cada função que compõe \aspas{process\_cell}.
+O gráfico da figura \ref{graf:G13} apresenta, com base em 10 iterações, a média do tempo gasto em segundos por cada função que compõe a \aspas{process\_cell}.
 
 \begin{figure}[H]
 	\centering
@@ -247,14 +236,7 @@ O gráfico da figura \ref{graf:G14} mostra o desempenho relativo de cada funçã
 	\legend{Fonte: Elaborado pelo autor (2023)}
 \end{figure}
 
-
-
-
-
-
-As 2 funções mais relevantes para a alta taxa de latência do processamento do frame são \aspas{verify\_eph} e \aspas{verify\_maoBarra} sendo responsavel por cerca de 85.14\% do tempo gasto por \aspas{process\_cell}
-
-
+As duas funções mais relevantes para a alta taxa de latência do processamento do frame são \aspas{verify\_eph} e \aspas{verify\_maoBarra}, sendo responsáveis por cerca de 85,14\% do tempo gasto por \aspas{process\_cell}.
 
 \begin{table}[h]
 	\centering
@@ -291,6 +273,5 @@ As 2 funções mais relevantes para a alta taxa de latência do processamento do
 	\caption{Tempos médios e menores tempos registrados para cada função que compõe verify\_char\_AFD}
 	\label{tab:tempos_funcoes_especificas}
 \end{table}
-	
-Por fim  o tempo médio para a execução da função \aspas{process\_cell} foi de 0,2481895403 segundos, enquanto o menor tempo registrado foi de 0,171841 segundos assumindo um desvio padrão de 0,03161229806 e uma variancia de 0,0009993373889.
-
+		
+Por fim, o tempo médio para a execução da função \aspas{process\_cell} foi de 0,2481895403 segundos, enquanto o menor tempo registrado foi de 0,171841 segundos, assumindo um desvio padrão de 0,03161229806 e uma variância de 0,0009993373889.
