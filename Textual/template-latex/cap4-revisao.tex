@@ -8,7 +8,7 @@ Neste capítulo são mostrados os fundamentos necessários para entender os conc
 
 \subsection[Teste de Aptidão Física]{Teste de Aptidão Física}\label{sec:Teste de Aptidão Física}
 
-O \ac{TAF} é uma etapa comum em concursos públicos para provimento de cargos em carreiras relacionadas à área de segurança pública. Seu objetivo é atestar a capacidade do indivíduo em desempenhar funções específicas do cargo por meio da avaliação de determinados exercícios. A avaliação é embasada em exercícios e parâmetros preestabelecidos no edital, como, por exemplo, a quantidade de repetições de um determinado movimento para o exercício de barra fixa ou flexão abdominal, o tempo gasto para translocação em uma determinada distância nas corridas de 12 km, 2.400 m ou natação, ou até mesmo a distância percorrida durante o salto de impulsão horizontal \cite{TAF_adv}.
+O \ac{TAF} é uma etapa comum em concursos públicos para provimento de cargos em carreiras relacionadas à área de segurança pública. Seu objetivo é atestar a capacidade do indivíduo em desempenhar funções específicas do cargo por meio da avaliação de determinados exercícios. A avaliação é embasada em exercícios e parâmetros preestabelecidos no edital, como, por exemplo, a quantidade de repetições de um determinado movimento para o movimento de barra fixa ou flexão abdominal, o tempo gasto para translocação em uma determinada distância nas corridas de 12 km, 2.400 m ou natação, ou até mesmo a distância percorrida durante o salto de impulsão horizontal \cite{TAF_adv}.
 
 \subsection[Barra Fixa]{Barra Fixa}\label{sec:Barra Fixa}
 
@@ -142,17 +142,17 @@ Embora Imagens Monocromáticas representem tons variados de uma única cor, elas
 
 \begin{figure}[!htb]
 	\centering
-    \caption{Composição de um imagem RGB}
+    \caption{Composição de uma imagem RGB}
 	\includegraphics[scale=0.25]{figuras/Imagem_colorida/colored.png}
     \legend{Fonte: Elaborado pelo autor (2023).}
-	\label{fig:Composicao de um imagem RGB}
+	\label{fig:Composicao de uma imagem RGB}
 \end{figure}
 
 Em uma imagem digital, a descrição da intensidade da luz pode ocorrer de maneiras distintas,relacionada à natureza da imagem. A descrição da intensidade pode adotar valores binários representados por branco e preto e são frequentemente associados a conceitos como a presença ou a ausencia de um objeto.Para  uma representação mais complexa de nuances de intensidade, texturas e detalhes é comum  que a intensidade da luz seja descrita em 8 bits ou seja 256 tonalidades diferentes de cores, variando de 0 a 255, onde 0 é preto e 255 é branco.Por fim para uma riqueza maior de detalhes é comum que imagens coloridas sejam descritas por uma tripla de canais \ac{RGB}  onde cada canal representa uma  cor, adotando valores de 8 bits por canal, portanto uma representação de 24 bits por pixel \cite{imagemIBM}.
 
 \begin{figure}[!htb]
 	\centering
-	\caption{Representação do Pixel de uma imagem com 3 canais}
+	\caption{Representação de um pixel de uma imagem com três canais}
 	\includegraphics[scale=1]{figuras/processamento_imagem/pixel.png}
     \legend{Fonte:\cite{imagemIBM}.}
 	\label{fig:Representacao do Pixel de uma imagem com 3 canais}
@@ -201,28 +201,32 @@ Identificação de Pose ou \ac{EPH} é um problema geral em Visão Computacional
 A Transformada de Hough é um algoritmo amplamente empregado na detecção de linhas retas em imagens. Sua utilidade é especialmente evidente ao buscar a extração de informações relacionadas a linhas presentes na imagem independentemente da orientação, localização ou contiuidade. Em suma a Transformada de Hough opera transformando coordenadas cartesianas ($x$, $y$) da imagem em uma representação polar ($\rho$, $\theta$) no espaço de parâmetros, também conhecido como plano de Hough, esse plano é usado como um espaço de votação, onde é verificado quantos pontos compartilham uma mesma reta assim as retas que acumulam mais votos no espaço de votação são consideradas as retas detectadas na imagem \cite{transformadaHough1}.
 
 
-Uma reta pode ser descrita como: $$y = mx + b$$ As características desta reta são a inclinação $m$ e a intersecção $b$ assim, uma reta $y = mx + b$ pode ser representada como um par ordenado $(b, m)$, porem em tal representação à medida em que a reta torna-se vertical, as magnitudes de $b$ e $m$ tendem ao infinito, contudo a mesma reta pode ser representada na forma:  $$\rho = x*cos(\theta)+y*sin(\theta)$$ Onde o parâmetro $\rho$ é a mínima distância da reta a origem, centro do plano, e $\theta$ é o ângulo de inclinação da normal à reta, sendo a normal uma linha perpendicular a direção da reta \cite{detectBar}.
+Uma reta pode ser descrita como: $$y = mx + b$$
+
+As características desta reta são a inclinação $m$ e a intersecção $b$ assim, uma reta $y = mx + b$ pode ser representada como um par ordenado $(b, m)$, porem em tal representação à medida em que a reta torna-se vertical, as magnitudes de $b$ e $m$ tendem ao infinito, contudo a mesma reta pode ser representada na forma:  $$\rho = x*cos(\theta)+y*sin(\theta)$$
+
+Onde o parâmetro $\rho$ é a mínima distância da reta a origem, centro do plano, e $\theta$ é o ângulo de inclinação da normal à reta, sendo a normal uma linha perpendicular a direção da reta \cite{detectBar}.
 
 \begin{figure}[!htb]
 	\centering
-    \caption{Representação da reta pelos parametros $\rho$ e $\theta$}
+    \caption{Representação da reta pelos parâmetros $\rho$ e $\theta$}
 	\includegraphics[scale=2]{figuras/math/rhotheta.png}
     \legend{Fonte: \cite{parametrizacao}.}
     \label{fig:Representacao da reta pelos parametros}
 \end{figure}
 
-O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel} é demonstrado um ponto no plano e logo em seguinda sua representação no espaço parametrizavel $\rho$ e $\theta$.
-
+O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel}, o primeiro gráfico apresenta um ponto no plano. O segundo gráfico apresenta a representação desse ponto no espaço parametrizável $\rho$ e $\theta$.
 
 \begin{figure}[!htb]
 	\centering
-    \caption{Representação de um ponto no espaço parametrizavel $\rho$ e $\theta$}
+    \caption{Representação de um ponto no espaço parametrizado por $\rho$ e $\theta$}
 	\includegraphics[scale=0.5]{figuras/math/pontoEspacoParametrizavel.png}
     \legend{Fonte: \cite{parametrizacao}.}
 	\label{fig:Representacao de um ponto no espaco parametrizavel}
 \end{figure}
 
-Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a duas senóides no plano de Hough. A interseção dessas duas senóides representa a reta $pq$ que passa pelos dois pontos no plano da imagem. Analogamente, 4 retas no plano da imagem correspondem a 4 senóides no plano de Hough que se acumulam em 4 pontos. Portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}. Na figura \ref{fig:Representacao da reta por meio do ponto de interseccao}, são demonstrados 8 pontos no plano pertencentes a 2 retas, e logo em seguida, sua representação no espaço parametrizável $\rho$ e $\theta$, que ocorre por meio da intersecção das curvas. Assim, o local da interseção das 4 curvas representa uma reta com parâmetros $\rho$ e $\theta$ específicos.
+Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a duas senóides no plano de Hough. A interseção dessas duas senóides representa a reta $pq$ que passa pelos dois pontos no plano da imagem. Analogamente, 4 retas no plano da imagem correspondem a 4 senóides no plano de Hough que se acumulam em 4 pontos. Portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}. A figura \ref{fig:Representação da reta por meio do ponto de intersecção} apresenta, no primeiro gráfico, 8 pontos no plano pertencentes a duas retas. O segundo gráfico apresenta, no espaço parametrizável $\rho$ e $\theta$, 8 senoides que se interceptam em dois pontos diferentes. Assim, o local da interseção entre as senoides representa uma reta com parâmetros $\rho$ e $\theta$ específicos.
+
 
 \begin{figure}[!htb]
 	\centering
@@ -235,18 +239,17 @@ Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a 
 
 
 
-
 \subsection[Detector de bordas de Canny]{Detector de bordas de Canny}\label{sec:Detector de bordas de Canny}
 
 Um filtro de detecção de borda é um método utilizado no processamento de imagens para identificar mudanças abruptas na intensidade luminosa. Essas mudanças geralmente correspondem a limites entre diferentes objetos ou regiões na imagem. O filtro de detecção de borda realça essas mudanças, destacando os contornos e limites dos objetos presentes na imagem. Ele funciona calculando gradientes de intensidade em várias direções e destacando as regiões onde esses gradientes são mais acentuados. Em específico o filtro de Canny possui cinco etápas sendo elas: Redução de ruído; Cálculo de gradiente; Supressão não máxima; Limite duplo;Rastreamento de borda por histerese \cite{canny-edge-detection-python}.
 
 
 \subsubsection[Redução de ruido]{Redução de ruido}
-A redução de ruído ocorre com a aplicação de um filtro gaussiano, uma técnica de convolução de imagens que, de acordo com um filtro, substitui o valor de cada pixel da imagem pela média da vizinhança. Isso tem como efeito a suavização da imagem, uma vez que as altas frequências que correspondem às transições abruptas são atenuadas \cite{filtroGaus}.
+A redução de ruído ocorre com a aplicação de um filtro Gaussiano, uma técnica de convolução de imagens que, de acordo com um filtro, substitui o valor de cada pixel da imagem pela média da vizinhança. Isso tem como efeito a suavização da imagem, uma vez que as altas frequências que correspondem às transições abruptas são atenuadas \cite{filtroGaus}.
 
 A convolução é uma operação matemática que combina duas funções para criar uma terceira. No contexto de processamento de imagens, a imagem original atua como uma das funções e o filtro (ou kernel) atua como a segunda função. O filtro é uma matriz de números que define como a vizinhança de cada pixel na imagem será ponderada e combinada para gerar o novo valor desse pixel na imagem resultante. O processo de convolução envolve a superposição do filtro sobre cada região da imagem e a multiplicação elemento a elemento dos valores do filtro com os valores correspondentes da imagem. Os resultados dessas multiplicações são somados para produzir o novo valor do pixel na imagem de saída \cite{convolucao}.
 
-Kernel 5x5 utilizado no filtro gaussiano \cite{kernel_gaus}:
+Kernel 5x5 utilizado no filtro Gaussiano \cite{kernel_gaus}:
 
 \[
     \begin{bmatrix}
@@ -301,7 +304,7 @@ Essa inclinação é perpendicular às arestas e arredondada para um dos quatro 
 
 \begin{figure}[!htb]
 	\centering
-    \caption{Imagem em preto e branco com filtro gaussiano}
+    \caption{Imagem em preto e branco com filtro Gaussiano}
 	\includegraphics[scale=0.25]{figuras/filter/sobel/f_normal.jpeg}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:Imagem em preto e branco com filtro de gaus}
@@ -323,7 +326,7 @@ Essa inclinação é perpendicular às arestas e arredondada para um dos quatro 
 
 \begin{figure}[!ht]
 	\centering
-    \caption{Supressao não maxima}
+    \caption{Supressão não maxima}
 	\includegraphics[scale=0.65]{figuras/filter/supressao_nao_maxima/supressao3.png}
     \legend{Fonte: \cite{canny-edge-detection-python}.}
 	\label{fig:Supressao nao maxima}
@@ -377,7 +380,7 @@ Quando uma imagem é ampliada ou exibida em uma resolução maior do que sua res
 
 \begin{figure}[htbp]
     \centering
-    \caption{Imagem pixelizada com blocos de 32x32}
+    \caption{Imagem pixelizada com blocos de 32 x 32}
         \begin{minipage}{0.4\textwidth}
             \includegraphics[width=\textwidth]{figuras/pixelizacao/foto.jpeg}
         \end{minipage}
@@ -420,7 +423,7 @@ O terceiro componente, otimização, é responsável por ajustar o modelo de mod
 
 
 
-\section[Automatos Finitos]{Automatos Finitios}
+\section[Autômatos Finitos]{Autômatos Finitos}
 
 
 Os reconhecedores são sistemas formais conhecidos tambem como autômatos capazes de aceitar todas as sentenças que pertençam a uma determinada linguagem, rejeitando todas as demais. Por esse motivo, constituem uma forma alternativa às gramáticas para a representação finita de linguagens \cite{reconhecimento}.
@@ -444,7 +447,7 @@ Alguns tipos de reconhecedores não apenas leem os símbolos da fita de entrada,
 
 
 Um \ac{AF} é um modelo abstrato e simplificado de um sistema computacional que pode ser usado para reconhecer padrões em sequências de símbolos \cite{afd}. Formalmente é representado como uma lista de cinco elementos  com : 
-um conjunto finito de estados representado por $Q$, um alfabeto de entrada representado por $\Sigma$, Funções de transição representada por $\delta : Q \times \Sigma \rightarrow Q$, estado inicial $q_0 \in Q$ e um conjunto de estados finais $F \subseteq Q$ portanto um automato finito é representado como uma 5-upla $(Q, \Sigma, \delta, q_0, F)$
+um conjunto finito de estados representado por $Q$, um alfabeto de entrada representado por $\Sigma$, Funções de transição representada por $\delta : Q \times \Sigma \rightarrow Q$, estado inicial $q_0 \in Q$ e um conjunto de estados finais $F \subseteq Q$ portanto um autômato finito é representado como uma 5-upla $(Q, \Sigma, \delta, q_0, F)$
 
 Sendo que o estado é uma representação de uma condição específica em que o autômato pode se encontrar durante a sua execução, o alfabeto é o conjunto finito de símbolos que o autômato pode receber como entrada, e as funções de transição definem como o autômato muda de um estado para outro em resposta a um símbolo de entrada.
 

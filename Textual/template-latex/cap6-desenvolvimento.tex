@@ -135,7 +135,7 @@ Dentro do processamento de imagem, a segmentação é a etapa onde a imagem é d
 O objetivo da ferramenta é operar em um ambiente controlado. Entretanto, devido às características específicas da infraestrutura do local de teste, tornou-se essencial incorporar uma máscara para uma manipulação adequada de cada quadro. Com esse propósito, uma máscara previamente elaborada a partir do primeiro quadro do vídeo foi aplicada, utilizando a função bitwise\_and, disponibilizada na biblioteca \ac{openCV}. A operação bitwise\_and consiste em um processo de AND bit a bit entre os valores dos pixels do quadro e os valores correspondentes da máscara. O resultado é uma nova imagem em que os pixels que não fazem parte das regiões brancas da máscara são convertidos para preto, enquanto os pixels que pertencem a essas regiões permanecem intactos. A finalidade dessa máscara é realçar a região de interesse dentro do quadro, permitindo um foco preciso durante a etapa de segmentação da imagem.
 \begin{figure}[htb]
     \centering
-    \caption{Ambiente de gravação e Mascara Preto e Branca criada apartir do mesmo}
+    \caption{Ambiente de gravação e máscara preto e branco criada a partir do mesmo}
         \begin{minipage}{0.4\textwidth}
             \includegraphics[width=\textwidth]{figuras/filter/mask/ambiente.png}
         \end{minipage}
@@ -286,7 +286,7 @@ A partir desse ponto, a imagem passa a conter diferentes níveis de brilho, repr
 
 \begin{figure}[H]
     \centering
-    \caption{Binarização da Imagem}
+    \caption{Binarização da imagem}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/gray.png}
         \end{minipage}
@@ -302,7 +302,7 @@ Com a imagem binarizada, foi aplicado um filtro de suavização usando um kernel
 
 \begin{figure}[H]
     \centering
-    \caption{Redução de ruidos com a suavização e binarização}
+    \caption{Redução de ruídos com a suavização e binarização}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/blur.png}
         \end{minipage}
@@ -318,7 +318,7 @@ Neste ponto, a imagem, que passou por uma segunda binarização para melhorar a 
 
 \begin{figure}[H]
     \centering
-    \caption{Imagem Pixelizada e binarizada}
+    \caption{Imagem pixelizada e binarizada}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/pixel.png}
         \end{minipage}
@@ -334,7 +334,7 @@ A área de interesse é representada por uma linha na direção da barra mesclad
 
 \begin{figure}[H]
     \centering
-    \caption{Mascara da região de interesse}
+    \caption{Máscara da região de interesse}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/mask3.png}
         \end{minipage}
@@ -347,7 +347,7 @@ Por fim, com a imagem filtrada e binarizada, foi destacada a região de interess
 
 \begin{figure}[H]
     \centering
-    \caption{Do lado esquerdo a imagem segmentada e do lado direto sua representação}
+    \caption{Do lado esquerdo a imagem segmentada e do lado direito sua representação}
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/mao_barra/only_hands.png}
         \end{minipage}
@@ -414,7 +414,7 @@ Para verificar se ocorreu a ultrapassagem do queixo à barra, foram avaliadas tr
 
 \begin{figure}[H]
 	\centering
-    \caption{Diagrama Ultrapassagem do queixo a barra }
+    \caption{Diagrama da ultrapassagem do queixo a barra}
 	\includegraphics[scale=0.75]{figuras/diagrama/ultrapassagem_barra.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{dia:ultrapassagem}
@@ -458,7 +458,7 @@ A partir deste ponto, o processo se destaca, pois é aplicada uma máscara para 
  
 \begin{figure}[H]
     \centering
-    \caption{Representação da mascara para região de interesse }
+    \caption{Representação da máscara para região de interesse }
         \begin{minipage}{\sizeImg\textwidth}
             \includegraphics[width=\textwidth]{figuras/ultrapassar_barra/134_mask_head.png}
         \end{minipage}
@@ -491,21 +491,21 @@ O movimento do quadril foi examinado de maneira semelhante à flexão e extensã
 
 
 
- \section[Codigo fonte]{Codigo fonte}
+\section[Código fonte]{Código fonte}
 
- O código-fonte pode ser encontrado em um repositório específico hospedado no GitHub. Para acessar e explorar o conjunto completo de arquivos, você pode visitar o seguinte sítio eletrônico: \url{https://github.com/le314u/TCC/tree/main/Tecnologico/Source/Programa/python}. Neste repositório, os arquivos estão organizados de forma a facilitar a navegação e a análise individual de cada componente do programa. Este repositório oferece uma visão abrangente do presente trabalho e é uma valiosa fonte de informações para qualquer pessoa interessada em entender melhor a implementação da ferramenta e queira ter este trabalho como base para trabalhos futuros.
+O código-fonte pode ser encontrado em um repositório específico hospedado no GitHub. Para acessar e explorar o conjunto completo de arquivos, você pode visitar o seguinte sítio eletrônico: \url{https://github.com/le314u/TCC/tree/main/Tecnologico/Source/Programa/python}. Neste repositório, os arquivos estão organizados de forma a facilitar a navegação e a análise individual de cada componente do programa. Este repositório oferece uma visão abrangente do presente trabalho e é uma valiosa fonte de informações para qualquer pessoa interessada em entender melhor a implementação da ferramenta e queira ter este trabalho como base para trabalhos futuros.
  
  
 
-\subsection[Hierarquia de diretorio]{Hierarquia de diretorio}
+\subsection[Hierarquia de diretório]{Hierarquia de diretório}
 
 
 O projeto foi estruturado de forma que os componentes do código conseguissem ser divididos em 5 grandes blocos, sendo eles controller, model, view, util e mídia.
 
 \begin{figure}[H]
 	\centering
-    \caption{Estrutura do diretorio baseado em 5 grande blocos }
-	\includegraphics[scale=0.5]{figuras/diretorios/Blocos.png}
+    \caption{Estrutura do diretório baseado em cinco grande blocos }
+	\includegraphics[scale=0.5]{figuras/diretórios/Blocos.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:blocos}
 \end{figure}
@@ -515,7 +515,7 @@ No contexto do meu projeto, a estrutura de diretórios é organizada da seguinte
 \begin{figure}[H]
     \centering
     \caption{Estrutura do diretório \aspas{/model}}
-    \includegraphics[scale=0.5]{figuras/diretorios/model.png}
+    \includegraphics[scale=0.5]{figuras/diretórios/model.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
     \label{fig:model}
 \end{figure}
@@ -526,8 +526,8 @@ A pasta \aspas{view} é responsável por apresentar esses dados de maneira atrae
 
 \begin{figure}[H]
 	\centering
-	\caption{Estrutura do diretorio \aspas{/view}}
-	\includegraphics[scale=0.5]{figuras/diretorios/view.png}
+	\caption{Estrutura do diretório \aspas{/view}}
+	\includegraphics[scale=0.5]{figuras/diretórios/view.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:view}
 \end{figure}
@@ -536,8 +536,8 @@ O diretório \aspas{mídia} abriga arquivos relacionados a imagens, áudio, víd
 
 \begin{figure}[H]
 	\centering
-	\caption{Estrutura do diretorio \aspas{/midia}}
-	\includegraphics[scale=0.5]{figuras/diretorios/midia.png}
+	\caption{Estrutura do diretório \aspas{/midia}}
+	\includegraphics[scale=0.5]{figuras/diretórios/midia.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:midia}
 \end{figure}
@@ -546,8 +546,8 @@ Por fim, o diretório \aspas{util} contém arquivos genéricos que não se encai
 
 \begin{figure}[H]
 	\centering
-    \caption{Estrutura do diretorio \aspas{/util}}
-	\includegraphics[scale=0.5]{figuras/diretorios/util.png}
+    \caption{Estrutura do diretório \aspas{/util}}
+	\includegraphics[scale=0.5]{figuras/diretórios/util.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:util}
 \end{figure}
@@ -556,16 +556,10 @@ O \aspas{controller} atua como um mediador entre os arquivos da view e do model,
 
 \begin{figure}[H]
 	\centering
-    \caption{Estrutura do diretorio \aspas{/controller}}
-	\includegraphics[scale=0.6]{figuras/diretorios/controller.png}
+    \caption{Estrutura do diretório \aspas{/controller}}
+	\includegraphics[scale=0.6]{figuras/diretórios/controller.png}
     \legend{Fonte: Elaborado pelo autor (2023)}
 	\label{fig:controller}
 \end{figure}
-
-
-
-\section[Codigo fonte]{Codigo fonte}
-
-O código-fonte pode ser encontrado em um repositório específico hospedado no GitHub. Para acessar e explorar o conjunto completo de arquivos, você pode visitar o seguinte site eletrônico: \url{https://github.com/le314u/TCC/tree/main/Tecnologico/Source/Programa/python}. Neste repositório, os arquivos estão organizados de forma a facilitar a navegação e a análise individual de cada componente do programa. Este repositório oferece uma visão abrangente do presente trabalho e é uma valiosa fonte de informações para qualquer pessoa interessada em entender melhor a implementação da ferramenta e queira ter este trabalho como base para trabalhos futuros.
 
 
