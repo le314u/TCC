@@ -1,4 +1,4 @@
-% ----------------------------------------------------------
+% ----------------------------------------------------------, 
 \chapter{Fundamentação Teórica}
 % ----------------------------------------------------------
 Neste capítulo são mostrados os fundamentos necessários para entender os conceitos abordados no presente trabalho.
@@ -40,7 +40,7 @@ O teste de flexão em barra fixa, ou teste dinâmico de barra fixa, apresenta va
 	\centering
     \caption{Movimento de barra fixa}
 	\includegraphics[scale=0.7]{figuras/TAF/barraFixa.jpg}
-    \legend{Fonte:\cite{barraFixa_IMG}.}
+    \legend{Fonte: \cite{barraFixa_IMG}.}
 	\label{fig:Movimento de barra fixa}
 \end{figure}
 
@@ -65,7 +65,7 @@ Cada plano tem um eixo perpendicular utilizado para caracterizar os movimentos r
 	\centering
     \caption{Planos anatômicos}
 	\includegraphics[scale=0.15]{figuras/TAF/planos.png}
-    \legend{Fonte:\cite{planosAnatomicos_IMG}.}
+    \legend{Fonte: \cite{planosAnatomicos_IMG}.}
 	\label{fig:Planos anatomicos}
 \end{figure}
 
@@ -127,12 +127,12 @@ Uma imagem digital pode ser representada como uma matriz com um número fixo de 
 A representação de uma imagem digital com $N$ linhas e $M$ colunas pode ser expressa da seguinte forma, onde $(0 < y < N-1)$ e $(0 < x < M-1)$, e cada pixel corresponde ao valor de intensidade em uma posição (x, y) da imagem digital.
 
 \[
-    f(x,y) = \left[
+    f(x, y) = \left[
         \begin{array}{cccc}
-        f(0,0) & f(0,1) & \cdots & f(0,M-1) \\
-        f(1,0) & f(1,1) & \cdots & f(1,M-1) \\
+        f(0, 0) & f(0, 1) & \cdots & f(0, M-1) \\
+        f(1, 0) & f(1, 1) & \cdots & f(1, M-1) \\
         \vdots & \vdots & \ddots & \vdots \\
-        f(N-1,0) & f(N-1,1) & \cdots & f(N-1,M-1) \\
+        f(N-1, 0) & f(N-1, 1) & \cdots & f(N-1, M-1) \\
         \end{array}
     \right]
 \]
@@ -148,13 +148,13 @@ Embora Imagens Monocromáticas representem tons variados de uma única cor, elas
 	\label{fig:Composicao de uma imagem RGB}
 \end{figure}
 
-Em uma imagem digital, a descrição da intensidade da luz pode ocorrer de maneiras distintas,relacionada à natureza da imagem. A descrição da intensidade pode adotar valores binários representados por branco e preto e são frequentemente associados a conceitos como a presença ou a ausência de um objeto.Para  uma representação mais complexa de nuances de intensidade, texturas e detalhes é comum  que a intensidade da luz seja descrita em 8 bits ou seja 256 tonalidades diferentes de cores, variando de 0 a 255, onde 0 é preto e 255 é branco.Por fim para uma riqueza maior de detalhes é comum que imagens coloridas sejam descritas por uma tripla de canais \ac{RGB}  onde cada canal representa uma  cor, adotando valores de 8 bits por canal, portanto uma representação de 24 bits por pixel \cite{imagemIBM}.
+Em uma imagem digital, a descrição da intensidade da luz pode ocorrer de maneiras distintas, relacionadas à natureza da imagem. A descrição da intensidade pode adotar valores binários representados por branco e preto e são frequentemente associados a conceitos como a presença ou a ausência de um objeto. Para  uma representação mais complexa de nuances de intensidade, texturas e detalhes é comum  que a intensidade da luz seja descrita em 8 bits ou seja 256 tonalidades diferentes de cores, variando de 0 a 255, onde 0 é preto e 255 é branco. Por fim para uma riqueza maior de detalhes é comum que imagens coloridas sejam descritas por uma tripla de canais \ac{RGB}  onde cada canal representa uma  cor, adotando valores de 8 bits por canal, portanto uma representação de 24 bits por pixel \cite{imagemIBM}.
 
 \begin{figure}[!htb]
 	\centering
 	\caption{Representação de um pixel de uma imagem com três canais}
 	\includegraphics[scale=1]{figuras/processamento_imagem/pixel.png}
-    \legend{Fonte:\cite{imagemIBM}.}
+    \legend{Fonte: \cite{imagemIBM}.}
 	\label{fig:Representacao do Pixel de uma imagem com 3 canais}
 \end{figure}
 
@@ -179,7 +179,7 @@ O processamento de imagens abrange um conjunto de etapas interligadas, cada uma 
 
 
 \subsection[Estimativa de pose humana]{Estimativa de pose humana}\label{sec:Estimativa de pose humana}
-Identificação de Pose ou \ac{EPH} é um problema geral em Visão Computacional, que tem o objetivo de detectar a posição e a orientação de uma pessoa em imagens ou vídeos prevendo a localização de alguns pontos-chaves ,conhecidos também como \textit{landmarks}, tais como  cabeça, ombros, cotovelos, mãos, quadril, joelhos e pés \cite{edh}.
+Identificação de Pose ou \ac{EPH} é um problema geral em Visão Computacional, que tem o objetivo de detectar a posição e a orientação de uma pessoa em imagens ou vídeos prevendo a localização de alguns pontos-chaves , conhecidos também como \textit{landmarks}, tais como  cabeça, ombros, cotovelos, mãos, quadril, joelhos e pés \cite{edh}.
 
 \ac{EPH} pode ser bidimensional ou tridimensional, sendo o primeiro responsável por estimar as coordenadas X Y e o segundo as coordenadas X Y Z de um espaço virtual que geralmente é inferido a partir de uma imagem bidimensional. A \ac{EPH} pode também ser classificada de acordo com a quantidade de pessoas a serem estimadas podendo ser uma única pessoa ou de várias pessoas o que interfere nas resoluções possíveis pois a estimativa de postura de várias pessoas é ligeiramente mais difícil do que o caso de uma única pessoa \cite{edhDeep}.
 
@@ -215,7 +215,7 @@ Onde o parâmetro $\rho$ é a mínima distância da reta a origem, centro do pla
     \label{fig:Representacao da reta pelos parametros}
 \end{figure}
 
-O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough\cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel}, o primeiro gráfico apresenta um ponto no plano. O segundo gráfico apresenta a representação desse ponto no espaço parametrizável $\rho$ e $\theta$.
+O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough \cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel}, o primeiro gráfico apresenta um ponto no plano. O segundo gráfico apresenta a representação desse ponto no espaço parametrizável $\rho$ e $\theta$.
 
 \begin{figure}[!htb]
 	\centering
@@ -296,7 +296,7 @@ $$G_R = \sqrt{G_x^2 + G_y^2}$$
 $G_r$ refere-se ao valor resultante da combinação dos gradientes em duas direções (horizontal e vertical). Pontos onde $G_r$ é alto indicam mudanças bruscas de intensidade, muitas vezes correspondendo a bordas ou detalhes significativos na imagem. 
 
 A inclinação $\theta$ que informa a direção do gradiente é calculado pela fórmula:
-$$\theta(x,y) = \tan^{-1}\left(\frac{G_y}{G_x}\right)$$
+$$\theta(x, y) = \tan^{-1}\left(\frac{G_y}{G_x}\right)$$
 
 Essa inclinação é perpendicular às arestas e arredondada para um dos quatro ângulos que representam as direções vertical, horizontal e duas diagonais.
 
@@ -405,7 +405,7 @@ Quando uma imagem é ampliada ou exibida em uma resolução maior do que sua res
 
 A limiarização, também conhecida como \textit{thresholding}, é uma técnica de processamento de imagem usada para classificar os pixels em uma imagem com base em um valor específico, denominado limiar. Isso resulta na categorização dos pixels em dois grupos distintos, geralmente sendo aqueles que têm valores acima do limiar e aqueles que têm valores abaixo ou iguais a ele. Esse método é amplamente utilizado em processamento de imagem para destacar ou segmentar objetos de interesse em relação ao restante da imagem \cite{limiarizacao}.
 
-A limiarização pode ser empregada de duas maneiras distintas: ela pode transformar uma imagem em escala de cinza em uma imagem binarizada, tornando os pixels acima do limiar em branco e os pixels abaixo do limiar em preto. Alternativamente, ela pode ser utilizada para enfatizar uma faixa específica de frequência, convertendo apenas os pixels abaixo do limiar em preto ou apenas os pixels acima do limiar em branco\cite{opencv_thresholding}.
+A limiarização pode ser empregada de duas maneiras distintas: ela pode transformar uma imagem em escala de cinza em uma imagem binarizada, tornando os pixels acima do limiar em branco e os pixels abaixo do limiar em preto. Alternativamente, ela pode ser utilizada para enfatizar uma faixa específica de frequência, convertendo apenas os pixels abaixo do limiar em preto ou apenas os pixels acima do limiar em branco \cite{opencv_thresholding}.
 
 
 \section[Machine learning]{Machine learning}\label{sec:Machine learning}
@@ -443,7 +443,7 @@ reconhecedor, um cursor, que indica o próximo elemento da fita a ser processado
 
 A fita de entrada é composta pela cadeia que o reconhecedor precisa analisar. Ela é dividida em células, cada uma contendo um único símbolo da sequência, que faz parte do alfabeto de entrada escolhido. A sequência é organizada da esquerda para a direita, começando pelo símbolo mais à esquerda na fita. O cursor, chamado normalmente de cabeçote de acesso, é utilizado para ler os símbolos da fita de entrada. Ele aponta sempre para o próximo símbolo que deve ser processado. Os movimentos do cursor são controlados pela máquina de estados, podendo ser unidirecionais (em geral, movendo-se apenas para a direita) ou bidirecionais (movendo-se tanto para a esquerda quanto para a direita), dependendo do tipo de reconhecedor \cite{reconhecimento}.
 
-Alguns tipos de reconhecedores não apenas leem os símbolos da fita de entrada, mas também escrevem sobre a fita, substituindo os símbolos existentes por outros, de acordo com comandos definidos pela máquina de estados. A máquina de estados atua como o cérebro do reconhecedor, contendo um conjunto finito de estados que registram as informações coletadas e guiam o funcionamento do processo\cite{reconhecimento}.
+Alguns tipos de reconhecedores não apenas leem os símbolos da fita de entrada, mas também escrevem sobre a fita, substituindo os símbolos existentes por outros, de acordo com comandos definidos pela máquina de estados. A máquina de estados atua como o cérebro do reconhecedor, contendo um conjunto finito de estados que registram as informações coletadas e guiam o funcionamento do processo \cite{reconhecimento}.
 
 
 Um \ac{AF} é um modelo abstrato e simplificado de um sistema computacional que pode ser usado para reconhecer padrões em sequências de símbolos \cite{afd}. Formalmente é representado como uma lista de cinco elementos  com : 
@@ -462,7 +462,7 @@ Portanto um \ac{AF} chamado $M_1$ que aceita qualquer número binário impar pod
 \begin{itemize}
     \item[$M_1$] = $(Q, \Sigma, \delta, q_1, F)$, onde:
     \item[$Q$] = $\{q_1, q_2, q_3\}$
-    \item[$\Sigma$] = \{0,1\}
+    \item[$\Sigma$] = \{0, 1\}
     \item [$\delta$] é descrito como
     \item [ ]
         \begin{tabular}{c|cc}
