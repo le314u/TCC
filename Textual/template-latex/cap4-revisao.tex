@@ -36,7 +36,7 @@ O teste de flexão em barra fixa, ou teste dinâmico de barra fixa, apresenta va
 
 \end{itemize}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Movimento de barra fixa}
 	\includegraphics[scale=0.7]{figuras/TAF/barraFixa.jpg}
@@ -61,7 +61,7 @@ Os planos cardinais, também chamados de planos anatômicos, são três planos i
 Cada plano tem um eixo perpendicular utilizado para caracterizar os movimentos referentes a esse plano. O eixo sagital ou medial-lateral é responsável pelos movimentos de flexão e extensão, o eixo frontal ou anterior-posterior é responsável pelos movimentos de abdução e adução, e o eixo transversal, também conhecido como eixo látero-lateral, é responsável pelos movimentos de rotação medial e lateral \cite{cinesiologia}.
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Planos anatômicos}
 	\includegraphics[scale=0.15]{figuras/TAF/planos.png}
@@ -140,7 +140,7 @@ A representação de uma imagem digital com $N$ linhas e $M$ colunas pode ser ex
 
 Embora Imagens Monocromáticas representem tons variados de uma única cor, elas podem representar qualquer cor, analogamente a isso, as imagens coloridas são a incorporação de diferentes canais monocromáticos, cada um dedicado a representar uma cor específica. Imagens coloridas são normalmente representadas por 3 canais de imagens monocromáticas sendo elas o vermelho, verde e azul em inglês \ac{RGB} \cite{imagemIBM}.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Composição de uma imagem RGB}
 	\includegraphics[scale=0.25]{figuras/Imagem_colorida/colored.png}
@@ -150,7 +150,7 @@ Embora Imagens Monocromáticas representem tons variados de uma única cor, elas
 
 Em uma imagem digital, a descrição da intensidade da luz pode ocorrer de maneiras distintas, relacionadas à natureza da imagem. A descrição da intensidade pode adotar valores binários representados por branco e preto e são frequentemente associados a conceitos como a presença ou a ausência de um objeto. Para  uma representação mais complexa de nuances de intensidade, texturas e detalhes é comum  que a intensidade da luz seja descrita em 8 bits ou seja 256 tonalidades diferentes de cores, variando de 0 a 255, onde 0 é preto e 255 é branco. Por fim para uma riqueza maior de detalhes é comum que imagens coloridas sejam descritas por uma tripla de canais \ac{RGB}  onde cada canal representa uma  cor, adotando valores de 8 bits por canal, portanto uma representação de 24 bits por pixel \cite{imagemIBM}.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
 	\caption{Representação de um pixel de uma imagem com três canais}
 	\includegraphics[scale=1]{figuras/processamento_imagem/pixel.png}
@@ -167,7 +167,7 @@ O processamento de imagem refere-se à manipulação de imagens digitais para ob
 O processamento de imagens abrange um conjunto de etapas interligadas, cada uma contribuindo para transformar uma imagem digital em informações compreensíveis e relevantes. Inicialmente, ocorre a \aspas{aquisição de imagens}, onde os dados visuais são capturados por meio de câmeras, scanners ou sensores. Em seguida, passa-se pelo \aspas{pré-processamento}, onde a imagem é preparada para análise, eliminando ruídos e melhorando o contraste. A \aspas{segmentação} divide a imagem em regiões distintas, possibilitando focar em áreas específicas. A etapa de \aspas{representação e descrição} extrai características únicas de cada região, como texturas, formas e cores. Posteriormente, o \aspas{reconhecimento e interpretação} entra em cena, empregando algoritmos para identificar padrões, objetos ou informações relevantes com base nas características extraídas anteriormente. Esse processo cíclico de aquisição, pré-processamento, segmentação, representação e descrição, bem como reconhecimento e interpretação, forma o núcleo do processamento de imagens, permitindo a compreensão e análise de informações visuais de maneira mais eficaz e detalhada \cite{imagemMonocromatica}.
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Fluxograma das etapas do processamento de imagens digitais}
 	\includegraphics[scale=0.4]{figuras/processamento_imagem/ProcessamentoImagem.png}
@@ -183,7 +183,7 @@ Identificação de Pose ou \ac{EPH} é um problema geral em Visão Computacional
 
 \ac{EPH} pode ser bidimensional ou tridimensional, sendo o primeiro responsável por estimar as coordenadas X Y e o segundo as coordenadas X Y Z de um espaço virtual que geralmente é inferido a partir de uma imagem bidimensional. A \ac{EPH} pode também ser classificada de acordo com a quantidade de pessoas a serem estimadas podendo ser uma única pessoa ou de várias pessoas o que interfere nas resoluções possíveis pois a estimativa de postura de várias pessoas é ligeiramente mais difícil do que o caso de uma única pessoa \cite{edhDeep}.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Captura de pontos de referência para estimativa de pose humana}
 	\includegraphics[scale=0.2]{figuras/eph/keypoint.jpg}
@@ -207,7 +207,7 @@ As características desta reta são a inclinação $m$ e a intersecção $b$ ass
 
 Onde o parâmetro $\rho$ é a mínima distância da reta a origem, centro do plano, e $\theta$ é o ângulo de inclinação da normal à reta, sendo a normal uma linha perpendicular a direção da reta \cite{detectBar}.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Representação da reta pelos parâmetros $\rho$ e $\theta$}
 	\includegraphics[scale=2]{figuras/math/rhotheta.png}
@@ -217,7 +217,7 @@ Onde o parâmetro $\rho$ é a mínima distância da reta a origem, centro do pla
 
 O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough \cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel}, o primeiro gráfico apresenta um ponto no plano. O segundo gráfico apresenta a representação desse ponto no espaço parametrizável $\rho$ e $\theta$.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Representação de um ponto no espaço parametrizado por $\rho$ e $\theta$}
 	\includegraphics[scale=0.5]{figuras/math/pontoEspacoParametrizavel.png}
@@ -228,7 +228,7 @@ O plano de Hough é um plano bidimensional onde os eixos representam os parâmet
 Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a duas senoides no plano de Hough. A interseção dessas duas senoides representa a reta $pq$ que passa pelos dois pontos no plano da imagem. Analogamente, 4 retas no plano da imagem correspondem a 4 senoides no plano de Hough que se acumulam em 4 pontos. Portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}. A figura \ref{fig:Representação da reta por meio do ponto de intersecção} apresenta, no primeiro gráfico, 8 pontos no plano pertencentes a duas retas. O segundo gráfico apresenta, no espaço parametrizável $\rho$ e $\theta$, 8 senoides que se interceptam em dois pontos diferentes. Assim, o local da interseção entre as senoides representa uma reta com parâmetros $\rho$ e $\theta$ específicos.
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Representação da reta por meio do ponto de intersecção}
 	\includegraphics[scale=0.5]{figuras/math/senoidesIterseccao.png}
@@ -302,7 +302,7 @@ Essa inclinação é perpendicular às arestas e arredondada para um dos quatro 
 
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Imagem em preto e branco com filtro Gaussiano}
 	\includegraphics[scale=0.25]{figuras/filter/sobel/f_normal.jpeg}
@@ -310,7 +310,7 @@ Essa inclinação é perpendicular às arestas e arredondada para um dos quatro 
 	\label{fig:Imagem em preto e branco com filtro de gaus}
 \end{figure}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Intensidade da mudança de gradiente usando operador de Sobel}
 	\includegraphics[scale=0.25]{figuras/filter/sobel/f_sobel.jpeg}
@@ -324,7 +324,7 @@ Essa inclinação é perpendicular às arestas e arredondada para um dos quatro 
 
 É desejável que a imagem resultante apresente bordas precisas e nítidas. Para alcançar esse objetivo, aplica-se uma supressão não máxima, a fim de refinar as bordas detectadas. Nesse processo, o algoritmo percorre todos os pontos da matriz de intensidade de gradiente. Nos locais onde as bordas são encontradas, o algoritmo assegura que o pixel, que é um máximo local dentro de sua vizinhança na orientação do gradiente, seja mantido, e os que não são, sejam suprimidos \cite{canny-edge-detection-python}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 	\centering
     \caption{Supressão não maxima}
 	\includegraphics[scale=0.65]{figuras/filter/supressao_nao_maxima/supressao3.png}
@@ -432,7 +432,7 @@ Os reconhecedores apresentam quatro componentes fundamentais: uma memória (fita
 reconhecedor, um cursor, que indica o próximo elemento da fita a ser processado, uma máquina de estados finitos, sem memória, e uma memória auxiliar opcional.
 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Organização de um reconhecedor genérico}
 	\includegraphics[scale=2]{figuras/AFD/reconhecedor.png}
@@ -475,7 +475,7 @@ Portanto um \ac{AF} chamado $M_1$ que aceita qualquer número binário impar pod
     \item[$F$] = \{$q_2$\}
 \end{itemize}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
     \caption{Diagrama de estados de $M_1$}
 	\includegraphics[scale=1]{figuras/AFD/m1.png}

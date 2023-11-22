@@ -6,7 +6,7 @@ Neste capítulo, é apresentada a ferramenta obtida, assim como detalhes sobre o
 
 A ferramenta desenvolvida atua a partir de uma gravação no plano coronal da execução do movimento de barra fixa, processando a imagem de modo a detectar a barra e os pontos de referência do corpo humano. Logo em seguida, ocorre a segmentação da imagem e cálculos algébricos, retornando o estado atual do movimento de barra fixa e dados sobre o movimento como forma de feedback. Todo esse processo segue o fluxograma abaixo.
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
   \caption{Fluxograma do processo executado pela ferramenta.}
 	\includegraphics[scale=0.7]{figuras/diagrama/processo.png}
@@ -226,7 +226,7 @@ O gráfico da figura \ref{graf:G14} mostra o desempenho relativo de cada funçã
 
 As duas funções mais relevantes para a alta taxa de latência do processamento do frame são \aspas{verify\_eph} e \aspas{verify\_maoBarra}, sendo responsáveis por cerca de 85,14\% do tempo gasto por \aspas{process\_cell}.
 
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|p{6cm}|p{3cm}|p{5cm}|}
 	\hline
@@ -246,7 +246,7 @@ As duas funções mais relevantes para a alta taxa de latência do processamento
 
 
 
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|p{6cm}|p{3cm}|p{5cm}|}
 	\hline
