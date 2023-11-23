@@ -6,19 +6,19 @@
 
 \begin{frame}{Definição do movimento de barra fixa}
     \begin{itemize}
-        \item A barra fixa é instalada a uma altura tal, que o avaliado, mantendo-se pendurado, com os cotovelos em extensão, não tenha contato dos pés com o solo;
-        \item  A posição da pegada é pronada (dorso da mão voltado para o rosto) e a abertura das mãos corresponde à distância biacromial (largura dos ombros); 
-        \item  Após assumir essa posição, o avaliado deverá elevar o corpo até que o queixo ultrapasse o nível da barra, após o que retornará à posição inicial; 
-        \item  O movimento é repetido tantas vezes quanto possível, sem limite de tempo. 
+        \item A \textbf{barra} fixa é instalada a uma altura tal, que o avaliado, mantendo-se pendurado, com os cotovelos em extensão, não tenha contato dos pés com o solo;
+        \item  A posição da \textbf{pegada} é pronada (dorso da mão voltado para o rosto) e a abertura das mãos corresponde à distância biacromial (largura dos ombros); 
+        \item  Após assumir essa posição, o avaliado deverá elevar o corpo até que o \textbf{queixo ultrapasse o nível da barra}, após o que retornará à posição inicial; 
+        \item  O movimento é \textbf{repetido} tantas vezes quanto possível, sem limite de tempo. 
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Definição do movimento de barra fixa}
     \begin{itemize}
-        \item  Os cotovelos deverão estar em extensão total para o início de flexão; 
-        \item  É permitido repouso entre um movimento e outro, contudo, o avaliado não poderá tocar os pés no solo; 
-        \item  Não são permitidos movimentos de quadris ou pernas e extensão da coluna cervical como formas de auxiliar na execução da prova. 
-        \item  A não extensão total dos cotovelos antes do início de nova execução é considerado um movimento incorreto, o qual não será computado no desempenho do candidato. 
+        \item  Os cotovelos deverão estar em \textbf{extensão} total para o início de flexão; 
+        \item  É permitido \textbf{repouso} entre um movimento e outro, contudo, o avaliado não poderá tocar os pés no solo; 
+        \item  \textbf{Não são permitidos} movimentos de quadris ou pernas e extensão da coluna cervical como formas de auxiliar na execução da prova. 
+        \item  A não extensão total dos cotovelos antes do início de nova execução é considerado um \textbf{movimento incorreto}, o qual não será computado no desempenho do candidato. 
         \item  Somente é contado o número de movimentos completados corretamente.
     \end{itemize}
 \end{frame}
@@ -95,7 +95,7 @@
     \begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.13]{img/desenvolvimento/estrategia/afd_barra.png}
-    \caption*{Fonte - Proprio autor 2023).}
+    \caption*{Fonte - Proprio autor 2023.}
     \end{figure}
     
 \end{frame}
@@ -124,36 +124,11 @@
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%
-%%                     Pre processamento
-%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{frame}{Ambiente de gravação e Mascara Preto e Branca}
-    \begin{figure}[!ht]
-    \centering
-    \includegraphics[scale=0.55]{img/desenvolvimento/preAction/mascara.png}
-    \caption*{Fonte - Próprio Autor.}
-    \end{figure}
-\end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %%                     Método
 %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %%                     Detecção da barra
@@ -171,11 +146,11 @@
 
 \begin{frame}{Detecção da barra - Filtro de Canny.}
     \begin{itemize}
-        \item  Redução de ruido (Gaussiano - Blur)
-        \item  Calculo do Gradiente (Sobel - detecção de contornos)
-        \item  Supressão não máxima  
-        \item  Limite duplo (minVal e maxVal)
-        \item  Limite de histerese (continuidade/conectividade)
+        \item  Redução de ruído         (Gaussiano - Blur)
+        \item  Cálculo do Gradiente     (Sobel - detecção de contornos)
+        \item  Supressão não máxima     (Filtro Passa Alta) 
+        \item  Limite duplo             (minVal e maxVal)
+        \item  Limite de histerese      (conectividade)
     \end{itemize}
 \end{frame}
 
@@ -335,7 +310,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Mão na barra - Imagen segmentada}
+\begin{frame}{Mão na barra - Imagem segmentada}
     \begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.1]{img/desenvolvimento/maoBarra/only_hands.png}
@@ -369,11 +344,6 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Ultrapassagem do queixo à barra}
-    \begin{itemize}
-        \item O angulo do braço e antebraço pode ter um grau de movimento de 13º
-    \end{itemize}
-\end{frame}
 
 \begin{frame}{Braço esticado - Segmento dos membros}
     \begin{figure}[!ht]
@@ -381,6 +351,12 @@
             \includegraphics[scale=0.1]{img/desenvolvimento/bracoEsticado/bracoEsticado.png}
         \caption*{Fonte - Próprio Autor.}
     \end{figure}
+\end{frame}
+
+\begin{frame}{Braço esticado - Imprecisão}
+    \begin{itemize}
+        \item É aceito até 13 graus de movimento.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Braço esticado - Ombros}
@@ -409,8 +385,8 @@
 
 \begin{frame}{Ultrapassagem do queixo à barra}
     \begin{itemize}
-        \item A distância do ombro à barra é menor ou igual a 1.5 vezes a largura da barra.
-        \item O angulo do braço e ante braço pode ter um grau de movimento de 5º
+        \item A distância do ombro à barra tem que ser menor ou igual a 1.5 vezes a largura da barra.
+        \item O angulo do braço e antebraço pode ter até 5º graus de movimento
     \end{itemize}
 \end{frame}
 
@@ -457,13 +433,6 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Ultrapassagem do queixo à barra - Área de interesse}
-    \begin{itemize}
-        \item size\_block = 1/3 da Distancia do Ombro direito ao Ombro esquerdo
-        \item 1.5 * size\_block de distancia da barra
-        \item 0.5 * size\_block por  1.5 * size\_block
-    \end{itemize}
-\end{frame}
 
 \begin{frame}{Ultrapassagem do queixo à barra - Representação da área de interesse}
     \begin{figure}[!ht]

@@ -22,15 +22,15 @@ O teste de flexão em barra fixa, ou teste dinâmico de barra fixa, apresenta va
 
     \item Após assumir essa posição, o avaliado deverá elevar o corpo até que o queixo ultrapasse o nível da barra, após o que retornará à posição inicial;
           
-    \item O movimento é repetido tantas vezes quanto possível, sem limite de tempo.
+    \item O movimento é repetido tantas vezes quanto possível, sem limite de tempo;
 
     \item Os cotovelos deverão estar em extensão total para o início de flexão;
 
     \item É permitido repouso entre um movimento e outro, contudo, o avaliado não poderá tocar os pés no solo;
 
-    \item Não são permitidos movimentos de quadris ou pernas e extensão da coluna cervical como formas de auxiliar na execução da prova.
+    \item Não são permitidos movimentos de quadris ou pernas e extensão da coluna cervical como formas de auxiliar na execução da prova;
 
-    \item A não extensão total dos cotovelos antes do início de nova execução é considerado um movimento incorreto, o qual não será computado no desempenho do candidato.
+    \item A não extensão total dos cotovelos antes do início de nova execução é considerado um movimento incorreto, o qual não será computado no desempenho do candidato;
 
     \item Somente é contado o número de movimentos completados corretamente.
 
@@ -426,7 +426,7 @@ O terceiro componente, otimização, é responsável por ajustar o modelo de mod
 \section[Autômatos Finitos]{Autômatos Finitos}
 
 
-Os reconhecedores são sistemas formais conhecidos também como autômatos capazes de aceitar todas as sentenças que pertençam a uma determinada linguagem, rejeitando todas as demais. Por esse motivo, constituem uma forma alternativa às gramáticas para a representação finita de linguagens \cite{reconhecimento}.
+Os reconhecedores são sistemas formais conhecidos também como autômatos capazes de aceitar todas as sentenças que pertençam a uma determinada linguagem, rejeitando todas as demais. Por esse motivo, constituem uma forma alternativa às gramáticas para a representação finita de linguagens \cite{fundamentosComputacao}.
 
 Os reconhecedores apresentam quatro componentes fundamentais: uma memória (fita) contendo o texto de entrada do
 reconhecedor, um cursor, que indica o próximo elemento da fita a ser processado, uma máquina de estados finitos, sem memória, e uma memória auxiliar opcional.
@@ -441,9 +441,9 @@ reconhecedor, um cursor, que indica o próximo elemento da fita a ser processado
 \end{figure}
 
 
-A fita de entrada é composta pela cadeia que o reconhecedor precisa analisar. Ela é dividida em células, cada uma contendo um único símbolo da sequência, que faz parte do alfabeto de entrada escolhido. A sequência é organizada da esquerda para a direita, começando pelo símbolo mais à esquerda na fita. O cursor, chamado normalmente de cabeçote de acesso, é utilizado para ler os símbolos da fita de entrada. Ele aponta sempre para o próximo símbolo que deve ser processado. Os movimentos do cursor são controlados pela máquina de estados, podendo ser unidirecionais (em geral, movendo-se apenas para a direita) ou bidirecionais (movendo-se tanto para a esquerda quanto para a direita), dependendo do tipo de reconhecedor \cite{reconhecimento}.
+A fita de entrada é composta pela cadeia que o reconhecedor precisa analisar. Ela é dividida em células, cada uma contendo um único símbolo da sequência, que faz parte do alfabeto de entrada escolhido. A sequência é organizada da esquerda para a direita, começando pelo símbolo mais à esquerda na fita. O cursor, chamado normalmente de cabeçote de acesso, é utilizado para ler os símbolos da fita de entrada. Ele aponta sempre para o próximo símbolo que deve ser processado. Os movimentos do cursor são controlados pela máquina de estados, podendo ser unidirecionais (em geral, movendo-se apenas para a direita) ou bidirecionais (movendo-se tanto para a esquerda quanto para a direita), dependendo do tipo de reconhecedor \cite{fundamentosComputacao}.
 
-Alguns tipos de reconhecedores não apenas leem os símbolos da fita de entrada, mas também escrevem sobre a fita, substituindo os símbolos existentes por outros, de acordo com comandos definidos pela máquina de estados. A máquina de estados atua como o cérebro do reconhecedor, contendo um conjunto finito de estados que registram as informações coletadas e guiam o funcionamento do processo \cite{reconhecimento}.
+Alguns tipos de reconhecedores não apenas leem os símbolos da fita de entrada, mas também escrevem sobre a fita, substituindo os símbolos existentes por outros, de acordo com comandos definidos pela máquina de estados. A máquina de estados atua como o cérebro do reconhecedor, contendo um conjunto finito de estados que registram as informações coletadas e guiam o funcionamento do processo \cite{fundamentosComputacao}.
 
 
 Um \ac{AF} é um modelo abstrato e simplificado de um sistema computacional que pode ser usado para reconhecer padrões em sequências de símbolos \cite{afd}. Formalmente é representado como uma lista de cinco elementos  com : 
