@@ -21,7 +21,7 @@ O teste de flexão em barra fixa, ou teste dinâmico de barra fixa, apresenta va
     \item A posição da pegada é pronada (dorso da mão voltado para o rosto) e a abertura das mãos corresponde à distância biacromial (largura dos ombros);
 
     \item Após assumir essa posição, o avaliado deverá elevar o corpo até que o queixo ultrapasse o nível da barra, após o que retornará à posição inicial;
-
+          
     \item O movimento é repetido tantas vezes quanto possível, sem limite de tempo.
 
     \item Os cotovelos deverão estar em extensão total para o início de flexão;
@@ -203,7 +203,7 @@ A Transformada de Hough é um algoritmo amplamente empregado na detecção de li
 
 Uma reta pode ser descrita como: $$y = mx + b$$
 
-As características desta reta são a inclinação $m$ e a intersecção $b$ assim, uma reta $y = mx + b$ pode ser representada como um par ordenado $(b, m)$, porem em tal representação à medida em que a reta torna-se vertical, as magnitudes de $b$ e $m$ tendem ao infinito, contudo a mesma reta pode ser representada na forma:  $$\rho = x*cos(\theta)+y*sin(\theta)$$
+As características desta reta são a inclinação $m$ e a intersecção $b$ assim, uma reta $y = mx + b$ pode ser representada como um par ordenado $(b, m)$, porém em tal representação à medida em que a reta torna-se vertical, as magnitudes de $b$ e $m$ tendem ao infinito, contudo a mesma reta pode ser representada na forma:  $$\rho = x*cos(\theta)+y*sin(\theta)$$
 
 Onde o parâmetro $\rho$ é a mínima distância da reta a origem, centro do plano, e $\theta$ é o ângulo de inclinação da normal à reta, sendo a normal uma linha perpendicular a direção da reta \cite{detectBar}.
 
@@ -215,7 +215,7 @@ Onde o parâmetro $\rho$ é a mínima distância da reta a origem, centro do pla
     \label{fig:Representacao da reta pelos parametros}
 \end{figure}
 
-O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough \cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel}, o primeiro gráfico apresenta um ponto no plano. O segundo gráfico apresenta a representação desse ponto no espaço parametrizável $\rho$ e $\theta$.
+O plano de Hough é um plano bidimensional onde os eixos representam os parâmetros, sendo eixo $X$ representante do ângulo $\theta$ e o eixo $Y$ a representação da distância $\rho$ \cite{transformadaHough1}. Nesse contexto, um ponto no plano da imagem é atravessado por inúmeras retas, e a combinação de todas essas retas resulta na formação de uma curva senoidal no espaço de Hough \cite{detectBar}. Na figura \ref{fig:Representacao de um ponto no espaco parametrizavel}, o primeiro gráfico apresenta um ponto no plano. O segundo gráfico representa esse ponto no espaço parametrizável $\rho$ e $\theta$.
 
 \begin{figure}[H]
 	\centering
@@ -225,7 +225,7 @@ O plano de Hough é um plano bidimensional onde os eixos representam os parâmet
 	\label{fig:Representacao de um ponto no espaco parametrizavel}
 \end{figure}
 
-Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a duas senoides no plano de Hough. A interseção dessas duas senoides representa a reta $pq$ que passa pelos dois pontos no plano da imagem. Analogamente, 4 retas no plano da imagem correspondem a 4 senoides no plano de Hough que se acumulam em 4 pontos. Portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}. A figura \ref{fig:Representação da reta por meio do ponto de intersecção} apresenta, no primeiro gráfico, 8 pontos no plano pertencentes a duas retas. O segundo gráfico apresenta, no espaço parametrizável $\rho$ e $\theta$, 8 senoides que se interceptam em dois pontos diferentes. Assim, o local da interseção entre as senoides representa uma reta com parâmetros $\rho$ e $\theta$ específicos.
+Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a duas senoides no plano de Hough. A interseção dessas duas senoides representa a reta $pq$ que passa pelos dois pontos no plano da imagem. Analogamente, 4 retas no plano da imagem correspondem a 4 senoides no plano de Hough que se acumulam em 4 pontos. Portanto, para realizar a detecção de uma reta, é necessário examinar as interseções das curvas senoidais. Isso é alcançado por meio da utilização de um acumulador, que consiste em uma lista destinada a armazenar todos os cruzamentos identificados. O processo de detecção de retas consiste em selecionar os cruzamentos que apresentam maior frequência na lista do acumulador \cite{transformadaHough2}. A figura \ref{fig:Representacao da reta por meio do ponto de interseccao} apresenta, no primeiro gráfico, 8 pontos no plano pertencentes a duas retas. O segundo gráfico apresenta, no espaço parametrizável $\rho$ e $\theta$, 8 senoides que se interceptam em dois pontos diferentes. Assim, o local da interseção entre as senoides representa uma reta com parâmetros $\rho$ e $\theta$ específicos.
 
 
 \begin{figure}[H]
@@ -244,7 +244,7 @@ Dois pontos $p$ e $q$ no plano da imagem definem uma reta $pq$ e correspondem a 
 Um filtro de detecção de borda é um método utilizado no processamento de imagens para identificar mudanças abruptas na intensidade luminosa. Essas mudanças geralmente correspondem a limites entre diferentes objetos ou regiões na imagem. O filtro de detecção de borda realça essas mudanças, destacando os contornos e limites dos objetos presentes na imagem. Ele funciona calculando gradientes de intensidade em várias direções e destacando as regiões onde esses gradientes são mais acentuados. Em específico o filtro de Canny possui cinco etapas sendo elas: Redução de ruído; Cálculo de gradiente; Supressão não máxima; Limite duplo;Rastreamento de borda por histerese \cite{canny-edge-detection-python}.
 
 
-\subsubsection[Redução de ruido]{Redução de ruido}
+\subsubsection[Redução de ruído]{Redução de ruído}
 A redução de ruído ocorre com a aplicação de um filtro Gaussiano, uma técnica de convolução de imagens que, de acordo com um filtro, substitui o valor de cada pixel da imagem pela média da vizinhança. Isso tem como efeito a suavização da imagem, uma vez que as altas frequências que correspondem às transições abruptas são atenuadas \cite{filtroGaus}.
 
 A convolução é uma operação matemática que combina duas funções para criar uma terceira. No contexto de processamento de imagens, a imagem original atua como uma das funções e o filtro (ou kernel) atua como a segunda função. O filtro é uma matriz de números que define como a vizinhança de cada pixel na imagem será ponderada e combinada para gerar o novo valor desse pixel na imagem resultante. O processo de convolução envolve a superposição do filtro sobre cada região da imagem e a multiplicação elemento a elemento dos valores do filtro com os valores correspondentes da imagem. Os resultados dessas multiplicações são somados para produzir o novo valor do pixel na imagem de saída \cite{convolucao}.
@@ -360,7 +360,7 @@ O rastreamento, também conhecido como \textit{tracking}, pode ser conceituado c
 O modelo de aparência desempenha um papel crucial no processo, permitindo a realização de uma busca precisa em uma pequena área próxima à localização prevista pelo modelo de movimento. Isso otimiza o processo de rastreamento, pois ocorre uma pesquisa local em vez de uma pesquisa global, garantindo a identidade do objeto. Mesmo com uma oclusão do objeto, é possível rastreá-lo, pois o rastreamento leva em consideração a localização e a aparência do objeto no quadro anterior. Entretanto, esse processo pode enfrentar desafios consideráveis, como a perda do objeto quando ele fica obstruído por um período prolongado ou quando sua velocidade é tão elevada que o algoritmo de rastreamento não consegue acompanhá-lo. Por isso, é comum que os algoritmos de rastreamento acumulem erros ao longo do tempo, comprometendo a precisão da localização do objeto. Para mitigar essas questões inerentes aos algoritmos de rastreamento, uma abordagem utilizada é executar periodicamente um algoritmo de detecção para identificação da nova posição do objeto e, em seguida, retransmitir essas informações para o rastreador, a fim de contribuir para a correção dos erros acumulados e manter um acompanhamento mais preciso do objeto ao longo do tempo \cite{tracking}.
 
 
-Diversos algoritmos de rastreamento de objetos podem ser identificados, cada um com suas características particulares. Alguns exemplos notáveis incluem a Subtração de Plano de Fundo, o Casamento de Blocos, o \ac{SIFT} e o \ac{RANSAC}.
+Diversos algoritmos de rastreamento de objetos podem ser identificados, cada um com suas características particulares. Alguns exemplos notáveis incluem a Subtração de Plano de Fundo, o Casamento de Blocos, as \ac{SIFT} e o \ac{RANSAC}.
 
 A Subtração de Plano de Fundo é capaz de identificar objetos destacando discrepâncias entre o plano de fundo e os objetos em movimento na cena. Por sua vez, o Casamento de Blocos realiza a comparação de blocos de pixels em diferentes quadros, o que lhe permite rastrear o movimento de objetos com eficácia. O algoritmo \ac{SIFT} desempenha um papel crucial ao extrair características distintivas de uma imagem, possibilitando o rastreamento robusto de objetos, mesmo diante de variações na escala, rotação ou iluminação. Finalmente, o \ac{RANSAC} é empregado para a estimativa de parâmetros de um modelo matemático previamente definido, de forma a se ajustar ao maior número possível de dados, ou seja, aqueles que são comumente chamados de \aspas{inliers}. Esses algoritmos oferecem soluções diversas e adaptáveis para a tarefa de rastreamento de objetos, cada um adequado a diferentes cenários e requisitos de aplicação \cite{tracking-algoritimo}.
 
@@ -416,7 +416,7 @@ Comumente o algoritmo de aprendizado de máquina supervisionado consiste em trê
 
 O primeiro componente, decisão, é responsável por tomar decisões com base nas entradas fornecidas, que podem ser rotuladas ou não rotuladas. Esse componente é geralmente implementado como uma função matemática que mapeia as entradas para uma saída, seja uma classificação ou uma predição. Ele é responsável por transformar as entradas em informações úteis para o modelo, permitindo que o algoritmo aprenda a partir delas e tome decisões com base em novas entradas no futuro.
 
-O segundo componente, erro, é responsável por avaliar a precisão da classificação ou da saída predita em relação à saída verdadeira, ou seja, os exemplos conhecidos. Esse componente é crucial porque permite uma analise do modelo.
+O segundo componente, erro, é responsável por avaliar a precisão da classificação ou da saída predita em relação à saída verdadeira, ou seja, os exemplos conhecidos. Esse componente é crucial porque permite uma análise do modelo.
 
 
 O terceiro componente, otimização, é responsável por ajustar o modelo de modo que  minimize o  erro calculado pelo segundo componente e consequentemente seja possível melhorar a precisão da saída predita. 
@@ -457,7 +457,7 @@ Também é possível representar um \ac{AF} de modo mais visual por meio de um d
 
 Em um diagrama de estados, cada estado é representado por um círculo, enquanto as transições são marcadas por setas que conectam esses círculos. Essas setas são rotuladas com os símbolos de entradas correspondentes. O estado inicial é indicado com uma seta apontando para ele, originada de um ponto vazio. Os estados de aceitação são ilustrados por círculos duplos.
 
-Portanto um \ac{AF} chamado $M_1$ que aceita qualquer número binário impar pode ser representado de 2 maneiras,  por uma 5-upla ou um diagrama de estados:
+Portanto um \ac{AF} chamado $M_1$ que aceita qualquer número binário ímpar pode ser representado de 2 maneiras,  por uma 5-upla ou um diagrama de estados:
 
 \begin{itemize}
     \item[$M_1$] = $(Q, \Sigma, \delta, q_1, F)$, onde:
