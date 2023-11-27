@@ -1,6 +1,6 @@
 \chapter{Resultados}
 
-Neste capítulo, é apresentada a ferramenta obtida, assim como detalhes sobre o tempo de execução.
+Neste capítulo, será apresentada a ferramenta obtida, assim como detalhes sobre o tempo de execução.
 
 \section[Ferramenta]{Ferramenta}
 
@@ -27,7 +27,7 @@ A parte gráfica da ferramenta é baseada em duas telas: a tela de exibição, q
 \end{figure}
 
 
-A tela responsável por ser um painel de controle do player possui nove campos de entrada, sendo 2 caixas de texto \aspas{Speed} e \aspas{Frame}, e cinco botões: \aspas{PLAY}, \aspas{SaveF}, \aspas{SaveV}, \aspas{Barra}, \aspas{Dados}, \aspas{EPH}, e uma barra deslizante.
+A tela responsável por ser um painel de controle do player possui nove campos de entrada, sendo duas caixas de texto \aspas{Speed} e \aspas{Frame}, e cinco botões: \aspas{PLAY}, \aspas{SaveF}, \aspas{SaveV}, \aspas{Barra}, \aspas{Dados}, \aspas{EPH}, e uma barra deslizante.
 
 \begin{figure}[H]
 	\centering
@@ -38,21 +38,21 @@ A tela responsável por ser um painel de controle do player possui nove campos d
 
 
 \begin{itemize}
-	\item A caixa de texto \aspas{Speed} recebe um número decimal como entrada, representando um escalar pelo qual a velocidade de reprodução será alterada.
+	\item A caixa de texto \aspas{Speed} recebe um número decimal como entrada, representando um escalar pelo qual a velocidade de reprodução será alterada;
 
-	\item A caixa de texto \aspas{Frame} recebe um número inteiro como entrada, movendo o vídeo para o \textit{frame} semelhante à barra deslizante que altera o \textit{frame} em exibição.
+	\item A caixa de texto \aspas{Frame} recebe um número inteiro como entrada, movendo o vídeo para o \textit{frame} semelhante à barra deslizante que altera o \textit{frame} em exibição;
 	
-	\item O botão \aspas{PLAY} é responsável por reproduzir e pausar o vídeo.
+	\item O botão \aspas{PLAY} é responsável por reproduzir e pausar o vídeo;
 	
-	\item O botão \aspas{SaveF} salva o \textit{frame} visualizado no diretório \aspas{./midia/dist} do projeto.
+	\item O botão \aspas{SaveF} salva o \textit{frame} visualizado no diretório \aspas{./midia/dist} do projeto;
 	
-	\item O botão \aspas{SaveV} realiza a mesma ação do \aspas{SaveF}, mas para um vídeo em vez de uma imagem.
+	\item O botão \aspas{SaveV} realiza a mesma ação do \aspas{SaveF}, mas para um vídeo em vez de uma imagem;
 	
-	\item O botão \aspas{Barra} destaca a posição da barra no vídeo.
+	\item O botão \aspas{Barra} destaca a posição da barra no vídeo;
 	
-	\item O botão \aspas{EPH} destaca a pose do executor traçando segmentos de reta sobre os membros e o tronco.
+	\item O botão \aspas{EPH} destaca a pose do executor traçando segmentos de reta sobre os membros e o tronco;
     
-    \item O botão \aspas{Dados} exibe informações no canto superior esquerdo, como o ID do \textit{frame}, o estado do \ac{AFD}, a quantidade de barras realizadas, o ângulo entre o braço e antebraço, o ângulo formado pela perna e coxa, o ângulo pelo qual o vídeo foi rotacionado para a barra ficar paralela ao solo, condições como se a mão está tocando a barra, se o cotovelo está estendido ou flexionado, se as pernas estão dobradas, se a cabeça ultrapassou a barra, a distância do peito até a barra, se o peito tocou a barra e o caractere do \ac{AFD} que representa o \textit{frame} atual.
+    \item O botão \aspas{Dados} exibe informações no canto superior esquerdo, como o ID do \textit{frame}, o estado do \ac{AFD}, a quantidade de barras realizadas, o ângulo entre o braço e antebraço, o ângulo formado pela perna e coxa, o ângulo pelo qual o vídeo foi rotacionado para a barra ficar paralela ao solo, condições como: se a mão está tocando a barra, se o cotovelo está estendido ou flexionado, se as pernas estão dobradas, se a cabeça ultrapassou a barra, a distância do peito até a barra, se o peito tocou a barra e o caractere do \ac{AFD} que representa o \textit{frame} atual.
 	
 \end{itemize}
 
@@ -76,17 +76,17 @@ O tempo de execução desempenha um papel crucial, pois representa o intervalo d
 Para um melhor entendimento dos resultados, o processamento de um frame foi denominado de \aspas{process\_cell} e é subdividido em funções, sendo elas:
 
 \begin{itemize}
-	\item Função \aspas{barra} responsável pela Detecção da barra, conforme demonstrado na seção \ref{sec:Deteccao da barra}.
-	\item Função \aspas{verify\_inclination} responsável pela rotação da imagem de acordo com a inclinação da barra, conforme demonstrado na seção \ref{sec:Inclinacao da barra}.
-	\item Função \aspas{verify\_eph} responsável pela identificação dos pontos chaves do corpo humano, conforme demonstrado na seção \ref{sec:Reconhecimento de pose humana}.
-	\item Função \aspas{verify\_angle\_member} responsável pela identificação dos ângulos entre os segmentos, conforme demonstrado na seção \ref{angulo_braco} e \ref{sec:Movimentacao do quadril}. 
-	\item Função \aspas{verify\_char\_AFD} responsável pela extração das informações presentes no caractere do \ac{AFD}, conforme explicado em \ref{sec:Estrategia para deteccao do movimento correto de barra fixa}. Sendo um compilado de 4 funções.
+	\item Função \aspas{barra} responsável pela Detecção da barra, conforme demonstrado na seção \ref{sec:Deteccao da barra};
+	\item Função \aspas{verify\_inclination} responsável pela rotação da imagem de acordo com a inclinação da barra, conforme demonstrado na seção \ref{sec:Inclinacao da barra};
+	\item Função \aspas{verify\_eph} responsável pela identificação dos pontos chaves do corpo humano, conforme demonstrado na seção \ref{sec:Reconhecimento de pose humana};
+	\item Função \aspas{verify\_angle\_member} responsável pela identificação dos ângulos entre os segmentos, conforme demonstrado na seção \ref{angulo_braco} e \ref{sec:Movimentacao do quadril}; 
+	\item Função \aspas{verify\_char\_AFD} responsável pela extração das informações presentes no caractere do \ac{AFD}, conforme explicado em \ref{sec:Estrategia para deteccao do movimento correto de barra fixa}. Sendo um compilado de quatro funções.
 		
 	\begin{itemize}
 		
-		\item Função \aspas{verify\_maoBarra} responsável pela verificação do contato da mão com a barra, demonstrado na seção \ref{sec:Mao na barra}.
-		\item Função \aspas{verify\_extensaoCotovelo} responsável pela verificação da extensão do braço, demonstrado na seção \ref{sec:Braco esticado}.
-		\item Função \aspas{verify\_ultrapassarBarra} responsável pela verificação da ultrapassagem do queixo à barra, demonstrado na seção \ref{sec:meta}.
+		\item Função \aspas{verify\_maoBarra} responsável pela verificação do contato da mão com a barra, demonstrado na seção \ref{sec:Mao na barra};
+		\item Função \aspas{verify\_extensaoCotovelo} responsável pela verificação da extensão do braço, demonstrado na seção \ref{sec:Braco esticado};
+		\item Função \aspas{verify\_ultrapassarBarra} responsável pela verificação da ultrapassagem do queixo à barra, demonstrado na seção \ref{sec:meta};
 		\item Função \aspas{verify\_movimentoQuadrilPerna} responsável pela verificação da flexão dos membros inferiores, demonstrado na seção \ref{sec:Movimentacao do quadril}.
 
 	\end{itemize}
@@ -200,7 +200,7 @@ Para um melhor entendimento dos resultados, o processamento de um frame foi deno
 
 
 
-A função \aspas{verify\_char\_AFD} é responsável pela extração das informações para a criação do caractere do AFD e é composta pelas funções \aspas{verify\_maoBarra}, \aspas{verify\_extensaoCotovelo}, \aspas{verify\_ultrapassarBarra} e \aspas{verify\_movimentoQuadrilPerna}. E das funções que a compõem, \aspas{verify\_maoBarra} se destaca por gastar cerca de 99,09\% do tempo de processamento em relação ao tempo gasto por \aspas{verify\_char\_AFD}.
+A função \aspas{verify\_char\_AFD} é responsável pela extração das informações para a criação do caractere do AFD e é composta pelas funções \aspas{verify\_maoBarra}, \aspas{verify\_extensaoCotovelo}, \aspas{verify\_ultrapassarBarra} e \aspas{verify\_movimentoQuadrilPerna}. Entre as funções que a compõem, \aspas{verify\_maoBarra} se destaca por gastar cerca de 99,09\% do tempo de processamento em relação ao tempo gasto por \aspas{verify\_char\_AFD}.
 
 
 O gráfico da Figura \ref{graf:G13} apresenta, com base em 10 iterações, a média do tempo gasto em segundos por cada função que compõe a função \aspas{process\_cell}. No eixo vertical, é demonstrado o tempo gasto em uma escala de 0,1 segundos, enquanto no eixo horizontal são representados os identificadores dos frames, variando de 1 a 211. Devido à escala de 0,1 segundos, algumas funções não são visíveis no gráfico, uma vez que estão em uma escala relativamente pequena em comparação com a escala de 0,1 segundos.

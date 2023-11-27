@@ -1,16 +1,16 @@
 \chapter{Projeto e Desenvolvimento}
-Nesta seção são detalhados os passos e decisões tomadas ao decorrer do desenvolvimento deste trabalho. São apresentadas as etapas de implementação e integração com outras soluções utilizadas, assim como a execução e comparação dos resultados obtidos.
+Nesta seção serão detalhados os passos e decisões tomadas ao decorrer do desenvolvimento deste trabalho. Assim como as etapas de implementação e integração com outras soluções utilizadas, além dá execução e comparação dos resultados obtidos.
 
 \section[Uso de visão computacional associado ao treinamento físico]{Uso de visão computacional associado ao treinamento físico}\label{sec:Uso de visao computacional associado ao treinamento fisico}
 
-Foi feita uma revisão bibliográfica com objetivo de encontrar ferramentas ou trabalhos disponíveis que associam a visão computacional a algum tipo de atividade física, portanto foram formuladas algumas questões de pesquisa para identificar trabalhos pertinentes que possam agregar a este trabalho de alguma forma, são elas:
+Foi feita uma revisão bibliográfica com objetivo de encontrar ferramentas ou trabalhos disponíveis que associem a visão computacional a algum tipo de atividade física, portanto, foram formuladas algumas questões de pesquisa para identificar trabalhos pertinentes que possam agregar a este trabalho de alguma forma, são elas:
  \begin{itemize}
    \item Q1: Em quais atividades físicas foi utilizada a visão computacional como ferramenta?
    \item Q2: Como a visão computacional foi empregada em determinada atividade física?
    \item Q3: Quais métricas ou parâmetros são frequentemente extraídos das imagens
  \end{itemize}
 
-No decorrer desta revisão, foram identificados diversos estudos relevantes na área, com destaque especial para o trabalho intitulado \aspas{Análise postural digital para ciclistas} \cite{vcBicicleta}. Um dos objetivos desse estudo foi o desenvolvimento de um sistema digital denominado BFit4All. Esse sistema tem como objetivo identificar e propor ajustes na bicicleta com base nas análises posturais de ciclistas durante a atividade de pedalar por meio de fotografias. É importante ressaltar que a abordagem adotada nesse trabalho para a segmentação da imagem digital faz uso de marcadores fixados ao corpo do ciclista para destacar os pontos de referência e assim calcular as angulações entre eles. Embora essa metodologia revele-se eficaz em diversos aspectos, é válido destacar que esta implementação requer uma intervenção prévia à captura do vídeo.
+No decorrer desta revisão, foram identificados diversos estudos relevantes na área, com destaque especial para o trabalho intitulado \aspas{Análise postural digital para ciclistas} \cite{vcBicicleta}. Um dos objetivos desse estudo foi o desenvolvimento de um sistema digital denominado BFit4All. Esse sistema tem como objetivo identificar e propor ajustes na bicicleta com base nas análises posturais de ciclistas durante a atividade de pedalar por meio de fotografias. É importante ressaltar que a abordagem adotada nesse trabalho, para a segmentação da imagem digital faz uso de marcadores fixados ao corpo do ciclista para destacar os pontos de referência, e assim, calcular as angulações entre eles. Embora essa metodologia revele-se eficaz em diversos aspectos, é válido destacar que esta implementação requer uma intervenção prévia à captura do vídeo.
 
 Também foram identificados outros trabalhos relevantes, como os de Pádua (\citeyear{vcFutebol}) e Paulichen (\citeyear{futebolTatica}). Esses estudos abordam o desenvolvimento de sistemas de visão computacional que utilizam algoritmos de rastreamento de objetos. Tais sistemas extraem informações detalhadas sobre o posicionamento, trajetória, velocidades e distâncias percorridas pelos jogadores de futsal. As informações resultantes desse processo proporcionam indicadores de natureza tática e fisiológica, que se mostram valiosos para a equipe técnica. Uma abordagem interessante que foi adotada no trabalho de Paulichen para o rastreamento de uma área de interesse foi a aplicação do filtro de Kalman, uma técnica de estimativa e previsão que combina informações medidas e modelos matemáticos para melhorar a precisão de uma estimativa, reduzindo o ruído e as incertezas nas medições.
 
@@ -37,7 +37,7 @@ Nesta seção do trabalho, será abordado o processo de escolha das bibliotecas,
 \subsection{Open Source Computer Vision Library}
 Para a realização do processamento de imagem, a escolha recaiu sobre a biblioteca \ac{openCV}. A decisão de adotá-la foi primordialmente embasada na sua perfeita integração com a linguagem selecionada, Python.
 
-A sólida reputação do \ac{openCV} na indústria, usado por empresas de renome como a Microsoft, Google e Intel, entre outras, torna-o uma escolha altamente relevante. Além disso, sua proeminente utilização no meio acadêmico oferece uma perspectiva valiosa de compartilhamento de conhecimento e habilidades para futuros projetos e oportunidades \cite{opencv_docs}. 
+A sólida reputação do \ac{openCV} na indústria, usado por empresas de renome como a Microsoft, Google, Intel, entre outras, torna-o uma escolha altamente relevante. Além disso, sua proeminente utilização no meio acadêmico oferece uma perspectiva valiosa de compartilhamento de conhecimento e habilidades para futuros projetos e oportunidades \cite{opencv_docs}. 
 
 A extensa documentação disponível, juntamente com uma extensa comunidade engajada e ativa, simplificam tanto a compreensão quanto a implementação. Assim, a escolha do \ac{openCV} como biblioteca para o processamento de imagem é respaldada pelo potencial de eficiência e facilidade de implementação que essa escolha oferece \cite{opencv_docs}.
 
@@ -49,7 +49,7 @@ Dentro do contexto do processamento de imagem, optou-se por empregar a bibliotec
 
 Vale ressaltar que a biblioteca MediaPipe é voltada para a simplificação da implementação de técnicas de \ac{IA} e \ac{ML} em diversos cenários, com um enfoque específico na análise de mídia. Seu diferencial reside na disponibilidade de modelos pré-treinados e customizáveis, permitindo uma integração eficaz e adaptável ao projeto em questão \cite{mediapipe_guide}.
 
-Por atuar com uma aplicação de \ac{IA} e \ac{ML} que trabalha com modelos já treinados, o processamento dos dados de entrada ocorre completamente no dispositivo o que foi um ponto relevante, garantindo a persistência e funcionalidade contínua da ferramenta desenvolvida, independentemente da ação do tempo em relação a disponibilidade de servidores externos.
+Por atuar com uma aplicação de \ac{IA} e \ac{ML} que trabalha com modelos já treinados, o processamento dos dados de entrada ocorre completamente no dispositivo, o que foi um ponto relevante, garantindo a persistência e funcionalidade contínua da ferramenta desenvolvida, independentemente da ação do tempo em relação a disponibilidade de servidores externos.
 
 Outro ponto relevante para a escolha dessa ferramenta foi o fato de que ela se destaca pela capacidade de fornecer resultados precisos e reais na detecção de poses, o que possibilita a emissão de um feedback por parte da ferramenta desenvolvida.
 
@@ -61,11 +61,11 @@ Outro ponto relevante para a escolha dessa ferramenta foi o fato de que ela se d
 
 Esta seção delineia a estratégia utilizada para detectar o movimento correto da barra fixa na ferramenta desenvolvida. O movimento de barra fixa se desdobra em um padrão que segue etapas distintas, as quais podem ser divididas em três fases bem definidas.
 
-A primeira etapa engloba a posição inicial, onde o praticante se encontra pendurado na barra em pegada pronada, com os cotovelos estendidos e sem que os pés façam contato com o solo. A segunda etapa engloba a fase de contração concêntrica, onde o indivíduo eleva seu corpo até que seu queixo ultrapasse o nível da barra, sem fazer movimentos de quadris ou pernas e com extensão da coluna cervical como forma de auxílio na execução do movimento. Por fim, a terceira etapa engloba a fase de contração excêntrica, que envolve o retorno do corpo à posição inicial após a ultrapassagem da barra. Cabe salientar que a meta é fazer com que o queixo ultrapasse a barra independentemente de se manter assim por muito ou pouco tempo. Portanto, é possível adicionar mais uma fase, totalizando quatro, mas a essência do movimento se dá em três fases.
+A primeira etapa engloba a posição inicial, onde o praticante se encontra pendurado na barra em pegada pronada, com os cotovelos estendidos e sem que os pés façam contato com o solo. A segunda etapa engloba a fase de contração concêntrica, onde o indivíduo eleva seu corpo até que seu queixo ultrapasse o nível da barra, sem fazer movimentos de quadris ou pernas e com extensão da coluna cervical como forma de auxílio na execução do movimento. Por fim, a terceira etapa engloba a fase de contração excêntrica, que envolve o retorno do corpo à posição inicial após a ultrapassagem da barra. Cabe salientar que a meta é fazer com que o queixo ultrapasse a barra, independentemente de se manter assim por muito ou pouco tempo. Portanto, é possível adicionar mais uma fase, totalizando quatro, mas a essência do movimento se dá em três fases.
 
 Dessa forma, optou-se por adotar a ideia de um reconhecedor para analisar o movimento de barra fixa. Nesse contexto, a fita é representada por um vídeo, no qual cada quadro do vídeo, comumente chamado de \textit{frame}, representa uma célula da fita. Os \textit{frames} são submetidos a um processamento afim de extrair informações cruciais que serão usadas na máquina como um caractere presente na fita. Para conduzir essa análise, é usada a ideia de uma máquina com cursor fixo que desloca a fita de maneira linear para a esquerda, lendo sequencialmente os caracteres presentes à direita. Além disso, essa abordagem incorpora uma memória auxiliar, responsável por registrar as transições entre dois estados específicos. Tal estratégia é implementada visando a precisão na contabilização dos movimentos corretos realizados durante o teste, conferindo, assim, uma avaliação meticulosa e sistemática do movimento de barra fixa.
 
-Em suma, foi elaborado um \ac{AFD} que inicia em um estado de preparação e avança para o estado de início somente quando as mãos estão na barra e os braços estão esticados.
+Em suma, foi elaborado um \ac{AFD}, que inicia em um estado de preparação e avança para o estado de início somente quando as mãos estão na barra e os braços estão esticados.
 
 O movimento concêntrico ocorre quando, partindo do estado inicial, os braços deixam de estar esticados e se mantêm nessa posição até que a meta seja alcançada ou ocorra um movimento ilegal dos quadris.
 
@@ -101,15 +101,15 @@ O \ac{AFD} desenvolvido consiste em um conjunto de sete estados:
 \{ &\text{Preparação, Início, Concêntrica, Meta, Excêntrica, Erro, Fim} \}
 \end{aligned}
 \]
-O estado \aspas{Preparação} é o estado inicial do \ac{AFD} representado qualquer momento que antecede o começo do teste de barra fixa como um todo. Um exemplo disso são os momentos que o executor se aproxima da barra fixa e se prepara para assumir a posição inicial.
+O estado \aspas{Preparação} é o estado inicial do \ac{AFD}, representado qualquer momento que antecede o começo do teste de barra fixa como um todo. Um exemplo disso são os momentos que o executor se aproxima da barra fixa e se prepara para assumir a posição inicial.
 
 O estado \aspas{Início} simboliza o começo do movimento da barra fixa. Nesse ponto, o executor deve estar pendurado na barra com a pegada pronada, cotovelos estendidos e sem contato dos pés com o solo.
 
-O estado \aspas{Concêntrica} simboliza a transição da posição inicial até a realização da meta, que é a ultrapassagem do queixo sobre a barra. Esse estado tem o nome de concêntrica, pois, para o alcance da meta, é necessário que o executor recrute as fibras musculares dos membros superiores, realizando uma contração concêntrica afim de alcançar a meta.
+O estado \aspas{Concêntrica} simboliza a transição da posição inicial até a realização da meta, que é a ultrapassagem do queixo sobre a barra. Esse estado tem o nome de concêntrica pois para o alcance da meta, é necessário que o executor recrute as fibras musculares dos membros superiores, realizando uma contração concêntrica afim de alcançar a meta.
 
 O estado \aspas{Meta} simboliza a realização da meta, ou seja, houve a ultrapassagem do queixo sobre a barra.
 
-O estado \aspas{Excêntrica} simboliza a transição de volta à posição inicial, ou seja, pendurado na barra com a pegada pronada, cotovelos estendidos e sem contato dos pés com o solo. Esse estado tem o nome de excêntrica, pois, para voltar à posição inicial, é necessário que o executor realize uma contração excêntrica até o momento em que os cotovelos fiquem totalmente esticados.
+O estado \aspas{Excêntrica} simboliza a transição de volta à posição inicial, ou seja, pendurado na barra com a pegada pronada, cotovelos estendidos e sem contato dos pés com o solo. Esse estado tem o nome de excêntrica pois para voltar à posição inicial, é necessário que o executor realize uma contração excêntrica até o momento em que os cotovelos fiquem totalmente esticados.
 
 O estado \aspas{Erro} representa todas as instâncias em que o teste está em andamento, mas devido a uma falha do executor, parâmetros são identificados que exigem um retorno à posição inicial para que o movimento seja considerado correto. Por exemplo, isso pode ocorrer quando o executor realiza um movimento de balanço com o quadril para facilitar a execução do movimento. Em outras palavras, se o executor alcança a meta de ultrapassar o queixo acima da barra, mas utiliza o impulso das pernas para isso, o movimento não será considerado válido. Portanto, é necessário retornar à posição inicial e reiniciar o movimento. 
 
@@ -132,7 +132,7 @@ As funções de transições estão representadas no diagrama de estados a segui
 
 Dentro do processamento de imagem, a segmentação é a etapa onde a imagem é dividida em regiões ou componentes significativos que podem ser analisados e processados de forma independente. Em outras palavras, a segmentação visa identificar áreas distintas na imagem que correspondem a objetos, padrões, bordas ou características de interesse \cite{imagemMonocromatica}.
 
-O objetivo da ferramenta é operar em um ambiente controlado. Entretanto, devido às características específicas da infraestrutura do local de teste, tornou-se essencial incorporar uma máscara para uma manipulação adequada de cada quadro. Com esse propósito, uma máscara previamente elaborada a partir do primeiro quadro do vídeo foi aplicada, utilizando a função bitwise\_and, disponibilizada na biblioteca \ac{openCV}. A operação bitwise\_and consiste em um processo de AND bit a bit entre os valores dos pixels do quadro e os valores correspondentes da máscara. O resultado é uma nova imagem em que os pixels que não fazem parte das regiões brancas da máscara são convertidos para preto, enquanto os pixels que pertencem a essas regiões permanecem intactos. A finalidade dessa máscara é realçar a região de interesse dentro do quadro, permitindo um foco preciso durante a etapa de segmentação da imagem.
+O objetivo da ferramenta é operar em um ambiente controlado. Entretanto, devido às características específicas da infraestrutura do local de teste, tornou-se essencial incorporar uma máscara para uma manipulação adequada de cada quadro. Com esse propósito, uma máscara previamente elaborada a partir do primeiro quadro do vídeo foi aplicada, utilizando a função \textit{bitwise\_and}, disponibilizada na biblioteca \ac{openCV}. A operação \textit{bitwise\_and} consiste em um processo de AND bit a bit entre os valores dos pixels do quadro e os valores correspondentes da máscara. O resultado é uma nova imagem em que os pixels que não fazem parte das regiões brancas da máscara são convertidos para preto, enquanto os pixels que pertencem a essas regiões permanecem intactos. A finalidade dessa máscara é realçar a região de interesse dentro do quadro, permitindo um foco preciso durante a etapa de segmentação da imagem.
 \begin{figure}[htb]
     \centering
     \caption{Ambiente de gravação e máscara preto e branco criada a partir do mesmo}
@@ -206,15 +206,15 @@ Durante o exame da barra física, é necessário que a barra esteja alinhada de 
 
 Foi adotada a biblioteca MediaPipe como uma ferramenta crucial para a predição dos pontos de referência da pose humana a partir de frames. Durante a configuração da ferramenta, foram considerados quatro de sete parâmetros para otimizar o desempenho do sistema: $static\_image\_mode$, $model\_complexity$, $min\_detection\_confidence$ e $min\_tracking\_confidence$. Cada um desses parâmetros desempenha um papel fundamental na precisão e eficiência da \ac{EPH}, contribuindo para a robustez e a qualidade dos resultados obtidos em nosso estudo.
 
-O parâmetro $static\_image\_mode$ pode ser configurado como $False$ ou $True$. Esse parâmetro determina se as imagens de entrada serão tratadas como um fluxo contínuo de vídeo ou como imagens independentes. Quando $static\_image\_mode$ é definido como $False$, o sistema realiza uma detecção inicial para identificar a pessoa mais proeminente. Após essa detecção, ocorre o \textit{tracking} dos pontos de referência, evitando a necessidade de iniciar uma nova detecção a cada quadro subsequente, a menos que o ponto de referência seja perdido. Por outro lado, quando $static\_image\_mode$ é configurado como $True$, o sistema processa um lote de imagens como entidades independentes e não relacionadas. A cada nova detecção, os valores anteriores são descartados, e todo o processo é reiniciado.
+O parâmetro $static\_image\_mode$, pode ser configurado como $False$ ou $True$. Esse parâmetro determina se as imagens de entrada serão tratadas como um fluxo contínuo de vídeo ou como imagens independentes. Quando $static\_image\_mode$ é definido como $False$, o sistema realiza uma detecção inicial para identificar a pessoa mais proeminente. Após essa detecção, ocorre o \textit{tracking} dos pontos de referência, evitando a necessidade de iniciar uma nova detecção a cada quadro subsequente, a menos que o ponto de referência seja perdido. Por outro lado, quando $static\_image\_mode$ é configurado como $True$, o sistema processa um lote de imagens como entidades independentes e não relacionadas. A cada nova detecção, os valores anteriores são descartados, e todo o processo é reiniciado.
 
-No contexto do nosso projeto, optamos por configurar o $static\_image\_mode$ como $False$, aproveitando a eficiência proporcionada pelo rastreamento contínuo de pontos de referência. Isso contribui para melhorar a computação geral e reduzir a latência do processo. Essa escolha foi feita com base nas necessidades específicas de nossa aplicação.
+No contexto do projeto, optou-se por configurar o $static\_image\_mode$ como $False$, aproveitando a eficiência proporcionada pelo rastreamento contínuo de pontos de referência. Isso contribui para melhorar a computação geral e reduzir a latência do processo. Essa escolha foi feita com base nas necessidades específicas da aplicação.
 
-O parâmetro $model\_complexity$ pode ser configurado com os valores predefinidos $0$, $1$ e $2$ e está ligado à precisão do ponto de referência. Quanto maior o número, maior a complexidade, influenciando diretamente a latência de inferência. Foi utilizado o valor $2$ porque os demais valores estavam gerando inferências errôneas em frames específicos, o que impactava diretamente na extração de características desses frames.
+O parâmetro $model\_complexity$, pode ser configurado com os valores predefinidos $0$, $1$ e $2$ e está ligado à precisão do ponto de referência. Quanto maior o número, maior a complexidade, influenciando diretamente a latência de inferência. Foi utilizado o valor $2$ porque os demais valores estavam gerando inferências errôneas em frames específicos, o que impactava diretamente na extração de características desses frames.
 
-O parâmetro $min\_detection\_confidence$ pode ser configurado como um valor entre $0.0$ a $1.0$ e define o valor de confiança mínimo para que o modelo de detecção de pessoa seja considerado bem-sucedido. O valor adotado foi $0.3$.
+O parâmetro $min\_detection\_confidence$, pode ser configurado como um valor entre $0.0$ a $1.0$ e define o valor de confiança mínimo para que o modelo de detecção de pessoa seja considerado bem-sucedido. O valor adotado foi $0.3$.
 
-O parâmetro $min\_tracking\_confidence$ pode ser configurado como um valor entre $0.0$ a $1.0$ e define o valor de confiança mínimo para que o modelo de rastreamento de pontos seja considerado rastreado com sucesso. O valor adotado foi $0.75$. Configurá-lo com um valor mais alto pode aumentar a robustez da solução, às custas de uma latência mais alta.
+O parâmetro $min\_tracking\_confidence$, pode ser configurado como um valor entre $0.0$ a $1.0$ e define o valor de confiança mínimo para que o modelo de rastreamento de pontos seja considerado rastreado com sucesso. O valor adotado foi $0.75$. Configurá-lo com um valor mais alto pode aumentar a robustez da solução, às custas de uma latência mais alta.
 
 A biblioteca MediaPipe fornece 33 pontos de referência, como mostrado na Figura \ref{fig:Pontos de referencia}. No entanto, foram utilizados apenas 16 pontos, sendo eles:
 
@@ -343,7 +343,7 @@ A área de interesse é representada por uma linha na direção da barra mesclad
 \end{figure}
 
 
-Por fim, com a imagem filtrada e binarizada, foi destacada a região de interesse e identificados os contornos presentes nessa região. Cada contorno representa algo obstruindo a barra, especificamente uma parte do corpo ou algo que tenha o mesmo intervalo de cor previamente estabelecido. Portanto, com a identificação de 1 ou mais contornos em cada lado da imagem, possivelmente são as mãos tocando a barra.
+Por fim, com a imagem filtrada e binarizada, foi destacada a região de interesse e identificados os contornos presentes nessa região. Cada contorno representa algo obstruindo a barra, especificamente uma parte do corpo ou algo que tenha o mesmo intervalo de cor previamente estabelecido. Portanto, com a identificação de um ou mais contornos em cada lado da imagem, possivelmente são as mãos tocando a barra.
 
 \begin{figure}[H]
     \centering
@@ -510,7 +510,7 @@ O projeto foi estruturado de forma que os componentes do código conseguissem se
 	\label{fig:blocos}
 \end{figure}
 
-No contexto do meu projeto, a estrutura de diretórios é organizada da seguinte forma: o diretório \aspas{model} contém arquivos que desempenham o papel fundamental na representação dos dados e a lógica de negócios da ferramenta.
+No contexto do presente projeto, a estrutura de diretórios é organizada da seguinte forma: o diretório \aspas{model} contém arquivos que desempenham o papel fundamental na representação dos dados e a lógica de negócios da ferramenta.
 
 \begin{figure}[H]
     \centering
@@ -532,7 +532,7 @@ A pasta \aspas{view} é responsável por apresentar esses dados de maneira atrae
 	\label{fig:view}
 \end{figure}
 
-O diretório \aspas{mídia} abriga arquivos relacionados a imagens, áudio, vídeo e às fontes do sistema.
+O diretório \aspas{mídia} abriga arquivos relacionados à imagens, áudio, vídeo e fontes do sistema.
 
 \begin{figure}[H]
 	\centering
